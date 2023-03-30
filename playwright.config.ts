@@ -26,20 +26,11 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  /* Configure projects for major browsers */
   projects: [
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'], storageState: 'playwright/.auth/user.json' },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'], storageState: 'playwright/.auth/user.json' },
     },
   ],
 })
