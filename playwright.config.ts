@@ -12,6 +12,7 @@ export default defineConfig({
   use: {
     baseURL: 'https://approved-premises-dev.hmpps.service.justice.gov.uk',
     trace: 'on-first-retry',
+    video: 'on-first-retry',
   },
   projects: [
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
