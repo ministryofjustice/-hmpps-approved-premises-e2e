@@ -8,7 +8,7 @@ test('test', async ({ page }) => {
   const sixMonths = 1000 * 60 * 60 * 24 * 7 * 4 * 6
   const releaseDate = new Date(new Date().getTime() + sixMonths)
 
-  await page.goto('https://approved-premises-dev.hmpps.service.justice.gov.uk')
+  await page.goto('/')
 
   await page.getByRole('link', { name: 'Apply for an Approved Premises placement' }).click()
 

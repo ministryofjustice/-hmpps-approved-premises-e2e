@@ -10,6 +10,7 @@ export default defineConfig({
   reporter: 'html',
   timeout: 60000,
   use: {
+    baseURL: 'https://approved-premises-dev.hmpps.service.justice.gov.uk',
     trace: 'on-first-retry',
   },
   projects: [
