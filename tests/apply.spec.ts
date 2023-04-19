@@ -1,204 +1,265 @@
-import { expect, test } from '@playwright/test'
+import { test } from '@playwright/test'
+import {
+  ApplyPage,
+  CRNPage,
+  CheckYourAnswersPage,
+  ConfirmPersonPage,
+  ConfirmationPage,
+  DashboardPage,
+  ListPage,
+  StartPage,
+  TasklistPage,
+} from '../pages/apply'
 
 test('test', async ({ page }) => {
-  const clickSave = async () => {
-    await page.getByRole('button', { name: 'Save and continue' }).click()
-  }
+  const dashboard = new DashboardPage(page)
+  await dashboard.goto()
+  await dashboard.clickApply()
 
-  const sixMonths = 1000 * 60 * 60 * 24 * 7 * 4 * 6
-  const releaseDate = new Date(new Date().getTime() + sixMonths)
+  const listPage = new ListPage(page)
+  await listPage.startApplication()
 
-  await page.goto('/')
+  const startPage = new StartPage(page)
+  await startPage.createApplication()
 
-  await page.getByRole('link', { name: 'Apply for an Approved Premises placement' }).click()
+  const crnPage = new CRNPage(page)
+  await crnPage.enterCrn()
+  await crnPage.clickSave()
 
-  await page.getByRole('button', { name: 'Start now' }).click()
-  await page.getByRole('button', { name: 'Start now' }).click()
+  const confirmPersonPage = new ConfirmPersonPage(page)
+  await confirmPersonPage.clickSave()
 
-  await page.getByLabel("Enter the person's CRN").fill('X371199')
-  await clickSave()
+  const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
+  await notEligiblePage.checkRadio('Yes')
+  await notEligiblePage.clickSave()
 
-  await clickSave()
+  const exemptionApplicationPage = await ApplyPage.initialize(page, 'Provide details for exemption application')
+  await exemptionApplicationPage.checkRadio('Yes')
+  await exemptionApplicationPage.fillField('Name of senior manager', 'Some text')
+  await exemptionApplicationPage.fillDateField({ year: '2022', month: '3', day: '12' })
+  await exemptionApplicationPage.fillField(
+    'Provide a summary of the reasons why this is an exempt application',
+    'Some text',
+  )
+  await exemptionApplicationPage.clickSave()
 
-  await page.getByLabel('Yes').check()
-  await clickSave()
+  const transgenderPage = await ApplyPage.initialize(
+    page,
+    'Is Ben Davies transgender or do they have a transgender history?',
+  )
+  await transgenderPage.checkRadio('No')
+  await transgenderPage.clickSave()
 
-  await page.getByLabel('Yes').check()
-  await page.getByLabel('Name of senior manager').fill('Some text')
-  await page.getByLabel('Day').fill('12')
-  await page.getByLabel('Month').fill('3')
-  await page.getByLabel('Year').fill('2022')
-  await page.getByLabel('Provide a summary of the reasons why this is an exempt application').fill('Some text')
-  await clickSave()
+  const sentenceTypePage = await ApplyPage.initialize(
+    page,
+    'Which of the following best describes the sentence type the person is on?',
+  )
+  await sentenceTypePage.checkRadio('Standard determinate custody')
+  await sentenceTypePage.clickSave()
 
-  await page.getByLabel('Standard determinate custody').check()
-  await clickSave()
+  const releaseTypePage = await ApplyPage.initialize(page, 'What type of release will the application support?')
+  await releaseTypePage.checkRadio('Licence')
+  await releaseTypePage.clickSave()
 
-  await page.getByLabel('Licence', { exact: true }).check()
-  await clickSave()
+  const releaseDatePage = await ApplyPage.initialize(page, 'Do you know Ben Davies’s release date?')
+  await releaseDatePage.checkRadio('Yes')
+  await releaseDatePage.fillReleaseDateField()
+  await releaseDatePage.clickSave()
 
-  await page.getByLabel('Yes').check()
-  await page.getByLabel('Day').fill(releaseDate.getDate().toString())
-  await page.getByLabel('Month').fill((releaseDate.getMonth() + 1).toString())
-  await page.getByLabel('Year').fill(releaseDate.getFullYear().toString())
-  await clickSave()
+  const placementDatePage = await ApplyPage.initialize(page)
+  await placementDatePage.checkRadio('Yes')
+  await placementDatePage.clickSave()
 
-  await page.getByLabel('Yes').check()
-  await clickSave()
+  const purposePage = await ApplyPage.initialize(page, 'What is the purpose of the Approved Premises (AP) placement?')
+  await purposePage.checkCheckBoxes(['Public protection', 'Prevent contact with known individuals or victims'])
+  await purposePage.clickSave()
 
-  await page.getByLabel('Public protection').check()
-  await page.getByLabel('Prevent contact with known individuals or victims').check()
-  await clickSave()
+  let taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Type of AP required')
 
-  await page.getByRole('link', { name: 'Type of AP required' }).click()
-  await page.getByText('Standard AP', { exact: true }).click()
-  await clickSave()
+  const typeOfApPage = await ApplyPage.initialize(page, 'Which type of AP does Ben Davies require?')
+  await typeOfApPage.checkRadio('Standard AP')
+  await typeOfApPage.clickSave()
 
-  await page.getByRole('link', { name: 'Choose sections of OASys to import' }).click()
-  await page.getByLabel('3. Accommodation').check()
-  await page.getByLabel('13. Health').check()
-  await page.getByLabel('4. Education, training and employment').check()
-  await clickSave()
-  await clickSave()
-  await clickSave()
-  await clickSave()
-  await clickSave()
-  await clickSave()
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Choose sections of OASys to import')
 
-  await page.getByRole('link', { name: 'Add detail about managing risks and needs' }).click()
+  const oasysPage = await ApplyPage.initialize(page, 'Which of the following sections of OASys do you want to import?')
+  await oasysPage.checkCheckBoxes(['3. Accommodation', '13. Health', '4. Education, training and employment'])
+  await oasysPage.clickSave()
 
-  await page.getByLabel('Describe why an AP placement is needed to manage the risk of Ben Davies').fill('Some text')
-  await page
-    .getByLabel('Provide details of any additional measures that will be necessary for the management of risk')
-    .fill('Some text')
-  await clickSave()
+  const roshSummaryPage = await ApplyPage.initialize(page)
+  await roshSummaryPage.clickSave()
 
-  await page.getByLabel('No').check()
-  await clickSave()
+  const offenceAnalysisPage = await ApplyPage.initialize(page)
+  await offenceAnalysisPage.clickSave()
 
-  await page.getByLabel('Health').check()
-  await page.getByLabel('Children and families').check()
-  await page.getByText('Accommodation Drugs and alcohol Children and families Health Education, training').click()
-  await page.getByLabel('Finance, benefits and debt').check()
-  await clickSave()
+  const supportingInformationPage = await ApplyPage.initialize(page)
+  await supportingInformationPage.clickSave()
 
-  await page.getByRole('link', { name: 'Review prison information' }).click()
-  await page.getByLabel('Select case note from Thursday 21 April 2022').check()
-  await page.getByRole('tab', { name: 'Adjudications' }).click()
-  await page.getByRole('tab', { name: 'ACCT' }).click()
-  await page.getByRole('tab', { name: 'Prison case notes' }).click()
-  await clickSave()
+  const riskManagementPage = await ApplyPage.initialize(page)
+  await riskManagementPage.clickSave()
 
-  await page.getByRole('link', { name: 'Describe location factors' }).click()
-  await page.getByLabel('What is the preferred postcode area for the Approved Premises (AP) placement?').fill('B71')
-  await page.getByLabel('Give details of why this postcode area would benefit the person').fill('Some text')
-  await page
-    .getByRole('group', {
-      name: 'If an AP Placement is not available in the persons preferred area, would a placement further away be considered?',
-    })
-    .getByLabel('No')
-    .check()
-  await page
-    .getByRole('group', { name: 'Are there any restrictions linked to placement location?' })
-    .getByLabel('No')
-    .check()
-  await clickSave()
+  const riskToSelfPage = await ApplyPage.initialize(page)
+  await riskToSelfPage.clickSave()
 
-  await page.getByRole('link', { name: 'Add access, cultural and healthcare needs' }).click()
-  await page.getByLabel('None of the above').check()
-  await page
-    .getByRole('group', { name: 'Does Ben Davies have any religious or cultural needs?' })
-    .getByLabel('No')
-    .check()
-  await page.getByRole('group', { name: 'Does Ben Davies need an interpreter?' }).getByLabel('No').check()
-  await page
-    .getByRole('group', { name: 'Has a care act assessment been completed?' })
-    .getByLabel('No', { exact: true })
-    .check()
-  await clickSave()
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Add detail about managing risks and needs')
 
-  await page
-    .getByRole('group', { name: 'Has Ben Davies been fully vaccinated for COVID-19?' })
-    .getByLabel('No', { exact: true })
-    .check()
-  await page
-    .getByRole('group', { name: 'Is Ben Davies at a higher risk from COVID-19 based on the NHS guidance?' })
-    .getByLabel('No', { exact: true })
-    .click()
-  await clickSave()
+  const riskManagementFeaturesPage = await ApplyPage.initialize(
+    page,
+    'What features of an Approved Premises (AP) will support the management of risk?',
+  )
+  await riskManagementFeaturesPage.fillField(
+    'Describe why an AP placement is needed to manage the risk of Ben Davies',
+    'Some text',
+  )
+  await riskManagementFeaturesPage.fillField(
+    'Provide details of any additional measures that will be necessary for the management of risk',
+    'Some text',
+  )
+  await riskManagementFeaturesPage.clickSave()
 
-  await page.getByRole('link', { name: 'Detail further considerations for placement' }).click()
-  await page
-    .getByRole('group', { name: 'Is there any evidence that the person may pose a risk to AP staff?' })
-    .getByLabel('No')
-    .check()
-  await page
-    .getByRole('group', { name: 'Is there any evidence that the person may pose a risk to other AP residents?' })
-    .getByLabel('No')
-    .check()
-  await page
-    .getByRole('group', { name: 'Do you have any concerns about the person sharing a bedroom?' })
-    .getByLabel('No')
-    .check()
-  await page
-    .getByRole('group', {
-      name: 'Is there any evidence of previous trauma or significant event in the persons history which would indicate that room share may not be suitable?',
-    })
-    .getByLabel('No')
-    .check()
-  await page
-    .getByRole('group', { name: 'Is there potential for the person to benefit from a room share?' })
-    .getByLabel('No')
-    .check()
-  await clickSave()
+  const convictedOffencesPage = await ApplyPage.initialize(
+    page,
+    'Has Ben Davies ever been convicted of the following offences?',
+  )
+  await convictedOffencesPage.checkRadio('No')
+  await convictedOffencesPage.clickSave()
 
-  await page
-    .getByRole('group', { name: 'Are you aware that Ben Davies is vulnerable to exploitation from others?' })
-    .getByLabel('No')
-    .check()
-  await page
-    .getByRole('group', {
-      name: 'Is there any evidence or expectation that Ben Davies may groom, radicalise or exploit others?',
-    })
-    .getByLabel('No')
-    .check()
-  await clickSave()
+  const rehabilativeActivitiesPage = await ApplyPage.initialize(
+    page,
+    "Which of the rehabilitative activities will assist the person's rehabilitation in the Approved Premises (AP)?",
+  )
+  await rehabilativeActivitiesPage.checkCheckBoxes(['Health', 'Children and families', 'Finance, benefits and debt'])
+  await rehabilativeActivitiesPage.fillField(
+    'Provide a summary of how these interventions will assist the persons rehabilitation in the AP.',
+    'Some text',
+  )
+  await rehabilativeActivitiesPage.clickSave()
 
-  await page.getByLabel('No', { exact: true }).check()
-  await clickSave()
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Review prison information')
 
-  await page.getByLabel('No').check()
-  await clickSave()
+  const prisonInformationPage = await ApplyPage.initialize(page, 'Prison information')
+  await prisonInformationPage.checkCheckBoxes(['Select case note from Thursday 21 April 2022'])
+  await prisonInformationPage.clickTab('Adjudications')
+  await prisonInformationPage.clickTab('ACCT')
+  await prisonInformationPage.clickTab('Prison case notes')
+  await prisonInformationPage.clickSave()
 
-  await page.getByLabel('No').check()
-  await clickSave()
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Describe location factors')
 
-  await page.getByLabel('No').check()
-  await clickSave()
+  const locationFactorsPage = await ApplyPage.initialize(page, 'Location factors')
+  await locationFactorsPage.fillField(
+    'What is the preferred postcode area for the Approved Premises (AP) placement?',
+    'B71',
+  )
+  await locationFactorsPage.fillField('Give details of why this postcode area would benefit the person', 'Some text')
+  await locationFactorsPage.checkRadioInGroup(
+    'If an AP Placement is not available in the persons preferred area, would a placement further away be considered?',
+    'No',
+  )
+  await locationFactorsPage.checkRadioInGroup('Are there any restrictions linked to placement location?', 'No')
+  await locationFactorsPage.clickSave()
 
-  await page.getByRole('link', { name: 'Add move on information' }).click()
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Add access, cultural and healthcare needs')
 
-  await page.getByLabel('Duration in weeks').fill('12')
-  await page.getByLabel('Provide any additional information').fill('Some text')
-  await clickSave()
+  const accessNeedsPage = await ApplyPage.initialize(page, 'Access, cultural and healthcare needs')
+  await accessNeedsPage.checkCheckBoxes(['None of the above'])
+  await locationFactorsPage.checkRadioInGroup('Does Ben Davies have any religious or cultural needs?', 'No')
+  await locationFactorsPage.checkRadioInGroup('Does Ben Davies need an interpreter?', 'No')
+  await locationFactorsPage.checkRadioInGroup('Has a care act assessment been completed?', 'No')
+  await accessNeedsPage.clickSave()
 
-  await page.getByLabel('Where is Ben Davies most likely to live when they move on from the AP?').fill('WS1')
-  await clickSave()
+  const covidPage = await ApplyPage.initialize(page, 'COVID information')
+  await covidPage.checkRadioInGroup('Has Ben Davies been fully vaccinated for COVID-19?', 'No')
+  await covidPage.checkRadioInGroup('Is Ben Davies at a higher risk from COVID-19 based on the NHS guidance?', 'No')
+  await covidPage.clickSave()
 
-  await page.getByLabel('No').check()
-  await clickSave()
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Detail further considerations for placement')
 
-  await page.getByLabel('Living with partner, family or friends').check()
-  await clickSave()
+  const roomSharingPage = await ApplyPage.initialize(page, 'Room sharing')
+  await roomSharingPage.checkRadioInGroup('Is there any evidence that the person may pose a risk to AP staff?', 'No')
+  await roomSharingPage.checkRadioInGroup(
+    'Is there any evidence that the person may pose a risk to other AP residents?',
+    'No',
+  )
+  await roomSharingPage.checkRadioInGroup(
+    'Is there any evidence that the person may pose a risk to other AP residents?',
+    'No',
+  )
+  await roomSharingPage.checkRadioInGroup('Do you have any concerns about the person sharing a bedroom?', 'No')
+  await roomSharingPage.checkRadioInGroup(
+    'Is there any evidence of previous trauma or significant event in the persons history which would indicate that room share may not be suitable?',
+    'No',
+  )
+  await roomSharingPage.checkRadioInGroup('Is there potential for the person to benefit from a room share?', 'No')
+  await roomSharingPage.clickSave()
 
-  await page.getByRole('link', { name: 'Attach required documents' }).click()
-  await clickSave()
+  const vulnerabilityPage = await ApplyPage.initialize(page, 'Vulnerability')
+  await vulnerabilityPage.checkRadioInGroup(
+    'Are you aware that Ben Davies is vulnerable to exploitation from others?',
+    'No',
+  )
+  await vulnerabilityPage.checkRadioInGroup(
+    'Is there any evidence or expectation that Ben Davies may groom, radicalise or exploit others?',
+    'No',
+  )
+  await vulnerabilityPage.clickSave()
 
-  await page.getByRole('link', { name: 'Check your answers' }).click()
-  await page.getByRole('button', { name: 'Continue' }).click()
+  const previousPlacementsPage = await ApplyPage.initialize(page, 'Previous Approved Premises (AP) placements')
+  await previousPlacementsPage.checkRadio('No')
+  await previousPlacementsPage.clickSave()
 
-  await page.getByLabel('I confirm the information provided is complete, accurate and up to date.').check()
-  await page.getByRole('button', { name: 'Submit application' }).click()
+  const cateringRequirementsPage = await ApplyPage.initialize(page, 'Catering requirements')
+  await cateringRequirementsPage.checkRadio('No')
+  await cateringRequirementsPage.clickSave()
 
-  await expect(page.locator('h1.govuk-panel__title')).toContainText('Application confirmation')
+  const arsonPage = await ApplyPage.initialize(page, 'Arson')
+  await arsonPage.checkRadio('No')
+  await arsonPage.clickSave()
+
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Add move on information')
+
+  const placementDurationPage = await ApplyPage.initialize(page, 'Placement duration and move on')
+  await placementDurationPage.checkRadio('No')
+  await placementDurationPage.clickSave()
+
+  const moveOnPage = await ApplyPage.initialize(page, 'Placement duration and move on')
+  await moveOnPage.fillField('Where is Ben Davies most likely to live when they move on from the AP?', 'WS1')
+  await moveOnPage.clickSave()
+
+  const moveOnArrangementsPage = await ApplyPage.initialize(page, 'Placement duration and move on')
+  await moveOnArrangementsPage.checkRadio('No')
+  await moveOnArrangementsPage.clickSave()
+
+  const typeOfAccommodationPage = await ApplyPage.initialize(page, 'Placement duration and move on')
+  await typeOfAccommodationPage.checkRadio('Living with partner, family or friends')
+  await typeOfAccommodationPage.clickSave()
+
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Attach required documents')
+
+  const requiredDocumentsPage = await ApplyPage.initialize(
+    page,
+    'Select any additional documents that are required to support your application',
+  )
+  await requiredDocumentsPage.clickSave()
+
+  taskListPage = new TasklistPage(page)
+  await taskListPage.clickTask('Check your answers')
+
+  const checkYourAnswersPage = await CheckYourAnswersPage.initialize(page)
+  await checkYourAnswersPage.clickContinue()
+
+  taskListPage = new TasklistPage(page)
+  await taskListPage.submitApplication()
+
+  const confirmationPage = new ConfirmationPage(page)
+  await confirmationPage.shouldShowSuccessMessage()
 })
