@@ -223,6 +223,10 @@ test('test', async ({ page }) => {
   await arsonPage.checkRadio('No')
   await arsonPage.clickSave()
 
+  const additionalCircumstancesPage = await ApplyPage.initialize(page, 'Additional circumstances')
+  await additionalCircumstancesPage.checkRadio('No')
+  await additionalCircumstancesPage.clickSave()
+
   taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Add move on information')
 
