@@ -142,7 +142,8 @@ test('test', async ({ page }) => {
   await taskListPage.clickTask('Review prison information')
 
   const prisonInformationPage = await ApplyPage.initialize(page, 'Prison information')
-  await prisonInformationPage.checkCheckBoxes(['Select case note from Thursday 21 April 2022'])
+  // TODO once this CRN has prison case notes again
+  // await prisonInformationPage.checkCheckBoxes(['Select case note from Thursday 21 April 2022'])
   await prisonInformationPage.clickTab('Adjudications')
   await prisonInformationPage.clickTab('ACCT')
   await prisonInformationPage.clickTab('Prison case notes')
@@ -171,6 +172,7 @@ test('test', async ({ page }) => {
   await accessNeedsPage.checkCheckBoxes(['None of the above'])
   await locationFactorsPage.checkRadioInGroup('Does Ben Davies have any religious or cultural needs?', 'No')
   await locationFactorsPage.checkRadioInGroup('Does Ben Davies need an interpreter?', 'No')
+  await locationFactorsPage.checkRadioInGroup('Does this person have care and support needs?', 'No')
   await locationFactorsPage.checkRadioInGroup('Has a care act assessment been completed?', 'No')
   await accessNeedsPage.clickSave()
 

@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint . --cache --max-warnings 0 ",
-    "lint:fix": "eslint . --cache --max-warnings 0 --fix"
+    "lint:fix": "eslint . --cache --max-warnings 0 --fix",
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --headed",
+    "install-playwright": "npx playwright install"
   },
   "keywords": [],
   "author": "",
