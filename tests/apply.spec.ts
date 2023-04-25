@@ -142,7 +142,6 @@ test('test', async ({ page }) => {
   await taskListPage.clickTask('Review prison information')
 
   const prisonInformationPage = await ApplyPage.initialize(page, 'Prison information')
-  await prisonInformationPage.checkCheckBoxes(['Select case note from Thursday 21 April 2022'])
   await prisonInformationPage.clickTab('Adjudications')
   await prisonInformationPage.clickTab('ACCT')
   await prisonInformationPage.clickTab('Prison case notes')
