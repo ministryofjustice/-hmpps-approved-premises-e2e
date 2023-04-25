@@ -4,6 +4,8 @@ A suite of end to end tests for the [Approved Premises project](https://github.c
 
 ## Getting started
 
+We strongly recommend using the [VS Code Playwright plugin](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) and use the plugin's commands.
+
 ### Prerequisites
 
 - Node.JS
@@ -15,6 +17,7 @@ Install the dependencies with:
 
 ```bash
 npm install
+npm run install-playwright
 ```
 
 Add a `.env` file to the root of the project with the following variables:
@@ -29,5 +32,5 @@ HMPPS_AUTH_PASSWORD= # A valid HMPPS Auth Password
 To run the tests locally, run the following command:
 
 ```bash
-npx playwright test
+npm run test
 ```
