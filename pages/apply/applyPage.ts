@@ -58,6 +58,6 @@ export class ApplyPage extends BasePage {
   }
 
   async clickTab(title: string) {
-    await this.page.getByRole('tab', { name: title }).click()
+    await this.page.getByRole('link', { name: title }).click()
   }
 }
