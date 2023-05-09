@@ -1,7 +1,7 @@
 import { ApplyPage } from './applyPage'
 import { ConfirmationPage } from './confirmationPage'
 import { CheckYourAnswersPage } from './checkYourAnswersPage'
-import { DashboardPage } from './dashboardPage'
+import { DashboardPage } from '../dashboardPage'
 import { ListPage } from './listPage'
 import { StartPage } from './startPage'
 import { CRNPage } from './crnPage'

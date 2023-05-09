@@ -1,3 +1,3 @@
-import { BasePage } from './basePage'
+import { BasePage } from '../basePage'
 
 export class ConfirmPersonPage extends BasePage {}

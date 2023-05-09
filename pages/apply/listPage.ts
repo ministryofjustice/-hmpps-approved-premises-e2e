@@ -1,4 +1,4 @@
-import { BasePage } from './basePage'
+import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
   async startApplication() {
