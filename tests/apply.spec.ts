@@ -17,7 +17,7 @@ import {
   submitApplication,
   visitDashboard,
 } from '../steps/apply'
-import { assignAssessmentToMe } from '../steps/workflow'
+import { assignAssessmentToMe, assignPlacementRequestToMe } from '../steps/workflow'
 import {
   addMatchingInformation,
   assessSuitability,
@@ -30,6 +30,7 @@ import {
   startAssessment,
   submitAssessment,
 } from '../steps/assess'
+import { chooseBed, confirmBooking, searchForBed, shouldShowBookingConfirmation } from '../steps/match'
 
 test('Apply for an Approved Premises', async ({ page }) => {
   // Given I visit the Dashboard
@@ -117,4 +118,24 @@ test('Assess an Approved Premises Application', async ({ page }) => {
 
   // Then I should see a confirmation screen
   await shouldSeeAssessmentConfirmationScreen(page)
+})
+
+test('Match and book an Approved Premises Application', async ({ page }) => {
+  // Given I visit the Dashboard
+  const dashboard = await visitDashboard(page)
+
+  // And I allocate the placement request to myself
+  await assignPlacementRequestToMe(dashboard, page)
+
+  // And I search for a bed
+  await searchForBed(page)
+
+  // And I select a matching bed
+  await chooseBed(page)
+
+  // And I confirm my booking
+  await confirmBooking(page)
+
+  // Then I should bee a confirmation screen
+  await shouldShowBookingConfirmation(page)
 })

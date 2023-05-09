@@ -9,4 +9,13 @@ export class ListPage extends BasePage {
       .getByRole('link')
       .click()
   }
+
+  async chooseFirstPlacementRequest() {
+    await this.page
+      .getByRole('row')
+      .filter({ has: this.page.getByText('Placement request') })
+      .first()
+      .getByRole('link')
+      .click()
+  }
 }
