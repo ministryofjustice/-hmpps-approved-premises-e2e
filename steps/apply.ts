@@ -267,6 +267,10 @@ export const completeMoveOnTask = async (page: Page) => {
 
   const moveOnArrangementsPage = await ApplyPage.initialize(page, 'Placement duration and move on')
   await moveOnArrangementsPage.checkRadio('No')
+  await moveOnArrangementsPage.fillField(
+    'Provide detail about any plans to secure accommodation in preparation for move on',
+    'Some text',
+  )
   await moveOnArrangementsPage.clickSave()
 
   const typeOfAccommodationPage = await ApplyPage.initialize(page, 'Placement duration and move on')
