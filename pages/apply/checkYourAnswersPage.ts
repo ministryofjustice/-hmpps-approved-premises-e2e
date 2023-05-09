@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test'
-import { BasePage } from './basePage'
+import { BasePage } from '../basePage'
 
 export class CheckYourAnswersPage extends BasePage {
   static async initialize(page: Page) {

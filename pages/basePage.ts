@@ -6,4 +6,12 @@ export class BasePage {
   async clickSave() {
     await this.page.getByRole('button', { name: 'Save and continue' }).click()
   }
+
+  async clickSubmit() {
+    await this.page.getByRole('button', { name: 'Submit' }).click()
+  }
+
+  async clickContinue() {
+    await this.page.getByRole('button', { name: 'Continue' }).click()
+  }
 }

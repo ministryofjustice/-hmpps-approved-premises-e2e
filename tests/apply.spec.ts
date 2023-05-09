@@ -17,6 +17,19 @@ import {
   submitApplication,
   visitDashboard,
 } from '../steps/apply'
+import { assignAssessmentToMe } from '../steps/workflow'
+import {
+  addMatchingInformation,
+  assessSuitability,
+  checkAssessAnswers,
+  confirmInformation,
+  makeDecision,
+  provideRequirements,
+  reviewApplication,
+  shouldSeeAssessmentConfirmationScreen,
+  startAssessment,
+  submitAssessment,
+} from '../steps/assess'
 
 test('Apply for an Approved Premises', async ({ page }) => {
   // Given I visit the Dashboard
@@ -66,4 +79,42 @@ test('Apply for an Approved Premises', async ({ page }) => {
 
   // Then I should see a confirmation message
   await shouldSeeConfirmationPage(page)
+})
+
+test('Assess an Approved Premises Application', async ({ page }) => {
+  // Given I visit the Dashboard
+  const dashboard = await visitDashboard(page)
+
+  // And I allocate the assessement to myself
+  await assignAssessmentToMe(dashboard, page)
+
+  // And I start the assessment
+  await startAssessment(page)
+
+  // And I Review the application
+  await reviewApplication(page)
+
+  // And I confirm there is enough information in the Assessment
+  await confirmInformation(page)
+
+  // And I assess the suitablity of the Application
+  await assessSuitability(page)
+
+  // And I provide the requirements to support the placement
+  await provideRequirements(page)
+
+  // And I make a decision
+  await makeDecision(page)
+
+  // And I provide matching information
+  await addMatchingInformation(page)
+
+  // And I check my answers
+  await checkAssessAnswers(page)
+
+  // And I submit my Assessment
+  await submitAssessment(page)
+
+  // Then I should see a confirmation screen
+  await shouldSeeAssessmentConfirmationScreen(page)
 })
