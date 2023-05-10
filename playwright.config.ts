@@ -8,7 +8,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: 'html',
-  timeout: 60000,
+  timeout: 5 * 60 * 1000,
   use: {
     baseURL: 'https://approved-premises-dev.hmpps.service.justice.gov.uk',
     trace: 'on-first-retry',
