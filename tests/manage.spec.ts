@@ -7,6 +7,7 @@ import { BedPage } from '../pages/manage/bedPage'
 import { ConfirmationPage } from '../pages/manage/placementConfirmationPage'
 import { CRNPage } from '../pages/apply'
 import { CreatePlacementPage } from '../pages/manage/createPlacementPage'
+import { MarkBedOutOfServicePage } from '../pages/manage/markBedOutOfServicePage'
 
 test('Manually book a bed', async ({ page }) => {
   const premisesName = 'Test AP 1'
@@ -58,4 +59,34 @@ test('Manually book a bed', async ({ page }) => {
   // Then I should be taken to the confirmation page
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowSuccessMessage()
+})
+
+test('Mark a bed as lost', async ({ page }) => {
+  // Given I am on the list of premises page
+  const dashboard = await visitDashboard(page)
+  await dashboard.clickManage()
+  const listPage = await PremisesListPage.initialize(page, 'List of Approved Premises')
+
+  // When I click on a Premises' 'View' link
+  await listPage.choosePremises(premisesName)
+
+  // Then I should see the premises view page
+  const premisesPage = await PremisesPage.initialize(page, premisesName)
+
+  // When I view a premises room
+  await premisesPage.viewRooms()
+  const bedsPage = await BedsPage.initialize(page, 'Manage beds')
+  await bedsPage.viewAvailableBed()
+
+  // Then I should be able to mark a bed as out of service
+  const bedPage = await BedPage.initialize(page, 'Manage beds')
+  await bedPage.clickMarkBedAsOutOfService()
+
+  // When I fill in and submit the form
+  const markBedOutOfServicePage = await MarkBedOutOfServicePage.initialize(page, 'Mark a bed as out of service')
+  await markBedOutOfServicePage.completeForm()
+  await markBedOutOfServicePage.clickSave()
+
+  // Then I should be taken to the AP view page
+  await premisesPage.showsLostBedLoggedMessage()
 })
