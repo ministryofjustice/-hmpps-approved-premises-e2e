@@ -20,4 +20,8 @@ export class DashboardPage extends BasePage {
   async clickMatch() {
     await this.page.getByRole('link', { name: 'Match people to Approved Premises placements' }).click()
   }
+
+  async clickManage() {
+    await this.page.getByRole('link', { name: 'Manage an Approved Premises' }).click()
+  }
 }
