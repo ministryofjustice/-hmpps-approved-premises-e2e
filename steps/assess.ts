@@ -84,21 +84,23 @@ export const addMatchingInformation = async (page: Page) => {
 
   await matchingInformationPage.checkRadio('Standard AP')
 
-  await matchingInformationPage.checkRequirement('Wheelchair accessible', 'essential')
-  await matchingInformationPage.checkRequirement('Single room', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Adapted for hearing impairments', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Adapted for visual impairments', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Adapted for restricted mobility', 'essential')
-  await matchingInformationPage.checkRequirement('Catering required', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is wheelchair designated', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is single room', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is step free designated', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is catered', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is ground floor', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Has en suite', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is suited for sex offenders', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is arson designated', 'notRelevant')
 
-  await matchingInformationPage.checkRequirement('Contact sexual offences against an adult adults', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Non contact sexual offences against an adult adults', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Contact sexual offences against children', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Non contact sexual offences against children', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Non sexual offences against children', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Arson offences', 'relevant')
-  await matchingInformationPage.checkRequirement('Hate based offences', 'relevant')
-  await matchingInformationPage.checkRequirement('Vulnerable to exploitation', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is suitable for vulnerable', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Accepts sex offenders', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Accepts child sex offenders', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Accepts non sexual child offenders', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Accepts hate crime offenders', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is arson suitable', 'notRelevant')
+
+  await matchingInformationPage.checkRadio('Yes')
 
   await matchingInformationPage.clickSubmit()
 }
