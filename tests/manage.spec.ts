@@ -5,15 +5,16 @@ import { PremisesPage } from '../pages/manage/premisesPage'
 import { PlacementPage } from '../pages/manage/placementPage'
 import { BedsPage } from '../pages/manage/bedsPage'
 import { BedPage } from '../pages/manage/bedPage'
-import { ConfirmationPage } from '../pages/manage/placementConfirmationPage'
+import { ConfirmationPage } from '../pages/manage/confirmationPage'
 import { CRNPage } from '../pages/apply'
 import { CreatePlacementPage } from '../pages/manage/createPlacementPage'
 import { MarkBedOutOfServicePage } from '../pages/manage/markBedOutOfServicePage'
 import { CancellationPage } from '../pages/manage/cancellationPage'
 import { NonarrivalFormPage } from '../pages/manage/nonarrivalFormPage'
 import { ArrivalFormPage } from '../pages/manage/arrivalFormPage'
+import { ExtendPlacementPage } from '../pages/manage/extendPlacementFormPage'
 
-const premisesName = 'Test AP 1'
+const premisesName = 'Test AP 10'
 
 const navigateToBedsPage = async page => {
   await navigateToPremisesPage(page)
@@ -111,12 +112,12 @@ test('Manually book a bed', async ({ page }) => {
 
   // Then I should be taken to the confirmation page
   const confirmationPage = new ConfirmationPage(page)
-  await confirmationPage.shouldShowSuccessMessage()
+  await confirmationPage.shouldShowPlacementSuccessMessage()
 })
 
 test('Mark a booking as cancelled', async ({ page }) => {
   // Given there is a placement for today
-  await manuallyBookBed(page)
+  // await manuallyBookBed(page)
   await navigateToTodaysBooking(page)
   // And I am on the placement's page
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
@@ -134,6 +135,28 @@ test('Mark a booking as cancelled', async ({ page }) => {
   // TODO: once cancellation reasons are implemented properly
   // Then I should see the placement page with a banner
   // await placementPage.showsCancellationLoggedMessage()
+})
+
+test('Extend a booking', async ({ page }) => {
+  // Given there is a placement for today
+  await manuallyBookBed(page)
+  await navigateToTodaysBooking(page)
+  // And I am on the placement's page
+  const placementPage = await PlacementPage.initialize(page, 'Placement details')
+
+  // When I click the 'Extend' link
+  await placementPage.clickExtend()
+
+  // Then I should see the extension form
+  const extensionFormPage = await ExtendPlacementPage.initialize(page, 'Extend placement')
+
+  // When I complete the form
+  await extensionFormPage.completeForm()
+  await extensionFormPage.clickSubmit()
+
+  // Then I should see the placement page with a banner
+  const confirmationPage = new ConfirmationPage(page)
+  await confirmationPage.shouldShowExtensionSuccessMessage()
 })
 
 test('Mark a bed as lost', async ({ page }) => {
