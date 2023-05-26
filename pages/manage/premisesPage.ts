@@ -17,4 +17,13 @@ export class PremisesPage extends BasePage {
   async showsLostBedLoggedMessage() {
     await this.page.getByRole('heading', { name: 'Success' })
   }
+
+  async clickActions() {
+    await this.page.getByRole('button', { name: 'Actions' }).click()
+  }
+
+  async clickManageTodaysArrival() {
+    const table = this.page.getByRole('table', { name: 'Arriving Today' })
+    await table.getByRole('link', { name: 'Manage' }).first().click()
+  }
 }

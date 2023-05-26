@@ -9,6 +9,7 @@ import { ConfirmationPage } from '../pages/manage/placementConfirmationPage'
 import { CRNPage } from '../pages/apply'
 import { CreatePlacementPage } from '../pages/manage/createPlacementPage'
 import { MarkBedOutOfServicePage } from '../pages/manage/markBedOutOfServicePage'
+import { CancellationPage } from '../pages/manage/cancellationPage'
 
 const premisesName = 'Test AP 1'
 
@@ -109,6 +110,27 @@ test('Manually book a bed', async ({ page }) => {
   // Then I should be taken to the confirmation page
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowSuccessMessage()
+})
+
+test('Mark a booking as cancelled', async ({ page }) => {
+  // Given there is a placement for today
+  await manuallyBookBed(page)
+  await navigateToTodaysBooking(page)
+  // And I am on the placement's page
+  const placementPage = await PlacementPage.initialize(page, 'Placement details')
+
+  // When I click the 'Mark cancelled' link
+  await placementPage.clickMarkCancelled()
+
+  // Then I should see the cancellation form
+  const cancellationFormPage = await CancellationPage.initialize(page, 'Cancel this placement')
+
+  // When I complete the form
+  await cancellationFormPage.completeForm()
+  await cancellationFormPage.clickSubmit()
+
+  // Then I should see the placement page with a banner
+  await placementPage.showsCancellationLoggedMessage()
 })
 
 test('Mark a bed as lost', async ({ page }) => {
