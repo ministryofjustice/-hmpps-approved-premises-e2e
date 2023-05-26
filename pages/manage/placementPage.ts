@@ -28,6 +28,11 @@ export class PlacementPage extends BasePage {
     await this.page.getByRole('menuitem', { name: 'Cancel placement' }).click()
   }
 
+  async clickExtend() {
+    await this.clickActions()
+    await this.page.getByRole('menuitem', { name: 'Extend placement' }).click()
+  }
+
   async showsNonArrivalLoggedMessage() {
     await this.page.waitForSelector('text=Non-arrival logged')
   }
@@ -38,5 +43,9 @@ export class PlacementPage extends BasePage {
 
   async showsCancellationLoggedMessage() {
     await this.page.waitForSelector('text=Cancellation logged')
+  }
+
+  async showsExtensionLoggedMessage() {
+    await this.page.waitForSelector('text=Extension logged')
   }
 }

@@ -81,7 +81,7 @@ const manuallyBookBed = async page => {
 
   // Then I should be taken to the confirmation page
   const confirmationPage = new ConfirmationPage(page)
-  await confirmationPage.shouldShowSuccessMessage()
+  await confirmationPage.shouldShowPlacementSuccessMessage()
 }
 
 test('Manually book a bed', async ({ page }) => {
