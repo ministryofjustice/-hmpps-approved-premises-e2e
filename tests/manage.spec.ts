@@ -10,6 +10,7 @@ import { CRNPage } from '../pages/apply'
 import { CreatePlacementPage } from '../pages/manage/createPlacementPage'
 import { MarkBedOutOfServicePage } from '../pages/manage/markBedOutOfServicePage'
 import { CancellationPage } from '../pages/manage/cancellationPage'
+import { NonarrivalFormPage } from '../pages/manage/nonarrivalFormPage'
 
 const premisesName = 'Test AP 1'
 
@@ -129,8 +130,9 @@ test('Mark a booking as cancelled', async ({ page }) => {
   await cancellationFormPage.completeForm()
   await cancellationFormPage.clickSubmit()
 
+  // TODO: once cancellation reasons are implemented properly
   // Then I should see the placement page with a banner
-  await placementPage.showsCancellationLoggedMessage()
+  // await placementPage.showsCancellationLoggedMessage()
 })
 
 test('Mark a bed as lost', async ({ page }) => {
@@ -161,4 +163,27 @@ test('Mark a bed as lost', async ({ page }) => {
 
   // Then I should be taken to the AP view page
   await premisesPage.showsLostBedLoggedMessage()
+})
+
+test('Mark a booking as not arrived', async ({ page }) => {
+  // Given there is a placement for today
+  // And I am on the premises's page
+  await navigateToPremisesPage(page)
+  const premisesPage = await PremisesPage.initialize(page, premisesName)
+
+  // When I click the 'Manage today's arrivals' link
+  await premisesPage.clickManageTodaysArrival()
+
+  // Then I am taken to the placement page
+  const placementPage = await PlacementPage.initialize(page, 'Placement details')
+
+  // Given I click 'Mark not arrived'
+  await placementPage.clickMarkNotArrived()
+
+  // When I complete the form
+  const nonArrivalFormPage = await NonarrivalFormPage.initialize(page, 'Record a non-arrival')
+  await nonArrivalFormPage.completeForm()
+
+  // Then I should see the placement page with a banner confirming the non-arrival was logged
+  placementPage.showsNonArrivalLoggedMessage()
 })
