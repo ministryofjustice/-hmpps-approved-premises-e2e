@@ -18,6 +18,11 @@ export class PlacementPage extends BasePage {
     await this.page.getByRole('menuitem', { name: 'Mark as not arrived' }).click()
   }
 
+  async clickMarkArrived() {
+    await this.clickActions()
+    await this.page.getByRole('menuitem', { name: 'Mark as arrived' }).click()
+  }
+
   async clickMarkCancelled() {
     await this.clickActions()
     await this.page.getByRole('menuitem', { name: 'Cancel placement' }).click()
@@ -25,6 +30,10 @@ export class PlacementPage extends BasePage {
 
   async showsNonArrivalLoggedMessage() {
     await this.page.waitForSelector('text=Non-arrival logged')
+  }
+
+  async showsArrivalLoggedMessage() {
+    await this.page.waitForSelector('text=Arrival logged')
   }
 
   async showsCancellationLoggedMessage() {

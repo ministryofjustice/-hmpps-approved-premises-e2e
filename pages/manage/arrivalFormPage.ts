@@ -1,0 +1,53 @@
+import { addMonths, getDate, getMonth, getYear } from 'date-fns'
+import { Page, expect } from '@playwright/test'
+import { BasePage } from '../basePage'
+
+export class ArrivalFormPage extends BasePage {
+  static async initialize(page: Page, title?: string) {
+    if (title) {
+      await expect(page.locator('h1')).toContainText(title)
+    }
+    return new ArrivalFormPage(page)
+  }
+
+  async completeArrivalDate() {
+    await this.page
+      .getByRole('group', { name: 'What is the arrival date?' })
+      .getByLabel('Day')
+      .fill(getDate(new Date()).toString())
+    await this.page
+      .getByRole('group', { name: 'What is the arrival date?' })
+      .getByLabel('Month')
+      .fill((getMonth(new Date()) + 1).toString())
+    await this.page
+      .getByRole('group', { name: 'What is the arrival date?' })
+      .getByLabel('Year')
+      .fill(getYear(new Date()).toString())
+  }
+
+  async completeExpectedDepartureDate() {
+    await this.page
+      .getByRole('group', { name: 'What is their expected departure date?' })
+      .getByLabel('Day')
+      .fill(getDate(addMonths(new Date(), 1)).toString())
+    await this.page
+      .getByRole('group', { name: 'What is their expected departure date?' })
+      .getByLabel('Month')
+      .fill(getMonth(addMonths(new Date(), 1)).toString())
+    await this.page
+      .getByRole('group', { name: 'What is their expected departure date?' })
+      .getByLabel('Year')
+      .fill(getYear(addMonths(new Date(), 1)).toString())
+  }
+
+  async selectKeyWorker() {
+    await this.page.getByRole('combobox', { name: 'Key Worker' }).selectOption({ label: 'Al Rice' })
+  }
+
+  async completeForm() {
+    await this.completeArrivalDate()
+    await this.completeExpectedDepartureDate()
+    await this.selectKeyWorker()
+    await this.clickSubmit()
+  }
+}

@@ -11,6 +11,7 @@ import { CreatePlacementPage } from '../pages/manage/createPlacementPage'
 import { MarkBedOutOfServicePage } from '../pages/manage/markBedOutOfServicePage'
 import { CancellationPage } from '../pages/manage/cancellationPage'
 import { NonarrivalFormPage } from '../pages/manage/nonarrivalFormPage'
+import { ArrivalFormPage } from '../pages/manage/arrivalFormPage'
 
 const premisesName = 'Test AP 1'
 
@@ -163,6 +164,25 @@ test('Mark a bed as lost', async ({ page }) => {
 
   // Then I should be taken to the AP view page
   await premisesPage.showsLostBedLoggedMessage()
+})
+
+test('Mark a booking as arrived ', async ({ page }) => {
+  // Given there is a placement for today
+  // And I am on the premises's page
+  await manuallyBookBed(page)
+  await navigateToTodaysBooking(page)
+
+  const placementPage = await PlacementPage.initialize(page, 'Placement details')
+
+  // Given I click 'Mark arrived'
+  await placementPage.clickMarkArrived()
+
+  // When I complete the form
+  const arrivalFormpage = await ArrivalFormPage.initialize(page, 'Mark the person as arrived')
+  await arrivalFormpage.completeForm()
+
+  // Then I should see the placement page with a banner confirming the arrival was logged
+  placementPage.showsArrivalLoggedMessage()
 })
 
 test('Mark a booking as not arrived', async ({ page }) => {
