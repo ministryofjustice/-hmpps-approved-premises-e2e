@@ -29,6 +29,28 @@ export const confirmInformation = async (page: Page) => {
   await confirmPage.clickSubmit()
 }
 
+export const confirmInsufficientInformation = async (page: Page) => {
+  const tasklistPage = new TasklistPage(page)
+  await tasklistPage.clickTask('Check there is sufficient information to make a decision')
+
+  const confirmPage = await AssessPage.initialize(page, 'Sufficient information')
+  await confirmPage.checkRadio('No')
+  await confirmPage.fillField('What additional information is required?', 'This is a test')
+  await confirmPage.clickSubmit()
+}
+
+export const addAdditionalInformation = async (page: Page) => {
+  const additionalInformationPage = await AssessPage.initialize(page, 'Additional information')
+  await additionalInformationPage.checkRadio('Yes')
+  await additionalInformationPage.fillField(
+    'Provide the additional information received from the probation practitioner',
+    'Additional information',
+  )
+  await additionalInformationPage.fillDateField({ year: '2023', month: '3', day: '12' })
+
+  await additionalInformationPage.clickSubmit()
+}
+
 export const assessSuitability = async (page: Page) => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Assess suitability of application')
@@ -160,4 +182,29 @@ export const assessApplication = async ({ page, user, person }, applicationId: s
 
   // Then I should see a confirmation screen
   await shouldSeeAssessmentConfirmationScreen(page)
+}
+
+export const requestAndAddAdditionalInformation = async ({ page, user, person }, applicationId: string) => {
+  // When I start the assessment
+  const dashboard = await visitDashboard(page)
+  await assignAssessmentToMe(dashboard, page, user.name, applicationId)
+  await startAssessment(page, person.name, applicationId)
+  await reviewApplication(page)
+
+  // And I confirm there is not enough information in the Assessment
+  await confirmInsufficientInformation(page)
+
+  // Then I am shown a page detailing how to request the information from the PP
+  page.getByRole('heading', { name: 'Request information from probation practitioner' })
+
+  // Given I have requested further information
+  // When I visit the Dashboard
+  await page.getByRole('button', { name: 'Back to dashboard' }).click()
+
+  // Then I should see the application in the 'Requested further information' section
+  await page.getByRole('tab', { name: 'Requested further information' }).click()
+  await page.getByRole('link', { name: 'Ben Davies' }).first().click()
+
+  // And I should be able to add the additional information
+  await addAdditionalInformation(page)
 }
