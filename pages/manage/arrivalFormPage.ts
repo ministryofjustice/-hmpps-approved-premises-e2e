@@ -41,7 +41,7 @@ export class ArrivalFormPage extends BasePage {
   }
 
   async selectKeyWorker() {
-    await this.page.getByRole('combobox', { name: 'Key Worker' }).selectOption({ label: 'Al Rice' })
+    await this.page.getByRole('combobox', { name: 'Key Worker' }).selectOption({ index: 1 })
   }
 
   async completeForm() {
