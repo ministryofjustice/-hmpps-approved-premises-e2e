@@ -42,7 +42,7 @@ export class PlacementPage extends BasePage {
   }
 
   async showsCancellationLoggedMessage() {
-    await this.page.waitForSelector('text=Cancellation logged')
+    await this.page.waitForSelector('text=Booking cancelled')
   }
 
   async showsExtensionLoggedMessage() {

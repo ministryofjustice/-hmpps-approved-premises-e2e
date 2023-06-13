@@ -31,6 +31,7 @@ export class CancellationPage extends BasePage {
 
   async completeForm() {
     await this.enterCancellationDate()
+    await this.checkRadio('Withdrawn by Approved Premises')
     await this.fillInNotes()
   }
 }
