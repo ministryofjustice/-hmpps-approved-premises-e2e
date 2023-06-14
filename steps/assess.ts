@@ -72,7 +72,7 @@ export const makeDecision = async (page: Page) => {
   await tasklistPage.clickTask('Make a decision')
 
   const decisionPage = await AssessPage.initialize(page, 'Make a decision')
-  await decisionPage.checkRadio('Release date has been provided, proceed to matching')
+  await decisionPage.checkRadio('Accept')
   await decisionPage.clickSubmit()
 }
 
