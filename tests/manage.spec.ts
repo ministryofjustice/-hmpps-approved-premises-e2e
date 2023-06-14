@@ -132,9 +132,8 @@ test('Mark a booking as cancelled', async ({ page }) => {
   await cancellationFormPage.completeForm()
   await cancellationFormPage.clickSubmit()
 
-  // TODO: once cancellation reasons are implemented properly
   // Then I should see the placement page with a banner
-  // await placementPage.showsCancellationLoggedMessage()
+  await placementPage.showsCancellationLoggedMessage()
 })
 
 test('Extend a booking', async ({ page }) => {
