@@ -242,6 +242,7 @@ export const completeFurtherConsiderationsTask = async (page: Page) => {
 
   const cateringRequirementsPage = await ApplyPage.initialize(page, 'Catering requirements')
   await cateringRequirementsPage.checkRadio('No')
+  await cateringRequirementsPage.fillField('Provide details', 'Some details')
   await cateringRequirementsPage.clickSave()
 
   const arsonPage = await ApplyPage.initialize(page, 'Arson')
