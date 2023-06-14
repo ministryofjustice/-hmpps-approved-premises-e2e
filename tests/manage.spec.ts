@@ -204,7 +204,7 @@ test('Mark a booking as arrived ', async ({ page }) => {
   await arrivalFormpage.completeForm()
 
   // Then I should see the placement page with a banner confirming the arrival was logged
-  placementPage.showsArrivalLoggedMessage()
+  await placementPage.showsArrivalLoggedMessage()
 })
 
 test('Mark a booking as not arrived', async ({ page }) => {
@@ -227,5 +227,5 @@ test('Mark a booking as not arrived', async ({ page }) => {
   await nonArrivalFormPage.completeForm()
 
   // Then I should see the placement page with a banner confirming the non-arrival was logged
-  placementPage.showsNonArrivalLoggedMessage()
+  await placementPage.showsNonArrivalLoggedMessage()
 })
