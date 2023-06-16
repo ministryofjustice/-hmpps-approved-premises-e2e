@@ -85,7 +85,7 @@ export const addMatchingInformation = async (page: Page) => {
   await matchingInformationPage.checkRadio('Standard AP')
 
   await matchingInformationPage.checkRequirement('Is wheelchair designated', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Is single room', 'notRelevant')
+  await matchingInformationPage.checkRequirement('Is single', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is step free designated', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is catered', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is ground floor', 'notRelevant')
