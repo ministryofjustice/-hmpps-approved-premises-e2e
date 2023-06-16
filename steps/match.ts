@@ -2,12 +2,12 @@ import { Page } from '@playwright/test'
 import { visitDashboard } from './apply'
 import { ConfirmPage, ConfirmationPage, DetailsPage, ListPage, ResultsPage } from '../pages/match'
 
-export const searchForBed = async (page: Page) => {
+export const searchForBed = async (page: Page, personName: string) => {
   const dashboard = await visitDashboard(page)
   await dashboard.clickMatch()
 
   const listPage = new ListPage(page)
-  await listPage.clickFirstPlacementRequest()
+  await listPage.clickFirstPlacementRequest(personName)
 
   const detailsPage = new DetailsPage(page)
   await detailsPage.clickSearch()

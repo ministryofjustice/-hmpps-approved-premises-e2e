@@ -29,8 +29,39 @@ HMPPS_AUTH_PASSWORD= # A valid HMPPS Auth Password
 
 ## Running the tests
 
-To run the tests locally, run the following command:
+### Against the Development environment
+
+To run the tests locally against the MoJ Cloud Platform Development
+environment, run the following command:
 
 ```bash
 npm run test
 ```
+
+or;
+
+```bash
+npm run test:ui
+```
+
+To run using the Playwright user interface
+
+### Against your local enviroment
+
+Assuming you have the UI, API and all other required systems running
+using the [ap-tools project](https://github.com/ministryofjustice/hmpps-approved-premises-tools),
+you can run the tests against your local environment with the following command:
+
+```bash
+npm run test:local
+```
+
+or;
+
+```bash
+npm run test:local:ui
+```
+
+To run using the Playwright user interface.
+
+Local variables are contained in the `local` project in [playwright.config.ts](https://github.com/ministryofjustice/hmpps-approved-premises-e2e/blob/main/playwright.config.ts).

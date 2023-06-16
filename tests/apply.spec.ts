@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test } from '../test'
 import {
   checkApplyAnswers,
   completeAccessCulturalAndHealthcareTask,
@@ -32,7 +32,7 @@ import {
 } from '../steps/assess'
 import { chooseBed, confirmBooking, searchForBed, shouldShowBookingConfirmation } from '../steps/match'
 
-test('Apply for an Approved Premises', async ({ page }) => {
+test('Apply for an Approved Premises', async ({ page, person, indexOffenceRequired, oasysSections }) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
 
@@ -40,19 +40,19 @@ test('Apply for an Approved Premises', async ({ page }) => {
   await startAnApplication(dashboard, page)
 
   // And I enter and confirm a CRN
-  await enterAndConfirmCrn(page)
+  await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
 
   // And I complete the basic information Task
-  await completeBasicInformationTask(page)
+  await completeBasicInformationTask(page, person.name)
 
   // And I complete the Type of AP Task
-  await completeTypeOfApTask(page)
+  await completeTypeOfApTask(page, person.name)
 
   // And I complete the Oasys Import Task
-  await completeOasysImportTask(page)
+  await completeOasysImportTask(page, oasysSections)
 
   // And I complete the the Risks and Needs Task
-  await completeRisksAndNeedsTask(page)
+  await completeRisksAndNeedsTask(page, person.name)
 
   // And I complete the prison notes Task
   await completePrisonNotesTask(page)
@@ -61,13 +61,13 @@ test('Apply for an Approved Premises', async ({ page }) => {
   await completeLocationFactorsTask(page)
 
   // And I complete the Access, Cultural and Healthcare Task
-  await completeAccessCulturalAndHealthcareTask(page)
+  await completeAccessCulturalAndHealthcareTask(page, person.name)
 
   // And I complete the Further Considerations Task
-  await completeFurtherConsiderationsTask(page)
+  await completeFurtherConsiderationsTask(page, person.name)
 
   // And I complete the Move On Task
-  await completeMoveOnTask(page)
+  await completeMoveOnTask(page, person.name)
 
   // And I complete the Attach Required Documemts Task
   await completeAttachRequiredDocuments(page)
@@ -82,15 +82,15 @@ test('Apply for an Approved Premises', async ({ page }) => {
   await shouldSeeConfirmationPage(page)
 })
 
-test('Assess an Approved Premises Application', async ({ page }) => {
+test('Assess an Approved Premises Application', async ({ page, user, person }) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
 
   // And I allocate the assessement to myself
-  await assignAssessmentToMe(dashboard, page)
+  await assignAssessmentToMe(dashboard, page, user.name)
 
   // And I start the assessment
-  await startAssessment(page)
+  await startAssessment(page, person.name)
 
   // And I Review the application
   await reviewApplication(page)
@@ -120,15 +120,15 @@ test('Assess an Approved Premises Application', async ({ page }) => {
   await shouldSeeAssessmentConfirmationScreen(page)
 })
 
-test('Match and book an Approved Premises Application', async ({ page }) => {
+test('Match and book an Approved Premises Application', async ({ page, user, person }) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
 
   // And I allocate the placement request to myself
-  await assignPlacementRequestToMe(dashboard, page)
+  await assignPlacementRequestToMe(dashboard, page, user.name)
 
   // And I search for a bed
-  await searchForBed(page)
+  await searchForBed(page, person.name)
 
   // And I select a matching bed
   await chooseBed(page)
