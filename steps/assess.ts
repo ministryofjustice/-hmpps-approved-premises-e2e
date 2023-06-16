@@ -2,12 +2,12 @@ import { Page } from '@playwright/test'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
 
-export const startAssessment = async (page: Page) => {
+export const startAssessment = async (page: Page, personName: string) => {
   const dashboard = await visitDashboard(page)
   await dashboard.clickAssess()
 
   const listPage = new ListPage(page)
-  await listPage.clickFirstAssessment()
+  await listPage.clickFirstAssessment(personName)
 }
 
 export const reviewApplication = async (page: Page) => {

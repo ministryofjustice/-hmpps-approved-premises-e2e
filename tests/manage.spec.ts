@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test } from '../test'
 import { visitDashboard } from '../steps/apply'
 import { PremisesListPage } from '../pages/manage/premisesListPage'
 import { PremisesPage } from '../pages/manage/premisesPage'
@@ -53,7 +53,7 @@ const navigateToTodaysBooking = async page => {
   await premisesPage.clickManageTodaysArrival()
 }
 
-const manuallyBookBed = async page => {
+const manuallyBookBed = async ({ page, person }) => {
   const bedsPage = await navigateToBedsPage(page)
 
   // Given I am on the rooms view page
@@ -69,7 +69,7 @@ const manuallyBookBed = async page => {
   // Given I am on the CRN entry page
   const crnPage = new CRNPage(page)
   // When I enter a CRN
-  await crnPage.enterCrn()
+  await crnPage.enterCrn(person.crn)
   await crnPage.clickSearch()
 
   // Then I should see the placement page
@@ -84,7 +84,7 @@ const manuallyBookBed = async page => {
   await confirmationPage.shouldShowPlacementSuccessMessage()
 }
 
-test('Manually book a bed', async ({ page }) => {
+test('Manually book a bed', async ({ page, person }) => {
   const bedsPage = await navigateToBedsPage(page)
 
   // Given I am on the rooms view page
@@ -100,7 +100,7 @@ test('Manually book a bed', async ({ page }) => {
   // Given I am on the CRN entry page
   const crnPage = new CRNPage(page)
   // When I enter a CRN
-  await crnPage.enterCrn()
+  await crnPage.enterCrn(person.crn)
   await crnPage.clickSearch()
 
   // Then I should see the placement page
@@ -136,9 +136,9 @@ test('Mark a booking as cancelled', async ({ page }) => {
   await placementPage.showsCancellationLoggedMessage()
 })
 
-test('Extend a booking', async ({ page }) => {
+test('Extend a booking', async ({ page, person }) => {
   // Given there is a placement for today
-  await manuallyBookBed(page)
+  await manuallyBookBed({ page, person })
   await navigateToTodaysBooking(page)
   // And I am on the placement's page
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
@@ -188,10 +188,10 @@ test('Mark a bed as lost', async ({ page }) => {
   await premisesPage.showsLostBedLoggedMessage()
 })
 
-test('Mark a booking as arrived ', async ({ page }) => {
+test('Mark a booking as arrived ', async ({ page, person }) => {
   // Given there is a placement for today
   // And I am on the premises's page
-  await manuallyBookBed(page)
+  await manuallyBookBed({ page, person })
   await navigateToTodaysBooking(page)
 
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
