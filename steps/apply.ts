@@ -42,7 +42,7 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
   }
 }
 
-export const completeBasicInformationTask = async (page: Page, personName: string) => {
+export const completeBasicInformationTask = async (page: Page, personName: string, withReleaseDate = true) => {
   const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
   await notEligiblePage.checkRadio('Yes')
   await notEligiblePage.clickSave()
@@ -76,13 +76,23 @@ export const completeBasicInformationTask = async (page: Page, personName: strin
   await releaseTypePage.clickSave()
 
   const releaseDatePage = await ApplyPage.initialize(page, `Do you know ${personName}’s release date?`)
-  await releaseDatePage.checkRadio('Yes')
-  await releaseDatePage.fillReleaseDateField()
-  await releaseDatePage.clickSave()
 
-  const placementDatePage = await ApplyPage.initialize(page)
-  await placementDatePage.checkRadio('Yes')
-  await placementDatePage.clickSave()
+  if (withReleaseDate) {
+    await releaseDatePage.checkRadio('Yes')
+    await releaseDatePage.fillReleaseDateField()
+    await releaseDatePage.clickSave()
+
+    const placementDatePage = await ApplyPage.initialize(page)
+    await placementDatePage.checkRadio('Yes')
+    await placementDatePage.clickSave()
+  } else {
+    await releaseDatePage.checkRadio('No, the release date is to be determined by the parole board or other hearing')
+    await releaseDatePage.clickSave()
+
+    const oralHearingDatePage = await ApplyPage.initialize(page, `Do you know ${personName}’s oral hearing date?`)
+    await oralHearingDatePage.checkRadio('No')
+    await oralHearingDatePage.clickSave()
+  }
 
   const purposePage = await ApplyPage.initialize(page, 'What is the purpose of the Approved Premises (AP) placement?')
   await purposePage.checkCheckBoxes(['Public protection', 'Prevent contact with known individuals or victims'])
@@ -311,4 +321,61 @@ export const submitApplication = async (page: Page) => {
 export const shouldSeeConfirmationPage = async (page: Page) => {
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowSuccessMessage()
+}
+
+export const createApplication = async (
+  { page, person, indexOffenceRequired, oasysSections },
+  withReleaseDate: boolean,
+) => {
+  // Given I visit the Dashboard
+  const dashboard = await visitDashboard(page)
+
+  // And I start an application
+  await startAnApplication(dashboard, page)
+
+  // And I enter and confirm a CRN
+  await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
+
+  // And I complete the basic information Task
+  await completeBasicInformationTask(page, person.name, withReleaseDate)
+
+  // And I complete the Type of AP Task
+  await completeTypeOfApTask(page, person.name)
+
+  // And I complete the Oasys Import Task
+  await completeOasysImportTask(page, oasysSections)
+
+  // And I complete the the Risks and Needs Task
+  await completeRisksAndNeedsTask(page, person.name)
+
+  // And I complete the prison notes Task
+  await completePrisonNotesTask(page)
+
+  // And I complete the Location Factors Task
+  await completeLocationFactorsTask(page)
+
+  // And I complete the Access, Cultural and Healthcare Task
+  await completeAccessCulturalAndHealthcareTask(page, person.name)
+
+  // And I complete the Further Considerations Task
+  await completeFurtherConsiderationsTask(page, person.name)
+
+  // And I complete the Move On Task
+  await completeMoveOnTask(page, person.name)
+
+  // And I complete the Attach Required Documemts Task
+  await completeAttachRequiredDocuments(page)
+
+  // And I check my answers
+  await checkApplyAnswers(page)
+
+  // And I submit my application
+  await submitApplication(page)
+
+  // Then I should see a confirmation message
+  await shouldSeeConfirmationPage(page)
+
+  const url = page.url()
+
+  return url.match(/applications\/(.+)\//)[1]
 }

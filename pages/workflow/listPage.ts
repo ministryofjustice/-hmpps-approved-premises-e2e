@@ -1,6 +1,26 @@
 import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
+  async chooseAssessmentWithId(id: string) {
+    const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Assessment') })
+
+    await assessmentRows
+      .filter({ has: this.page.locator(`[data-cy-taskid="${id}"]`) })
+      .first()
+      .getByRole('link')
+      .click()
+  }
+
+  async choosePlacementApplicationWithId(id: string) {
+    const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Placement application') })
+
+    await assessmentRows
+      .filter({ has: this.page.locator(`[data-cy-taskid="${id}"]`) })
+      .first()
+      .getByRole('link')
+      .click()
+  }
+
   async chooseFirstAssessment() {
     await this.page
       .getByRole('row')
@@ -14,6 +34,16 @@ export class ListPage extends BasePage {
     await this.page
       .getByRole('row')
       .filter({ has: this.page.getByText('Placement request') })
+      .first()
+      .getByRole('link')
+      .click()
+  }
+
+  async choosePlacementRequestWithId(id: string) {
+    const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Placement request') })
+
+    await assessmentRows
+      .filter({ has: this.page.locator(`[data-cy-taskid="${id}"]`) })
       .first()
       .getByRole('link')
       .click()

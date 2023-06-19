@@ -1,13 +1,14 @@
 import { Page } from '@playwright/test'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
+import { assignAssessmentToMe } from './workflow'
 
-export const startAssessment = async (page: Page, personName: string) => {
+export const startAssessment = async (page: Page, personName: string, applicationId: string) => {
   const dashboard = await visitDashboard(page)
   await dashboard.clickAssess()
 
   const listPage = new ListPage(page)
-  await listPage.clickFirstAssessment(personName)
+  await listPage.clickAssessmentWithApplicationId(applicationId)
 }
 
 export const reviewApplication = async (page: Page) => {
@@ -121,4 +122,42 @@ export const submitAssessment = async (page: Page) => {
 export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowSuccessMessage()
+}
+
+export const assessApplication = async ({ page, user, person }, applicationId: string) => {
+  // Given I visit the Dashboard
+  const dashboard = await visitDashboard(page)
+
+  // And I allocate the assessement to myself
+  await assignAssessmentToMe(dashboard, page, user.name, applicationId)
+
+  // And I start the assessment
+  await startAssessment(page, person.name, applicationId)
+
+  // And I Review the application
+  await reviewApplication(page)
+
+  // And I confirm there is enough information in the Assessment
+  await confirmInformation(page)
+
+  // And I assess the suitablity of the Application
+  await assessSuitability(page)
+
+  // And I provide the requirements to support the placement
+  await provideRequirements(page)
+
+  // And I make a decision
+  await makeDecision(page)
+
+  // And I provide matching information
+  await addMatchingInformation(page)
+
+  // And I check my answers
+  await checkAssessAnswers(page)
+
+  // And I submit my Assessment
+  await submitAssessment(page)
+
+  // Then I should see a confirmation screen
+  await shouldSeeAssessmentConfirmationScreen(page)
 }

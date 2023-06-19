@@ -43,8 +43,8 @@ export class BasePage {
   }
 
   async fillDateField({ year, month, day }: { year: string; month: string; day: string }) {
-    await this.page.getByLabel('Day').fill(day)
-    await this.page.getByLabel('Month').fill(month)
-    await this.page.getByLabel('Year').fill(year)
+    await this.page.getByLabel('Day', { exact: true }).fill(day)
+    await this.page.getByLabel('Month', { exact: true }).fill(month)
+    await this.page.getByLabel('Year', { exact: true }).fill(year)
   }
 }

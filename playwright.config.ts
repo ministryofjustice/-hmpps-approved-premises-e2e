@@ -30,7 +30,18 @@ export default defineConfig<TestOptions>({
       },
       dependencies: ['setupDev'],
     },
-    { name: 'setupLocal', testMatch: /.*\.setup\.ts/, use: { baseURL: 'http://localhost:3000' } },
+    {
+      name: 'setupLocal',
+      testMatch: /.*\.setup\.ts/,
+      use: {
+        baseURL: 'http://localhost:3000',
+        user: {
+          name: 'JIM SNOW',
+          username: 'jimsnowldap',
+          password: 'secret',
+        },
+      },
+    },
     {
       name: 'local',
       use: {

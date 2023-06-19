@@ -1,141 +1,32 @@
 import { test } from '../test'
-import {
-  checkApplyAnswers,
-  completeAccessCulturalAndHealthcareTask,
-  completeAttachRequiredDocuments,
-  completeBasicInformationTask,
-  completeFurtherConsiderationsTask,
-  completeLocationFactorsTask,
-  completeMoveOnTask,
-  completeOasysImportTask,
-  completePrisonNotesTask,
-  completeRisksAndNeedsTask,
-  completeTypeOfApTask,
-  enterAndConfirmCrn,
-  shouldSeeConfirmationPage,
-  startAnApplication,
-  submitApplication,
-  visitDashboard,
-} from '../steps/apply'
-import { assignAssessmentToMe, assignPlacementRequestToMe } from '../steps/workflow'
-import {
-  addMatchingInformation,
-  assessSuitability,
-  checkAssessAnswers,
-  confirmInformation,
-  makeDecision,
-  provideRequirements,
-  reviewApplication,
-  shouldSeeAssessmentConfirmationScreen,
-  startAssessment,
-  submitAssessment,
-} from '../steps/assess'
-import { chooseBed, confirmBooking, searchForBed, shouldShowBookingConfirmation } from '../steps/match'
+import { createApplication } from '../steps/apply'
+import { assessApplication } from '../steps/assess'
+import { matchAndBookApplication } from '../steps/match'
 
-test('Apply for an Approved Premises', async ({ page, person, indexOffenceRequired, oasysSections }) => {
-  // Given I visit the Dashboard
-  const dashboard = await visitDashboard(page)
+import { reviewAndApprovePlacementApplication, startAndCreatePlacementApplication } from '../steps/placementApplication'
 
-  // And I start an application
-  await startAnApplication(dashboard, page)
-
-  // And I enter and confirm a CRN
-  await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
-
-  // And I complete the basic information Task
-  await completeBasicInformationTask(page, person.name)
-
-  // And I complete the Type of AP Task
-  await completeTypeOfApTask(page, person.name)
-
-  // And I complete the Oasys Import Task
-  await completeOasysImportTask(page, oasysSections)
-
-  // And I complete the the Risks and Needs Task
-  await completeRisksAndNeedsTask(page, person.name)
-
-  // And I complete the prison notes Task
-  await completePrisonNotesTask(page)
-
-  // And I complete the Location Factors Task
-  await completeLocationFactorsTask(page)
-
-  // And I complete the Access, Cultural and Healthcare Task
-  await completeAccessCulturalAndHealthcareTask(page, person.name)
-
-  // And I complete the Further Considerations Task
-  await completeFurtherConsiderationsTask(page, person.name)
-
-  // And I complete the Move On Task
-  await completeMoveOnTask(page, person.name)
-
-  // And I complete the Attach Required Documemts Task
-  await completeAttachRequiredDocuments(page)
-
-  // And I check my answers
-  await checkApplyAnswers(page)
-
-  // And I submit my application
-  await submitApplication(page)
-
-  // Then I should see a confirmation message
-  await shouldSeeConfirmationPage(page)
+test('Apply, assess, match and book an application for an Approved Premises with a release date', async ({
+  page,
+  user,
+  person,
+  indexOffenceRequired,
+  oasysSections,
+}) => {
+  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true)
+  await assessApplication({ page, user, person }, id)
+  await matchAndBookApplication({ page, user, person }, id)
 })
 
-test('Assess an Approved Premises Application', async ({ page, user, person }) => {
-  // Given I visit the Dashboard
-  const dashboard = await visitDashboard(page)
-
-  // And I allocate the assessement to myself
-  await assignAssessmentToMe(dashboard, page, user.name)
-
-  // And I start the assessment
-  await startAssessment(page, person.name)
-
-  // And I Review the application
-  await reviewApplication(page)
-
-  // And I confirm there is enough information in the Assessment
-  await confirmInformation(page)
-
-  // And I assess the suitablity of the Application
-  await assessSuitability(page)
-
-  // And I provide the requirements to support the placement
-  await provideRequirements(page)
-
-  // And I make a decision
-  await makeDecision(page)
-
-  // And I provide matching information
-  await addMatchingInformation(page)
-
-  // And I check my answers
-  await checkAssessAnswers(page)
-
-  // And I submit my Assessment
-  await submitAssessment(page)
-
-  // Then I should see a confirmation screen
-  await shouldSeeAssessmentConfirmationScreen(page)
-})
-
-test('Match and book an Approved Premises Application', async ({ page, user, person }) => {
-  // Given I visit the Dashboard
-  const dashboard = await visitDashboard(page)
-
-  // And I allocate the placement request to myself
-  await assignPlacementRequestToMe(dashboard, page, user.name)
-
-  // And I search for a bed
-  await searchForBed(page, person.name)
-
-  // And I select a matching bed
-  await chooseBed(page)
-
-  // And I confirm my booking
-  await confirmBooking(page)
-
-  // Then I should bee a confirmation screen
-  await shouldShowBookingConfirmation(page)
+test('Apply, assess, match and book an application for an Approved Premises without a release date', async ({
+  page,
+  user,
+  person,
+  indexOffenceRequired,
+  oasysSections,
+}) => {
+  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, false)
+  await assessApplication({ page, user, person }, id)
+  await startAndCreatePlacementApplication({ page }, id)
+  await reviewAndApprovePlacementApplication({ page, user }, id)
+  // TODO: Match and book once approval is done
 })
