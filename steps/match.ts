@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test'
 import { visitDashboard } from './apply'
 import { ConfirmPage, ConfirmationPage, DetailsPage, ListPage, ResultsPage } from '../pages/match'
+import { assignPlacementRequestToMe } from './workflow'
 
 export const searchForBed = async (page: Page, personName: string) => {
   const dashboard = await visitDashboard(page)
@@ -26,4 +27,24 @@ export const confirmBooking = async (page: Page) => {
 export const shouldShowBookingConfirmation = async (page: Page) => {
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowSuccessMessage()
+}
+
+export const matchAndBookApplication = async ({ page, user, person }, id: string) => {
+  // Given I visit the Dashboard
+  const dashboard = await visitDashboard(page)
+
+  // And I allocate the placement request to myself
+  await assignPlacementRequestToMe(dashboard, page, user.name, id)
+
+  // And I search for a bed
+  await searchForBed(page, person.name)
+
+  // And I select a matching bed
+  await chooseBed(page)
+
+  // And I confirm my booking
+  await confirmBooking(page)
+
+  // Then I should bee a confirmation screen
+  await shouldShowBookingConfirmation(page)
 }

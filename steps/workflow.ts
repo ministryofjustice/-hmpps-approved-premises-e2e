@@ -2,22 +2,27 @@ import { Page } from '@playwright/test'
 import { DashboardPage } from '../pages/dashboardPage'
 import { AssessmentPage, ListPage, PlacementRequestPage } from '../pages/workflow'
 
-export const assignAssessmentToMe = async (dashboard: DashboardPage, page: Page, userName: string) => {
+export const assignAssessmentToMe = async (dashboard: DashboardPage, page: Page, userName: string, id: string) => {
   await dashboard.clickWorkflow()
 
   const workflowListPage = new ListPage(page)
-  await workflowListPage.chooseFirstAssessment()
+  await workflowListPage.chooseAssessmentWithId(id)
 
   const assessmentPage = new AssessmentPage(page)
   await assessmentPage.selectStaffMember(userName)
   await assessmentPage.clickSubmit()
 }
 
-export const assignPlacementRequestToMe = async (dashboard: DashboardPage, page: Page, userName: string) => {
+export const assignPlacementRequestToMe = async (
+  dashboard: DashboardPage,
+  page: Page,
+  userName: string,
+  id: string,
+) => {
   await dashboard.clickWorkflow()
 
   const workflowListPage = new ListPage(page)
-  await workflowListPage.chooseFirstPlacementRequest()
+  await workflowListPage.choosePlacementRequestWithId(id)
 
   const placementRequestPage = new PlacementRequestPage(page)
   await placementRequestPage.selectStaffMember(userName)
