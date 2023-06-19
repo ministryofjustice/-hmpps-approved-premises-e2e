@@ -4,4 +4,17 @@ export class ListPage extends BasePage {
   async startApplication() {
     await this.page.getByRole('button', { name: 'Start now' }).click()
   }
+
+  async clickSubmitted(): Promise<void> {
+    await this.page.getByRole('tab', { name: 'Submitted' }).click()
+  }
+
+  async clickApplicationWithId(applicationId: string): Promise<void> {
+    await this.page
+      .getByRole('row')
+      .filter({ has: this.page.locator(`[data-cy-id="${applicationId}"]`) })
+      .first()
+      .getByRole('link')
+      .click()
+  }
 }
