@@ -13,6 +13,7 @@ import { CancellationPage } from '../pages/manage/cancellationPage'
 import { NonarrivalFormPage } from '../pages/manage/nonarrivalFormPage'
 import { ArrivalFormPage } from '../pages/manage/arrivalFormPage'
 import { ExtendPlacementPage } from '../pages/manage/extendPlacementFormPage'
+import { MoveBedPage } from '../pages/manage/moveBedPage'
 
 const premisesName = 'Test AP 10'
 
@@ -228,4 +229,28 @@ test('Mark a booking as not arrived', async ({ page }) => {
 
   // Then I should see the placement page with a banner confirming the non-arrival was logged
   await placementPage.showsNonArrivalLoggedMessage()
+})
+
+test('Move a booking', async ({ page, person }) => {
+  // Given there is a placement for today
+  // And I am on the premises's page
+  await manuallyBookBed({ page, person })
+  await navigateToPremisesPage(page)
+  const premisesPage = await PremisesPage.initialize(page, premisesName)
+
+  // When I click the 'Manage today's arrivals' link
+  await premisesPage.clickManageTodaysArrival()
+
+  // Then I am taken to the placement page
+  const placementPage = await PlacementPage.initialize(page, 'Placement details')
+
+  // Given I click 'Move person to a new bed'
+  await placementPage.clickMovePersonToANewBed()
+
+  // When I complete the form
+  const moveBedPage = await MoveBedPage.initialize(page, 'Move person to a new bed')
+  await moveBedPage.completeForm()
+
+  // Then I should see the placement page with a banner confirming the bed move was logged
+  await placementPage.showsBedMoveLoggedMessage()
 })
