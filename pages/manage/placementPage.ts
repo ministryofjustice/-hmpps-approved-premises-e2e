@@ -18,6 +18,11 @@ export class PlacementPage extends BasePage {
     await this.page.getByRole('menuitem', { name: 'Mark as not arrived' }).click()
   }
 
+  async clickMovePersonToANewBed() {
+    await this.clickActions()
+    await this.page.getByRole('menuitem', { name: 'Move person to a new bed' }).click()
+  }
+
   async clickMarkArrived() {
     await this.clickActions()
     await this.page.getByRole('menuitem', { name: 'Mark as arrived' }).click()
@@ -47,5 +52,9 @@ export class PlacementPage extends BasePage {
 
   async showsExtensionLoggedMessage() {
     await this.page.waitForSelector('text=Extension logged')
+  }
+
+  async showsBedMoveLoggedMessage() {
+    await this.page.waitForSelector('text=Bed move logged')
   }
 }
