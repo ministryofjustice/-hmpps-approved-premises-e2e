@@ -1,6 +1,6 @@
 import { test } from '../test'
 import { createApplication } from '../steps/apply'
-import { assessApplication } from '../steps/assess'
+import { assessApplication, requestAndAddAdditionalInformation } from '../steps/assess'
 import { matchAndBookApplication } from '../steps/match'
 
 import { reviewAndApprovePlacementApplication, startAndCreatePlacementApplication } from '../steps/placementApplication'
@@ -29,4 +29,15 @@ test('Apply, assess, match and book an application for an Approved Premises with
   await startAndCreatePlacementApplication({ page }, id)
   await reviewAndApprovePlacementApplication({ page, user }, id)
   // TODO: Match and book once approval is done
+})
+
+test('Request further information on an Application, adds it and proceeds with the assessment', async ({
+  page,
+  user,
+  person,
+  indexOffenceRequired,
+  oasysSections,
+}) => {
+  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true)
+  await requestAndAddAdditionalInformation({ page, user, person }, id)
 })
