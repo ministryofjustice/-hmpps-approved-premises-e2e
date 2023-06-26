@@ -2,6 +2,9 @@ import { Page } from '@playwright/test'
 import { ApplyPage, DashboardPage, ListPage } from '../pages/apply'
 import { ListPage as WorkflowListPage } from '../pages/workflow'
 import { ListPage as MatchListPage } from '../pages/match'
+import { PlacementApplicationReviewPage as ReviewPage } from '../pages/match/placement-applications/reviewPage'
+import { PlacementApplicationDecisionPage as DecisionPage } from '../pages/match/placement-applications/decisionPage'
+import { PlacementApplicationConfirmationPage as ConfirmationPage } from '../pages/match/placement-applications/confirmationPage'
 import { PlacementConfirmPage } from '../pages/apply/placementConfirmPage'
 import { ShowPage } from '../pages/apply/showPage'
 import { visitDashboard } from './apply'
@@ -111,5 +114,18 @@ export const reviewAndApprovePlacementApplication = async ({ page, user }, appli
   await listPage.clickPlacementApplications()
   await listPage.clickPlacementApplicationWithId(applicationId)
 
-  // TODO: Review and approve application
+  const reviewPage = new ReviewPage(page)
+  await reviewPage.fillField(
+    'Summarise any significant changes that have happened between the assessment and this placement request',
+    'nothing has changed',
+  )
+  await reviewPage.clickSave()
+
+  const decisionPage = new DecisionPage(page)
+  await decisionPage.checkRadio('Accept - proceed to match')
+  await decisionPage.fillField('Summarise your decision', 'a decision summary')
+  await decisionPage.clickSubmit()
+
+  const confirmationPage = new ConfirmationPage(page)
+  await confirmationPage.shouldShowSuccessMessage()
 }
