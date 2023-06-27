@@ -5,7 +5,7 @@ export class ListPage extends BasePage {
     const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Assessment') })
 
     await assessmentRows
-      .filter({ has: this.page.locator(`[data-cy-taskid="${id}"]`) })
+      .filter({ has: this.page.locator(`[data-cy-applicationId="${id}"]`) })
       .first()
       .getByRole('link')
       .click()
@@ -15,7 +15,7 @@ export class ListPage extends BasePage {
     const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Placement application') })
 
     await assessmentRows
-      .filter({ has: this.page.locator(`[data-cy-taskid="${id}"]`) })
+      .filter({ has: this.page.locator(`[data-cy-applicationId="${id}"]`) })
       .first()
       .getByRole('link')
       .click()
@@ -43,7 +43,7 @@ export class ListPage extends BasePage {
     const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Placement request') })
 
     await assessmentRows
-      .filter({ has: this.page.locator(`[data-cy-taskid="${id}"]`) })
+      .filter({ has: this.page.locator(`[data-cy-applicationId="${id}"]`) })
       .first()
       .getByRole('link')
       .click()
