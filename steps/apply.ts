@@ -213,8 +213,11 @@ export const completeAccessCulturalAndHealthcareTask = async (page: Page, person
   await accessNeedsPage.clickSave()
 
   const covidPage = await ApplyPage.initialize(page, 'COVID information')
-  await covidPage.checkRadioInGroup(`Has ${personName} been fully vaccinated for COVID-19?`, 'No')
-  await covidPage.checkRadioInGroup(`Is ${personName} at a higher risk from COVID-19 based on the NHS guidance?`, 'No')
+  await covidPage.checkRadioInGroup(`Is the person eligible for COVID-19 vaccination boosters?`, 'No')
+  await covidPage.checkRadioInGroup(
+    `Is the person immunosuppressed, eligible for nMAB treatment or higher risk as per the definitions in the COVID-19 guidance?`,
+    'No',
+  )
   await covidPage.clickSave()
 }
 
