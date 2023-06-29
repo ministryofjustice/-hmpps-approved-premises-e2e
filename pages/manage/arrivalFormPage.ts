@@ -25,6 +25,10 @@ export class ArrivalFormPage extends BasePage {
       .fill(getYear(new Date()).toString())
   }
 
+  async completeArrivalTime() {
+    await this.page.getByLabel('What is the time of arrival?').fill('12:30')
+  }
+
   async completeExpectedDepartureDate() {
     await this.page
       .getByRole('group', { name: 'What is their expected departure date?' })
@@ -46,6 +50,7 @@ export class ArrivalFormPage extends BasePage {
 
   async completeForm() {
     await this.completeArrivalDate()
+    await this.completeArrivalTime()
     await this.completeExpectedDepartureDate()
     await this.selectKeyWorker()
     await this.clickSubmit()
