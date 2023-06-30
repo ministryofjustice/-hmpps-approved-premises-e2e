@@ -51,7 +51,7 @@ export const addAdditionalInformation = async (page: Page) => {
   await additionalInformationPage.clickSubmit()
 }
 
-export const assessSuitability = async (page: Page) => {
+export const assessSuitability = async (page: Page, shortNotice = false) => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Assess suitability of application')
 
@@ -67,6 +67,15 @@ export const assessSuitability = async (page: Page) => {
   await assessPage.checkRadioInGroup('Are there factors to consider regarding the location of placement?', 'Yes')
   await assessPage.checkRadioInGroup('Is the move on plan sufficient?', 'Yes')
   await assessPage.clickSubmit()
+
+  if (shortNotice) {
+    const applicationTimelinessPage = await AssessPage.initialize(page, 'Application timeliness')
+    await applicationTimelinessPage.checkRadioInGroup(
+      "Do you agree with the applicant's reason for submission within 4 months of expected arrival?",
+      'Yes',
+    )
+    await applicationTimelinessPage.clickSubmit()
+  }
 }
 
 export const provideRequirements = async (page: Page) => {
@@ -146,7 +155,7 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
   await confirmationPage.shouldShowSuccessMessage()
 }
 
-export const assessApplication = async ({ page, user, person }, applicationId: string) => {
+export const assessApplication = async ({ page, user, person }, applicationId: string, shortNotice: boolean) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
 
@@ -163,7 +172,7 @@ export const assessApplication = async ({ page, user, person }, applicationId: s
   await confirmInformation(page)
 
   // And I assess the suitablity of the Application
-  await assessSuitability(page)
+  await assessSuitability(page, shortNotice)
 
   // And I provide the requirements to support the placement
   await provideRequirements(page)

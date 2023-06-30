@@ -42,7 +42,12 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
   }
 }
 
-export const completeBasicInformationTask = async (page: Page, personName: string, withReleaseDate = true) => {
+export const completeBasicInformationTask = async (
+  page: Page,
+  personName: string,
+  withReleaseDate = true,
+  shortNotice = false,
+) => {
   const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
   await notEligiblePage.checkRadio('Yes')
   await notEligiblePage.clickSave()
@@ -79,12 +84,18 @@ export const completeBasicInformationTask = async (page: Page, personName: strin
 
   if (withReleaseDate) {
     await releaseDatePage.checkRadio('Yes')
-    await releaseDatePage.fillReleaseDateField()
+    await releaseDatePage.fillReleaseDateField(shortNotice)
     await releaseDatePage.clickSave()
 
     const placementDatePage = await ApplyPage.initialize(page)
     await placementDatePage.checkRadio('Yes')
     await placementDatePage.clickSave()
+
+    if (shortNotice) {
+      const shortNoticePage = await ApplyPage.initialize(page, 'Short notice application')
+      await shortNoticePage.checkRadio('The risk level has recently escalated')
+      await shortNoticePage.clickSave()
+    }
   } else {
     await releaseDatePage.checkRadio('No, the release date is to be determined by the parole board or other hearing')
     await releaseDatePage.clickSave()
@@ -329,6 +340,7 @@ export const shouldSeeConfirmationPage = async (page: Page) => {
 export const createApplication = async (
   { page, person, indexOffenceRequired, oasysSections },
   withReleaseDate: boolean,
+  shortNotice: boolean,
 ) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
@@ -340,7 +352,7 @@ export const createApplication = async (
   await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
 
   // And I complete the basic information Task
-  await completeBasicInformationTask(page, person.name, withReleaseDate)
+  await completeBasicInformationTask(page, person.name, withReleaseDate, shortNotice)
 
   // And I complete the Type of AP Task
   await completeTypeOfApTask(page, person.name)
