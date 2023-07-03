@@ -69,6 +69,10 @@ export const completeBasicInformationTask = async (
   await transgenderPage.checkRadio('No')
   await transgenderPage.clickSave()
 
+  const endDatesPage = await ApplyPage.initialize(page, 'Which of the following dates are relevant?')
+  await endDatesPage.fillSedField({ year: '2022', month: '3', day: '12' })
+  await endDatesPage.clickSave()
+
   const sentenceTypePage = await ApplyPage.initialize(
     page,
     'Which of the following best describes the sentence type the person is on?',
