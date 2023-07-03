@@ -269,6 +269,10 @@ export const completeFurtherConsiderationsTask = async (page: Page, personName: 
   await previousPlacementsPage.checkRadio('No')
   await previousPlacementsPage.clickSave()
 
+  const rfapPage = await ApplyPage.initialize(page, 'Recovery Focused Approved Premises (RFAP)')
+  await rfapPage.checkRadio('No')
+  await rfapPage.clickSave()
+
   const cateringRequirementsPage = await ApplyPage.initialize(page, 'Catering requirements')
   await cateringRequirementsPage.checkRadio('No')
   await cateringRequirementsPage.fillField('Provide details', 'Some details')
