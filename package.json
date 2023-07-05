@@ -10,6 +10,7 @@
     "test:ui": "npm run test -- --ui",
     "test:local": "npx playwright test --project=setupLocal --project=local",
     "test:local:ui": "npm run test:local -- --ui",
+    "smoketest": "npx playwright test --ui --project=setupPreprod --project=preprod",
     "install-playwright": "npx playwright install"
   },
   "keywords": [],
