@@ -31,6 +31,36 @@ export default defineConfig<TestOptions>({
       dependencies: ['setupDev'],
     },
     {
+      name: 'setupPreprod',
+      testMatch: /.*\.setup\.ts/,
+      use: {
+        baseURL: 'https://approved-premises-preprod.hmpps.service.justice.gov.uk',
+        user: {
+          name: process.env.PREPROD_NAME as string,
+          username: process.env.PREPROD_USERNAME as string,
+          password: process.env.PREPROD_PASSWORD as string,
+        },
+      },
+    },
+    {
+      name: 'preprod',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
+        baseURL: 'https://approved-premises-preprod.hmpps.service.justice.gov.uk',
+        person: {
+          name: process.env.PREPROD_SMOKETEST_NAME as string,
+          crn: process.env.PREPROD_SMOKETEST_CRN as string,
+        },
+        user: {
+          name: process.env.PREPROD_NAME as string,
+          username: process.env.PREPROD_USERNAME as string,
+          password: process.env.PREPROD_PASSWORD as string,
+        },
+      },
+      dependencies: ['setupPreprod'],
+    },
+    {
       name: 'setupLocal',
       testMatch: /.*\.setup\.ts/,
       use: {
