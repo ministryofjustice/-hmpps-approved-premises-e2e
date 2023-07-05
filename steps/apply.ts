@@ -138,6 +138,7 @@ export const completeOasysImportTask = async (page: Page, oasysSections: Array<s
   await offenceAnalysisPage.clickSave()
 
   const supportingInformationPage = await ApplyPage.initialize(page)
+  page.getByLabel('Alcohol misuse issues contributing to risks of offending and harm').fill('Some details')
   await supportingInformationPage.clickSave()
 
   const riskManagementPage = await ApplyPage.initialize(page)
@@ -236,7 +237,7 @@ export const completeAccessCulturalAndHealthcareTask = async (page: Page, person
   await covidPage.clickSave()
 }
 
-export const completeFurtherConsiderationsTask = async (page: Page, personName: string) => {
+export const completeFurtherConsiderationsTask = async (page: Page, personName: string, shortNotice = false) => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Detail further considerations for placement')
 
@@ -289,6 +290,40 @@ export const completeFurtherConsiderationsTask = async (page: Page, personName: 
   const additionalCircumstancesPage = await ApplyPage.initialize(page, 'Additional circumstances')
   await additionalCircumstancesPage.checkRadio('No')
   await additionalCircumstancesPage.clickSave()
+
+  if (shortNotice) {
+    const contingencyPlansPage = await ApplyPage.initialize(page, 'Contingency plans')
+    await contingencyPlansPage.fillField(
+      'If the person does not return to the AP for curfew, what actions should be taken?',
+      'None',
+    )
+    await contingencyPlansPage.fillField(
+      "If the person's placement needs to be withdrawn out of hours, what actions should be taken?",
+      'None',
+    )
+    await contingencyPlansPage.fillField(
+      'If the person does not return to the AP for curfew, what actions should be taken?',
+      'None',
+    )
+    await contingencyPlansPage.fillField(
+      'Provide any victim considerations that the AP need to be aware of when out of hours',
+      'None',
+    )
+    await contingencyPlansPage.fillField(
+      'In the event of an out of hours placement withdrawal, provide any unsuitable addresses that the person cannot reside at',
+      'None',
+    )
+    await contingencyPlansPage.fillField(
+      'In the event of an out of hours placement withdrawal, provide alternative suitable addresses that the person can reside at',
+      'None',
+    )
+    await contingencyPlansPage.fillField(
+      'In the event of a breach, provide any further information to support Out of Hours (OoH) decision making',
+      'None',
+    )
+    await contingencyPlansPage.fillField('Are there any other considerations?', 'None')
+    await contingencyPlansPage.clickSave()
+  }
 }
 
 export const completeMoveOnTask = async (page: Page, personName: string) => {
@@ -381,7 +416,7 @@ export const createApplication = async (
   await completeAccessCulturalAndHealthcareTask(page, person.name)
 
   // And I complete the Further Considerations Task
-  await completeFurtherConsiderationsTask(page, person.name)
+  await completeFurtherConsiderationsTask(page, person.name, shortNotice)
 
   // And I complete the Move On Task
   await completeMoveOnTask(page, person.name)
