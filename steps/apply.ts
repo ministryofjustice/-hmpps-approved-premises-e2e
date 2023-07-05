@@ -37,7 +37,7 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
   await confirmPersonPage.clickSave()
 
   if (indexOffenceRequired) {
-    await page.getByLabel('Select Murder - Murder of infants under 1 year of age as index offence').click()
+    await page.locator('input[type="radio"][name="offenceId"]').first().click()
     await confirmPersonPage.clickSave()
   }
 }

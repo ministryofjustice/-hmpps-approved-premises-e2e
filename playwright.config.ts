@@ -52,6 +52,7 @@ export default defineConfig<TestOptions>({
           name: process.env.PREPROD_SMOKETEST_NAME as string,
           crn: process.env.PREPROD_SMOKETEST_CRN as string,
         },
+        indexOffenceRequired: true,
         user: {
           name: process.env.PREPROD_NAME as string,
           username: process.env.PREPROD_USERNAME as string,
