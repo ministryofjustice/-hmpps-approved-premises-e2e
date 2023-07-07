@@ -323,6 +323,14 @@ export const completeFurtherConsiderationsTask = async (page: Page, personName: 
     )
     await contingencyPlansPage.fillField('Are there any other considerations?', 'None')
     await contingencyPlansPage.clickSave()
+
+    const triggerPlansPage = await ApplyPage.initialize(page, 'Contingency plans')
+    await triggerPlansPage.checkRadioInGroup('Is there a trigger plan in place?', 'No')
+    await triggerPlansPage.checkRadioInGroup(
+      'Have additional Licence conditions been requested as an alternative to recall?',
+      'No',
+    )
+    await triggerPlansPage.clickSave()
   }
 }
 
