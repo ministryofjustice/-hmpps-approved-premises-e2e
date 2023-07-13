@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
@@ -15,5 +16,12 @@ export class ListPage extends BasePage {
       .filter({ has: this.page.locator(`[data-cy-id="${applicationId}"]`) })
       .first()
       .click()
+  }
+
+  async shouldShowWithdrawalConfirmationMessage() {
+    await expect(this.page.getByRole('alert', { name: 'Success' })).toContainText('Success')
+    await expect(this.page.getByRole('heading', { name: 'Application withdrawn' })).toContainText(
+      'Application withdrawn',
+    )
   }
 }

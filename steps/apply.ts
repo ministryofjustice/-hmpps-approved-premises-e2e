@@ -10,6 +10,7 @@ import {
   StartPage,
   TasklistPage,
 } from '../pages/apply'
+import { BasePage } from '../pages/basePage'
 
 export const visitDashboard = async (page: Page): Promise<DashboardPage> => {
   const dashboard = new DashboardPage(page)
@@ -444,4 +445,12 @@ export const createApplication = async (
   const url = page.url()
 
   return url.match(/applications\/(.+)\//)[1]
+}
+
+export const withdrawAnApplication = async (page: Page) => {
+  await page.getByRole('link', { name: 'Withdraw' }).first().click()
+
+  const confirmWithdrawalPage = new BasePage(page)
+  await confirmWithdrawalPage.checkRadio('Yes')
+  await confirmWithdrawalPage.clickContinue()
 }
