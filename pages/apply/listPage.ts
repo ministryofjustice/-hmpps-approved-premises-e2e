@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
@@ -11,10 +12,16 @@ export class ListPage extends BasePage {
 
   async clickApplicationWithId(applicationId: string): Promise<void> {
     await this.page
-      .getByRole('row')
+      .getByRole('rowheader')
       .filter({ has: this.page.locator(`[data-cy-id="${applicationId}"]`) })
       .first()
-      .getByRole('link')
       .click()
+  }
+
+  async shouldShowWithdrawalConfirmationMessage() {
+    await expect(this.page.getByRole('alert', { name: 'Success' })).toContainText('Success')
+    await expect(this.page.getByRole('heading', { name: 'Application withdrawn' })).toContainText(
+      'Application withdrawn',
+    )
   }
 }
