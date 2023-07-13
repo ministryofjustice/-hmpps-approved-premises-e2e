@@ -11,10 +11,9 @@ export class ListPage extends BasePage {
 
   async clickApplicationWithId(applicationId: string): Promise<void> {
     await this.page
-      .getByRole('row')
+      .getByRole('rowheader')
       .filter({ has: this.page.locator(`[data-cy-id="${applicationId}"]`) })
       .first()
-      .getByRole('link')
       .click()
   }
 }
