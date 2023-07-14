@@ -51,7 +51,7 @@ export const addAdditionalInformation = async (page: Page) => {
   await additionalInformationPage.clickSubmit()
 }
 
-export const assessSuitability = async (page: Page, shortNotice = false) => {
+export const assessSuitability = async (page: Page, emergencyApplication = false) => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Assess suitability of application')
 
@@ -68,13 +68,21 @@ export const assessSuitability = async (page: Page, shortNotice = false) => {
   await assessPage.checkRadioInGroup('Is the move on plan sufficient?', 'Yes')
   await assessPage.clickSubmit()
 
-  if (shortNotice) {
+  if (emergencyApplication) {
     const applicationTimelinessPage = await AssessPage.initialize(page, 'Application timeliness')
     await applicationTimelinessPage.checkRadioInGroup(
       "Do you agree with the applicant's reason for submission within 4 months of expected arrival?",
       'Yes',
     )
     await applicationTimelinessPage.clickSubmit()
+
+    const contingencyPlansSufficientPage = await AssessPage.initialize(page, 'Suitability assessment')
+    await contingencyPlansSufficientPage.checkRadioInGroup(
+      'Is the contingency plan sufficient to manage behaviour or a failure to return out of hours?',
+      'Yes',
+    )
+    await contingencyPlansSufficientPage.fillField('Additional comments', 'Some comments')
+    await contingencyPlansSufficientPage.clickSubmit()
   }
 }
 
@@ -155,7 +163,11 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
   await confirmationPage.shouldShowSuccessMessage()
 }
 
-export const assessApplication = async ({ page, user, person }, applicationId: string, shortNotice: boolean) => {
+export const assessApplication = async (
+  { page, user, person },
+  applicationId: string,
+  emergencyApplication: boolean,
+) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
 
@@ -172,7 +184,7 @@ export const assessApplication = async ({ page, user, person }, applicationId: s
   await confirmInformation(page)
 
   // And I assess the suitablity of the Application
-  await assessSuitability(page, shortNotice)
+  await assessSuitability(page, emergencyApplication)
 
   // And I provide the requirements to support the placement
   await provideRequirements(page)

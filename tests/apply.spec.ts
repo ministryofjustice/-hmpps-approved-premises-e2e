@@ -24,7 +24,7 @@ test('Apply, assess, match and book an application for an Approved Premises with
   await matchAndBookApplication({ page, user, person }, id)
 })
 
-test('Apply, assess, match and book a short notice application for an Approved Premises', async ({
+test('Apply, assess, match and book an emergency application for an Approved Premises', async ({
   page,
   user,
   person,
