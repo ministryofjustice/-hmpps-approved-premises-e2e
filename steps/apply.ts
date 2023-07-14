@@ -47,7 +47,7 @@ export const completeBasicInformationTask = async (
   page: Page,
   personName: string,
   withReleaseDate = true,
-  shortNotice = false,
+  emergencyApplication = false,
 ) => {
   const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
   await notEligiblePage.checkRadio('Yes')
@@ -89,17 +89,17 @@ export const completeBasicInformationTask = async (
 
   if (withReleaseDate) {
     await releaseDatePage.checkRadio('Yes')
-    await releaseDatePage.fillReleaseDateField(shortNotice)
+    await releaseDatePage.fillReleaseDateField(emergencyApplication)
     await releaseDatePage.clickSave()
 
     const placementDatePage = await ApplyPage.initialize(page)
     await placementDatePage.checkRadio('Yes')
     await placementDatePage.clickSave()
 
-    if (shortNotice) {
-      const shortNoticePage = await ApplyPage.initialize(page, 'Short notice application')
-      await shortNoticePage.checkRadio('The risk level has recently escalated')
-      await shortNoticePage.clickSave()
+    if (emergencyApplication) {
+      const emergencyApplicationPage = await ApplyPage.initialize(page, 'Emergency application')
+      await emergencyApplicationPage.checkRadio('The risk level has recently escalated')
+      await emergencyApplicationPage.clickSave()
     }
   } else {
     await releaseDatePage.checkRadio('No, the release date is to be determined by the parole board or other hearing')
@@ -238,7 +238,11 @@ export const completeAccessCulturalAndHealthcareTask = async (page: Page, person
   await covidPage.clickSave()
 }
 
-export const completeFurtherConsiderationsTask = async (page: Page, personName: string, shortNotice = false) => {
+export const completeFurtherConsiderationsTask = async (
+  page: Page,
+  personName: string,
+  emergencyApplication = false,
+) => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Detail further considerations for placement')
 
@@ -292,7 +296,7 @@ export const completeFurtherConsiderationsTask = async (page: Page, personName: 
   await additionalCircumstancesPage.checkRadio('No')
   await additionalCircumstancesPage.clickSave()
 
-  if (shortNotice) {
+  if (emergencyApplication) {
     const contingencyPlansPage = await ApplyPage.initialize(page, 'Contingency plans')
     await contingencyPlansPage.fillField(
       'If the person does not return to the AP for curfew, what actions should be taken?',
@@ -392,7 +396,7 @@ export const shouldSeeConfirmationPage = async (page: Page) => {
 export const createApplication = async (
   { page, person, indexOffenceRequired, oasysSections },
   withReleaseDate: boolean,
-  shortNotice: boolean,
+  emergencyApplication: boolean,
 ) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
@@ -404,7 +408,7 @@ export const createApplication = async (
   await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
 
   // And I complete the basic information Task
-  await completeBasicInformationTask(page, person.name, withReleaseDate, shortNotice)
+  await completeBasicInformationTask(page, person.name, withReleaseDate, emergencyApplication)
 
   // And I complete the Type of AP Task
   await completeTypeOfApTask(page, person.name)
@@ -425,7 +429,7 @@ export const createApplication = async (
   await completeAccessCulturalAndHealthcareTask(page, person.name)
 
   // And I complete the Further Considerations Task
-  await completeFurtherConsiderationsTask(page, person.name, shortNotice)
+  await completeFurtherConsiderationsTask(page, person.name, emergencyApplication)
 
   // And I complete the Move On Task
   await completeMoveOnTask(page, person.name)
