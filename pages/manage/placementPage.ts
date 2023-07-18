@@ -35,7 +35,7 @@ export class PlacementPage extends BasePage {
 
   async clickExtend() {
     await this.clickActions()
-    await this.page.getByRole('menuitem', { name: 'Extend placement' }).click()
+    await this.page.getByRole('menuitem', { name: 'Change placement dates' }).click()
   }
 
   async showsNonArrivalLoggedMessage() {

@@ -6,7 +6,7 @@ export class ConfirmationPage extends BasePage {
     await expect(this.page.locator('h1.govuk-panel__title')).toContainText('Placement confirmed')
   }
 
-  async shouldShowExtensionSuccessMessage() {
-    await expect(this.page.locator('h1.govuk-panel__title')).toContainText('Booking extension complete')
+  async shouldShowBookingChangeSuccessMessage() {
+    await expect(this.page.locator('h3')).toContainText('Booking changed successfully')
   }
 }
