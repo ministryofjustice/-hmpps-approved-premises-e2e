@@ -12,7 +12,7 @@ import { MarkBedOutOfServicePage } from '../pages/manage/markBedOutOfServicePage
 import { CancellationPage } from '../pages/manage/cancellationPage'
 import { NonarrivalFormPage } from '../pages/manage/nonarrivalFormPage'
 import { ArrivalFormPage } from '../pages/manage/arrivalFormPage'
-import { ExtendPlacementPage } from '../pages/manage/extendPlacementFormPage'
+import { ChangePlacementDatesPage } from '../pages/manage/changePlacementDates'
 import { MoveBedPage } from '../pages/manage/moveBedPage'
 
 const premisesName = 'Test AP 10'
@@ -137,7 +137,7 @@ test('Mark a booking as cancelled', async ({ page }) => {
   await placementPage.showsCancellationLoggedMessage()
 })
 
-test('Extend a booking', async ({ page, person }) => {
+test('Change placement dates', async ({ page, person }) => {
   // Given there is a placement for today
   await manuallyBookBed({ page, person })
   await navigateToTodaysBooking(page)
@@ -148,7 +148,7 @@ test('Extend a booking', async ({ page, person }) => {
   await placementPage.clickExtend()
 
   // Then I should see the extension form
-  const extensionFormPage = await ExtendPlacementPage.initialize(page, 'Extend placement')
+  const extensionFormPage = await ChangePlacementDatesPage.initialize(page, 'Change placement date')
 
   // When I complete the form
   await extensionFormPage.completeForm()
@@ -156,7 +156,7 @@ test('Extend a booking', async ({ page, person }) => {
 
   // Then I should see the placement page with a banner
   const confirmationPage = new ConfirmationPage(page)
-  await confirmationPage.shouldShowExtensionSuccessMessage()
+  await confirmationPage.shouldShowBookingChangeSuccessMessage()
 })
 
 test('Mark a bed as lost', async ({ page }) => {
