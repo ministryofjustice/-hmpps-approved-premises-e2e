@@ -208,9 +208,10 @@ test('Mark a booking as arrived ', async ({ page, person }) => {
   await placementPage.showsArrivalLoggedMessage()
 })
 
-test('Mark a booking as not arrived', async ({ page }) => {
+test('Mark a booking as not arrived', async ({ page, person }) => {
   // Given there is a placement for today
   // And I am on the premises's page
+  await manuallyBookBed({ page, person })
   await navigateToPremisesPage(page)
   const premisesPage = await PremisesPage.initialize(page, premisesName)
 
