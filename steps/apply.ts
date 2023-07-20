@@ -215,6 +215,13 @@ export const completeLocationFactorsTask = async (page: Page) => {
   )
   await locationFactorsPage.checkRadioInGroup('Are there any restrictions linked to placement location?', 'No')
   await locationFactorsPage.clickSave()
+
+  const preferredApsPage = await ApplyPage.initialize(page, 'Select a preferred AP')
+  await page.getByRole('combobox', { name: 'First choice AP' }).selectOption({ index: 1 })
+  await page.getByRole('combobox', { name: 'Second choice AP' }).selectOption({ index: 2 })
+  await page.getByRole('combobox', { name: 'Third choice AP' }).selectOption({ index: 3 })
+  await page.getByRole('combobox', { name: 'Fourth choice AP' }).selectOption({ index: 4 })
+  preferredApsPage.clickSave()
 }
 
 export const completeAccessCulturalAndHealthcareTask = async (page: Page, personName: string) => {
