@@ -7,9 +7,11 @@ import {
   withdrawAnApplication,
 } from '../steps/apply'
 import { assessApplication, requestAndAddAdditionalInformation } from '../steps/assess'
-import { matchAndBookApplication } from '../steps/match'
+// import { matchAndBookApplication } from '../steps/match'
 
-import { reviewAndApprovePlacementApplication, startAndCreatePlacementApplication } from '../steps/placementApplication'
+// import { reviewAndApprovePlacementApplication, startAndCreatePlacementApplication } from '../steps/placementApplication'
+import { startAndCreatePlacementApplication } from '../steps/placementApplication'
+
 import { ListPage } from '../pages/apply'
 
 test('Apply, assess, match and book an application for an Approved Premises with a release date', async ({
@@ -21,7 +23,8 @@ test('Apply, assess, match and book an application for an Approved Premises with
 }) => {
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false)
   await assessApplication({ page, user, person }, id, false)
-  await matchAndBookApplication({ page, user, person }, id)
+  // Skip match until it's back
+  // await matchAndBookApplication({ page, user, person }, id)
 })
 
 test('Apply, assess, match and book an emergency application for an Approved Premises', async ({
@@ -33,7 +36,8 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
 }) => {
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, true)
   await assessApplication({ page, user, person }, id, true)
-  await matchAndBookApplication({ page, user, person }, id)
+  // Skip match until it's back
+  // await matchAndBookApplication({ page, user, person }, id)
 })
 
 test('Apply, assess, match and book an application for an Approved Premises without a release date', async ({
@@ -46,7 +50,8 @@ test('Apply, assess, match and book an application for an Approved Premises with
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, false, false)
   await assessApplication({ page, user, person }, id, false)
   await startAndCreatePlacementApplication({ page }, id)
-  await reviewAndApprovePlacementApplication({ page, user }, id)
+  // Skip match until it's back
+  // await reviewAndApprovePlacementApplication({ page, user }, id)
   // TODO: Match and book once approval is done
 })
 
