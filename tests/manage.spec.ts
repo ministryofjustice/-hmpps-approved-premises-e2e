@@ -127,7 +127,7 @@ test('Mark a booking as cancelled', async ({ page }) => {
   await placementPage.clickMarkCancelled()
 
   // Then I should see the cancellation form
-  const cancellationFormPage = await CancellationPage.initialize(page, 'Cancel this placement')
+  const cancellationFormPage = await CancellationPage.initialize(page, 'Confirm cancelled placement')
 
   // When I complete the form
   await cancellationFormPage.completeForm()
