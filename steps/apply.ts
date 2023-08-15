@@ -462,6 +462,6 @@ export const withdrawAnApplication = async (page: Page) => {
   await page.getByRole('link', { name: 'Withdraw' }).first().click()
 
   const confirmWithdrawalPage = new BasePage(page)
-  await confirmWithdrawalPage.checkRadio('Yes')
+  await confirmWithdrawalPage.checkRadio('Alternative provision identified')
   await confirmWithdrawalPage.clickContinue()
 }
