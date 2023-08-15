@@ -127,7 +127,7 @@ test('Mark a booking as cancelled', async ({ page }) => {
   await placementPage.clickMarkCancelled()
 
   // Then I should see the cancellation form
-  const cancellationFormPage = await CancellationPage.initialize(page, 'Cancel this placement')
+  const cancellationFormPage = await CancellationPage.initialize(page, 'Confirm cancelled placement')
 
   // When I complete the form
   await cancellationFormPage.completeForm()
@@ -148,7 +148,7 @@ test('Change placement dates', async ({ page, person }) => {
   await placementPage.clickExtend()
 
   // Then I should see the extension form
-  const extensionFormPage = await ChangePlacementDatesPage.initialize(page, 'Change placement date')
+  const extensionFormPage = await ChangePlacementDatesPage.initialize(page, 'Update placement date')
 
   // When I complete the form
   await extensionFormPage.completeForm()

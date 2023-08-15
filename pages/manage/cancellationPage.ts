@@ -11,16 +11,17 @@ export class CancellationPage extends BasePage {
   }
 
   async enterCancellationDate() {
+    const cancellationLabel = 'When was this placement cancelled?'
     await this.page
-      .getByRole('group', { name: 'What date was this placement cancelled?' })
+      .getByRole('group', { name: cancellationLabel })
       .getByLabel('Day')
       .fill(getDate(new Date()).toString())
     await this.page
-      .getByRole('group', { name: 'What date was this placement cancelled?' })
+      .getByRole('group', { name: cancellationLabel })
       .getByLabel('Month')
       .fill((getMonth(new Date()) + 1).toString())
     await this.page
-      .getByRole('group', { name: 'What date was this placement cancelled?' })
+      .getByRole('group', { name: cancellationLabel })
       .getByLabel('Year')
       .fill(getYear(new Date()).toString())
   }
