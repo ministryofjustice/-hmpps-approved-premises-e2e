@@ -14,6 +14,7 @@ import { NonarrivalFormPage } from '../pages/manage/nonarrivalFormPage'
 import { ArrivalFormPage } from '../pages/manage/arrivalFormPage'
 import { ChangePlacementDatesPage } from '../pages/manage/changePlacementDates'
 import { MoveBedPage } from '../pages/manage/moveBedPage'
+import { ChangeDepartureDatePage } from '../pages/manage/changeDepartureDate'
 
 const premisesName = 'Test AP 10'
 
@@ -197,7 +198,7 @@ test('Mark a bed as lost', async ({ page }) => {
   await premisesPage.showsLostBedLoggedMessage()
 })
 
-test('Mark a booking as arrived ', async ({ page, person }) => {
+test('Mark a booking as arrived and extend it', async ({ page, person }) => {
   // Given there is a placement for today
   // And I am on the premises's page
   await manuallyBookBed({ page, person })
@@ -213,7 +214,19 @@ test('Mark a booking as arrived ', async ({ page, person }) => {
   await arrivalFormpage.completeForm()
 
   // Then I should see the placement page with a banner confirming the arrival was logged
-  await placementPage.showsArrivalLoggedMessage()
+  const premisesPage = await PremisesPage.initialize(page, premisesName)
+  await premisesPage.showsArrivalLoggedMessage()
+
+  // When I click the 'Change departure date' link
+  await navigateToCurrentResident(page)
+  await placementPage.clickChangeDepartureDate()
+
+  const changeDepartureDatesPage = await ChangeDepartureDatePage.initialize(page, 'Update departure date')
+  await changeDepartureDatesPage.completeForm()
+  await changeDepartureDatesPage.clickSubmit()
+
+  const confirmationPage = new ConfirmationPage(page)
+  await confirmationPage.shouldShowDepartureDateChangedMessage()
 })
 
 test('Mark a booking as not arrived', async ({ page, person }) => {
