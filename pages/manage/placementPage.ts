@@ -33,7 +33,7 @@ export class PlacementPage extends BasePage {
     await this.page.getByRole('menuitem', { name: 'Cancel placement' }).click()
   }
 
-  async clickExtend() {
+  async clickChangePlacementDates() {
     await this.clickActions()
     await this.page.getByRole('menuitem', { name: 'Change placement dates' }).click()
   }

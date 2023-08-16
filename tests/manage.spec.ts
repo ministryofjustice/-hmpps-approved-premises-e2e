@@ -153,7 +153,7 @@ test('Change placement dates', async ({ page, person }) => {
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
 
   // When I click the 'Extend' link
-  await placementPage.clickExtend()
+  await placementPage.clickChangePlacementDates()
 
   // Then I should see the extension form
   const extensionFormPage = await ChangePlacementDatesPage.initialize(page, 'Update placement date')
