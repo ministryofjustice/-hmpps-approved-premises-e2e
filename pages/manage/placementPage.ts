@@ -42,8 +42,6 @@ export class PlacementPage extends BasePage {
     await this.page.waitForSelector('text=Non-arrival logged')
   }
 
-  async showsArrivalLoggedMessage() {
-    await this.page.waitForSelector('text=Arrival logged')
   }
 
   async showsCancellationLoggedMessage() {
