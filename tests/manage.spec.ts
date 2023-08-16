@@ -54,6 +54,14 @@ const navigateToTodaysBooking = async page => {
   await premisesPage.clickManageTodaysArrival()
 }
 
+const navigateToCurrentResident = async page => {
+  await navigateToPremisesPage(page)
+
+  const premisesPage = await PremisesPage.initialize(page, premisesName)
+
+  await premisesPage.clickManageCurrentResident()
+}
+
 const manuallyBookBed = async ({ page, person }) => {
   const bedsPage = await navigateToBedsPage(page)
 

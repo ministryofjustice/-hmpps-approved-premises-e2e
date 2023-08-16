@@ -27,6 +27,11 @@ export class PremisesPage extends BasePage {
     await table.getByRole('link', { name: 'Manage' }).first().click()
   }
 
+  async clickManageCurrentResident() {
+    const table = this.page.getByRole('table', { name: 'Current residents' })
+    await table.getByRole('link', { name: 'Manage' }).first().click()
+  }
+
   async showsArrivalLoggedMessage() {
     await this.page.waitForSelector('text=Arrival logged')
   }
