@@ -33,17 +33,18 @@ export class PlacementPage extends BasePage {
     await this.page.getByRole('menuitem', { name: 'Cancel placement' }).click()
   }
 
-  async clickExtend() {
+  async clickChangePlacementDates() {
     await this.clickActions()
     await this.page.getByRole('menuitem', { name: 'Change placement dates' }).click()
   }
 
-  async showsNonArrivalLoggedMessage() {
-    await this.page.waitForSelector('text=Non-arrival logged')
+  async clickChangeDepartureDate() {
+    await this.clickActions()
+    await this.page.getByRole('menuitem', { name: 'Update departure date' }).click()
   }
 
-  async showsArrivalLoggedMessage() {
-    await this.page.waitForSelector('text=Arrival logged')
+  async showsNonArrivalLoggedMessage() {
+    await this.page.waitForSelector('text=Non-arrival logged')
   }
 
   async showsCancellationLoggedMessage() {
