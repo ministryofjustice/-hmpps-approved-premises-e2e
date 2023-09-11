@@ -65,7 +65,7 @@ export const completeBasicInformationTask = async (
 
   const transgenderPage = await ApplyPage.initialize(
     page,
-    `Is ${personName} transgender or do they have a transgender history?`,
+    `Is the person transgender or do they have a transgender history?`,
   )
   await transgenderPage.checkRadio('No')
   await transgenderPage.clickSave()
@@ -85,7 +85,7 @@ export const completeBasicInformationTask = async (
   await releaseTypePage.checkRadio('Licence')
   await releaseTypePage.clickSave()
 
-  const releaseDatePage = await ApplyPage.initialize(page, `Do you know ${personName}’s release date?`)
+  const releaseDatePage = await ApplyPage.initialize(page, `Do you know the person's release date?`)
 
   if (withReleaseDate) {
     await releaseDatePage.checkRadio('Yes')
@@ -105,7 +105,7 @@ export const completeBasicInformationTask = async (
     await releaseDatePage.checkRadio('No, the release date is to be determined by the parole board or other hearing')
     await releaseDatePage.clickSave()
 
-    const oralHearingDatePage = await ApplyPage.initialize(page, `Do you know ${personName}’s oral hearing date?`)
+    const oralHearingDatePage = await ApplyPage.initialize(page, `Do you know the person's oral hearing date?`)
     await oralHearingDatePage.checkRadio('No')
     await oralHearingDatePage.clickSave()
   }
@@ -115,11 +115,11 @@ export const completeBasicInformationTask = async (
   await purposePage.clickSave()
 }
 
-export const completeTypeOfApTask = async (page: Page, personName: string) => {
+export const completeTypeOfApTask = async (page: Page) => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Type of AP required')
 
-  const typeOfApPage = await ApplyPage.initialize(page, `Which type of AP does ${personName} require?`)
+  const typeOfApPage = await ApplyPage.initialize(page, `Which type of AP does the person require?`)
   await typeOfApPage.checkRadio('Standard AP')
   await typeOfApPage.clickSave()
 }
@@ -149,7 +149,7 @@ export const completeOasysImportTask = async (page: Page, oasysSections: Array<s
   await riskToSelfPage.clickSave()
 }
 
-export const completeRisksAndNeedsTask = async (page: Page, personName: string) => {
+export const completeRisksAndNeedsTask = async (page: Page) => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Add detail about managing risks and needs')
 
@@ -158,7 +158,7 @@ export const completeRisksAndNeedsTask = async (page: Page, personName: string) 
     'What features of an Approved Premises (AP) will support the management of risk?',
   )
   await riskManagementFeaturesPage.fillField(
-    `Describe why an AP placement is needed to manage the risk of ${personName}`,
+    `Describe why an AP placement is needed to manage the risk of the person`,
     'Some text',
   )
   await riskManagementFeaturesPage.fillField(
@@ -169,7 +169,7 @@ export const completeRisksAndNeedsTask = async (page: Page, personName: string) 
 
   const convictedOffencesPage = await ApplyPage.initialize(
     page,
-    `Has ${personName} ever been convicted of the following offences?`,
+    `Has the person ever been convicted of the following offences?`,
   )
   await convictedOffencesPage.checkRadio('No')
   await convictedOffencesPage.clickSave()
@@ -224,14 +224,14 @@ export const completeLocationFactorsTask = async (page: Page) => {
   preferredApsPage.clickSave()
 }
 
-export const completeAccessCulturalAndHealthcareTask = async (page: Page, personName: string) => {
+export const completeAccessCulturalAndHealthcareTask = async (page: Page) => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Add access, cultural and healthcare needs')
 
   const accessNeedsPage = await ApplyPage.initialize(page, 'Access, cultural and healthcare needs')
   await accessNeedsPage.checkCheckBoxes(['None of the above'])
-  await accessNeedsPage.checkRadioInGroup(`Does ${personName} have any religious or cultural needs?`, 'No')
-  await accessNeedsPage.checkRadioInGroup(`Does ${personName} need an interpreter?`, 'No')
+  await accessNeedsPage.checkRadioInGroup(`Does the person have any religious or cultural needs?`, 'No')
+  await accessNeedsPage.checkRadioInGroup(`Does the person need an interpreter?`, 'No')
   await accessNeedsPage.checkRadioInGroup('Does this person have care and support needs?', 'No')
   await accessNeedsPage.checkRadioInGroup('Has a care act assessment been completed?', 'No')
   await accessNeedsPage.clickSave()
@@ -247,7 +247,7 @@ export const completeAccessCulturalAndHealthcareTask = async (page: Page, person
 
 export const completeFurtherConsiderationsTask = async (
   page: Page,
-  personName: string,
+
   emergencyApplication = false,
 ) => {
   const taskListPage = new TasklistPage(page)
@@ -273,11 +273,11 @@ export const completeFurtherConsiderationsTask = async (
 
   const vulnerabilityPage = await ApplyPage.initialize(page, 'Vulnerability')
   await vulnerabilityPage.checkRadioInGroup(
-    `Are you aware that ${personName} is vulnerable to exploitation from others?`,
+    `Are you aware that the person is vulnerable to exploitation from others?`,
     'No',
   )
   await vulnerabilityPage.checkRadioInGroup(
-    `Is there any evidence or expectation that ${personName} may groom, radicalise or exploit others?`,
+    `Is there any evidence or expectation that the person may groom, radicalise or exploit others?`,
     'No',
   )
   await vulnerabilityPage.clickSave()
@@ -346,7 +346,7 @@ export const completeFurtherConsiderationsTask = async (
   }
 }
 
-export const completeMoveOnTask = async (page: Page, personName: string) => {
+export const completeMoveOnTask = async (page: Page) => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Add move on information')
 
@@ -355,7 +355,7 @@ export const completeMoveOnTask = async (page: Page, personName: string) => {
   await placementDurationPage.clickSave()
 
   const moveOnPage = await ApplyPage.initialize(page, 'Placement duration and move on')
-  await moveOnPage.fillField(`Where is ${personName} most likely to live when they move on from the AP?`, 'WS1')
+  await moveOnPage.fillField(`Where is the person most likely to live when they move on from the AP?`, 'WS1')
   await moveOnPage.clickSave()
 
   const moveOnArrangementsPage = await ApplyPage.initialize(page, 'Placement duration and move on')
@@ -418,13 +418,13 @@ export const createApplication = async (
   await completeBasicInformationTask(page, person.name, withReleaseDate, emergencyApplication)
 
   // And I complete the Type of AP Task
-  await completeTypeOfApTask(page, person.name)
+  await completeTypeOfApTask(page)
 
   // And I complete the Oasys Import Task
   await completeOasysImportTask(page, oasysSections)
 
   // And I complete the the Risks and Needs Task
-  await completeRisksAndNeedsTask(page, person.name)
+  await completeRisksAndNeedsTask(page)
 
   // And I complete the prison notes Task
   await completePrisonNotesTask(page)
@@ -433,13 +433,13 @@ export const createApplication = async (
   await completeLocationFactorsTask(page)
 
   // And I complete the Access, Cultural and Healthcare Task
-  await completeAccessCulturalAndHealthcareTask(page, person.name)
+  await completeAccessCulturalAndHealthcareTask(page)
 
   // And I complete the Further Considerations Task
-  await completeFurtherConsiderationsTask(page, person.name, emergencyApplication)
+  await completeFurtherConsiderationsTask(page, emergencyApplication)
 
   // And I complete the Move On Task
-  await completeMoveOnTask(page, person.name)
+  await completeMoveOnTask(page)
 
   // And I complete the Attach Required Documemts Task
   await completeAttachRequiredDocuments(page)
