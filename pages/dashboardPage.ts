@@ -24,4 +24,8 @@ export class DashboardPage extends BasePage {
   async clickManage() {
     await this.page.getByRole('link', { name: 'Manage an Approved Premises' }).click()
   }
+
+  async clickDownloadData() {
+    await this.page.getByRole('link', { name: 'Download data' }).click()
+  }
 }
