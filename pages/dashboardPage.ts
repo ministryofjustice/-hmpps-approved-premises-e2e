@@ -28,4 +28,8 @@ export class DashboardPage extends BasePage {
   async clickDownloadData() {
     await this.page.getByRole('link', { name: 'Download data' }).click()
   }
+
+  async clickUserMangement() {
+    await this.page.getByRole('link', { name: 'Manage user roles' }).click()
+  }
 }
