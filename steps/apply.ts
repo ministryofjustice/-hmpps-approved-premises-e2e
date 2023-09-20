@@ -11,6 +11,7 @@ import {
   TasklistPage,
 } from '../pages/apply'
 import { BasePage } from '../pages/basePage'
+import { TestOptions } from '../testOptions'
 
 export const visitDashboard = async (page: Page): Promise<DashboardPage> => {
   const dashboard = new DashboardPage(page)
@@ -45,9 +46,9 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
 
 export const completeBasicInformationTask = async (
   page: Page,
-  personName: string,
   withReleaseDate = true,
   emergencyApplication = false,
+  testMappaFlow = false,
 ) => {
   const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
   await notEligiblePage.checkRadio('Yes')
@@ -73,6 +74,19 @@ export const completeBasicInformationTask = async (
   const endDatesPage = await ApplyPage.initialize(page, 'Which of the following dates are relevant?')
   await endDatesPage.fillSedField({ year: '2022', month: '3', day: '12' })
   await endDatesPage.clickSave()
+
+  if (testMappaFlow) {
+    const sentenceTypePage = await ApplyPage.initialize(
+      page,
+      'Which of the following best describes the sentence type the person is on?',
+    )
+    await sentenceTypePage.checkRadio('Non-statutory, MAPPA case')
+    await sentenceTypePage.clickSave()
+
+    const managedByMappaPage = await ApplyPage.initialize(page, 'Is the person managed by MAPPA?')
+    await managedByMappaPage.checkRadio('No')
+    await managedByMappaPage.clickSave()
+  }
 
   const sentenceTypePage = await ApplyPage.initialize(
     page,
@@ -401,9 +415,15 @@ export const shouldSeeConfirmationPage = async (page: Page) => {
 }
 
 export const createApplication = async (
-  { page, person, indexOffenceRequired, oasysSections },
+  {
+    page,
+    person,
+    indexOffenceRequired,
+    oasysSections,
+  }: { page: Page; person: TestOptions['person']; indexOffenceRequired: boolean; oasysSections: Array<string> },
   withReleaseDate: boolean,
   emergencyApplication: boolean,
+  testMappaFlow?: boolean,
 ) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
@@ -415,7 +435,7 @@ export const createApplication = async (
   await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
 
   // And I complete the basic information Task
-  await completeBasicInformationTask(page, person.name, withReleaseDate, emergencyApplication)
+  await completeBasicInformationTask(page, withReleaseDate, emergencyApplication, testMappaFlow)
 
   // And I complete the Type of AP Task
   await completeTypeOfApTask(page)
