@@ -62,11 +62,46 @@ test('manage users', async ({ page }) => {
   // Then I should be taken to the Edit User page
   const editUserPage = await EditUser.initialize(page)
 
-  // When I click 'Save'
+  const checkboxes = [
+    'Administrator',
+    'Assessor',
+    'Manage an Approved Premises',
+    'Matcher',
+    'Workflow manager',
+    'Stop assessment allocations',
+    'Stop match allocations',
+    'Stop placement request allocations',
+    'PIPE',
+    'Emergency APs',
+    'Limited access offenders',
+    'ESAP',
+  ]
+
+  // When I select all the checkboxes
+  await editUserPage.checkCheckBoxes(checkboxes)
+  await editUserPage.assertCheckboxesAreSelected(checkboxes)
+
+  // And I click 'Save'
   await editUserPage.clickSave()
 
   // Then I should see the 'User updated' banner
   await editUserPage.shouldShowUserUpdatedBanner()
+
+  // And all the checkboxes should be selected
+  await editUserPage.assertCheckboxesAreSelected(checkboxes)
+
+  // When I unselect all the checkboxes
+  await editUserPage.checkCheckBoxes(checkboxes)
+  await editUserPage.assertCheckboxesAreUnselected(checkboxes)
+
+  // And I click 'Save'
+  await editUserPage.clickSave()
+
+  // Then I should see the 'User updated' banner
+  await editUserPage.shouldShowUserUpdatedBanner()
+
+  // And all the checkboxes should be selected
+  await editUserPage.assertCheckboxesAreUnselected(checkboxes)
 
   // When I click 'Remove access'
   await editUserPage.clickRemoveAccess()
