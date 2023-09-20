@@ -25,4 +25,16 @@ export class EditUser extends BasePage {
     await expect(this.page.getByRole('definition')).toHaveCount(5)
     this.page.getByRole('definition', { name: username })
   }
+
+  async assertCheckboxesAreSelected(labels: Array<string>) {
+    labels.forEach(async label => {
+      expect(await this.page.getByLabel(label).isChecked()).toBeTruthy()
+    })
+  }
+
+  async assertCheckboxesAreUnselected(labels: Array<string>) {
+    labels.forEach(async label => {
+      expect(await this.page.getByLabel(label).isChecked()).toBeFalsy()
+    })
+  }
 }
