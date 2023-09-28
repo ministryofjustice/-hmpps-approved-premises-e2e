@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test'
+
 import {
   ApplyPage,
   CRNPage,
@@ -63,6 +64,10 @@ export const completeBasicInformationTask = async (
     'Some text',
   )
   await exemptionApplicationPage.clickSave()
+
+  const confirmYourDetailsPage = await ApplyPage.initialize(page, 'Confirm your details')
+  await confirmYourDetailsPage.checkRadio('Yes')
+  await confirmYourDetailsPage.clickSave()
 
   const transgenderPage = await ApplyPage.initialize(
     page,
