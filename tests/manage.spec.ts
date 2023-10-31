@@ -94,7 +94,7 @@ const manuallyBookBed = async ({ page, person }) => {
   await confirmationPage.shouldShowPlacementSuccessMessage()
 }
 
-test('Manually book a bed', async ({ page, person }) => {
+test('Manually book a bed', async ({ page, person, indexOffenceRequired }) => {
   const bedsPage = await navigateToBedsPage(page)
 
   // Given I am on the rooms view page
@@ -117,7 +117,7 @@ test('Manually book a bed', async ({ page, person }) => {
   // Given I am on the placement page
   const createPlacementPage = new CreatePlacementPage(page)
   // When I complete the form
-  await createPlacementPage.completeForm()
+  await createPlacementPage.completeForm(indexOffenceRequired)
   createPlacementPage.clickSubmit()
 
   // Then I should be taken to the confirmation page

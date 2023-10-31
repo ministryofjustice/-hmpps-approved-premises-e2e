@@ -2,6 +2,14 @@ import { addDays, getDate, getMonth, getYear } from 'date-fns'
 import { BasePage } from '../basePage'
 
 export class CreatePlacementPage extends BasePage {
+  async chooseIndexOffence() {
+    await this.page
+      .getByRole('group', { name: 'Select an index offence' })
+      .locator('input[type="radio"]')
+      .first()
+      .click()
+  }
+
   async enterArrivalDate() {
     await this.page
       .getByRole('group', { name: 'What is their expected arrival date?' })
@@ -33,7 +41,10 @@ export class CreatePlacementPage extends BasePage {
       .fill(getYear(addDays(new Date(), 1)).toString())
   }
 
-  async completeForm() {
+  async completeForm(indexOffenceRequired: boolean) {
+    if (indexOffenceRequired) {
+      await this.chooseIndexOffence()
+    }
     await this.enterArrivalDate()
     await this.enterExpectedDepartureDate()
   }
