@@ -11,35 +11,37 @@ export class ChangePlacementDatesPage extends BasePage {
   }
 
   async selectAndEnterNewArrivalDate() {
+    const newDate = addMonths(new Date(), 2)
     await this.page.getByLabel('Arrival date').check()
     await this.page
       .getByRole('group', { name: 'What is the new arrival date?' })
       .getByLabel('Day')
-      .fill(getDate(new Date()).toString())
+      .fill(getDate(newDate).toString())
     await this.page
       .getByRole('group', { name: 'What is the new arrival date?' })
       .getByLabel('Month')
-      .fill(getMonth(addMonths(new Date(), 2)).toString())
+      .fill((getMonth(newDate) + 1).toString())
     await this.page
       .getByRole('group', { name: 'What is the new arrival date?' })
       .getByLabel('Year')
-      .fill(getYear(new Date()).toString())
+      .fill(getYear(newDate).toString())
   }
 
   async selectAndEnterNewDepartureDate() {
+    const newDate = addMonths(new Date(), 3)
     await this.page.getByLabel('Departure date').check()
     await this.page
       .getByRole('group', { name: 'What is the new departure date?' })
       .getByLabel('Day')
-      .fill(getDate(new Date()).toString())
+      .fill(getDate(newDate).toString())
     await this.page
       .getByRole('group', { name: 'What is the new departure date?' })
       .getByLabel('Month')
-      .fill(getMonth(addMonths(new Date(), 2)).toString())
+      .fill((getMonth(newDate) + 1).toString())
     await this.page
       .getByRole('group', { name: 'What is the new departure date?' })
       .getByLabel('Year')
-      .fill(getYear(new Date()).toString())
+      .fill(getYear(newDate).toString())
   }
 
   async completeForm() {

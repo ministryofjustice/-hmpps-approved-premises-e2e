@@ -11,19 +11,18 @@ export class ChangeDepartureDatePage extends BasePage {
   }
 
   async selectAndEnterNewDepartureDate() {
+    const newDate = addMonths(new Date(), 2)
+
     const departureDateLabel = 'What is the new departure date?'
-    await this.page
-      .getByRole('group', { name: departureDateLabel })
-      .getByLabel('Day')
-      .fill(getDate(new Date()).toString())
+    await this.page.getByRole('group', { name: departureDateLabel }).getByLabel('Day').fill(getDate(newDate).toString())
     await this.page
       .getByRole('group', { name: departureDateLabel })
       .getByLabel('Month')
-      .fill(getMonth(addMonths(new Date(), 2)).toString())
+      .fill((getMonth(newDate) + 1).toString())
     await this.page
       .getByRole('group', { name: departureDateLabel })
       .getByLabel('Year')
-      .fill(getYear(new Date()).toString())
+      .fill(getYear(newDate).toString())
   }
 
   async completeForm() {

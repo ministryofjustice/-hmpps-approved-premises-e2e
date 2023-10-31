@@ -30,18 +30,20 @@ export class ArrivalFormPage extends BasePage {
   }
 
   async completeExpectedDepartureDate() {
+    const newDate = addMonths(new Date(), 1)
+
     await this.page
       .getByRole('group', { name: 'What is their expected departure date?' })
       .getByLabel('Day')
-      .fill(getDate(addMonths(new Date(), 1)).toString())
+      .fill(getDate(newDate).toString())
     await this.page
       .getByRole('group', { name: 'What is their expected departure date?' })
       .getByLabel('Month')
-      .fill(getMonth(addMonths(new Date(), 1)).toString())
+      .fill((getMonth(newDate) + 1).toString())
     await this.page
       .getByRole('group', { name: 'What is their expected departure date?' })
       .getByLabel('Year')
-      .fill(getYear(addMonths(new Date(), 1)).toString())
+      .fill(getYear(newDate).toString())
   }
 
   async selectKeyWorker() {
