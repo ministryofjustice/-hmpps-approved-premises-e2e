@@ -129,3 +129,15 @@ export const reviewAndApprovePlacementApplication = async ({ page, user }, appli
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowSuccessMessage()
 }
+
+export const withdrawPlacementApplication = async (page, applicationId: string) => {
+  const dashboard = await visitDashboard(page)
+  await dashboard.clickApply()
+
+  const listPage = new ListPage(page)
+  await listPage.clickSubmitted()
+  await listPage.clickApplicationWithId(applicationId)
+
+  const showPage = new ShowPage(page)
+  await showPage.withdrawPlacementApplication()
+}

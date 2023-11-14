@@ -11,7 +11,7 @@ import { assessApplication, requestAndAddAdditionalInformation } from '../steps/
 // import { matchAndBookApplication } from '../steps/match'
 
 // import { reviewAndApprovePlacementApplication, startAndCreatePlacementApplication } from '../steps/placementApplication'
-import { startAndCreatePlacementApplication } from '../steps/placementApplication'
+import { startAndCreatePlacementApplication, withdrawPlacementApplication } from '../steps/placementApplication'
 
 import { ListPage } from '../pages/apply'
 
@@ -52,6 +52,8 @@ test('Apply, assess, match and book an application for an Approved Premises with
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, false, false)
   await assessApplication({ page, user, person }, id, false)
   await startAndCreatePlacementApplication({ page }, id)
+  await withdrawPlacementApplication(page, id)
+
   // Skip match until it's back
   // await reviewAndApprovePlacementApplication({ page, user }, id)
   // TODO: Match and book once approval is done
