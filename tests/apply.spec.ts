@@ -4,7 +4,8 @@ import {
   enterAndConfirmCrn,
   startAnApplication,
   visitDashboard,
-  withdrawAnApplication,
+  withdrawAnApplicationAfterSubmission,
+  withdrawAnApplicationBeforeSubmission,
 } from '../steps/apply'
 import { assessApplication, requestAndAddAdditionalInformation } from '../steps/assess'
 // import { matchAndBookApplication } from '../steps/match'
@@ -23,6 +24,7 @@ test('Apply, assess, match and book an application for an Approved Premises with
 }) => {
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
   await assessApplication({ page, user, person }, id, false)
+  await withdrawAnApplicationAfterSubmission(page)
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
 })
@@ -55,7 +57,7 @@ test('Apply, assess, match and book an application for an Approved Premises with
   // TODO: Match and book once approval is done
 })
 
-test('Withdraw an application', async ({ page, person, indexOffenceRequired }) => {
+test('Withdraw an application before submission', async ({ page, person, indexOffenceRequired }) => {
   const dashboard = await visitDashboard(page)
 
   await startAnApplication(dashboard, page)
@@ -64,7 +66,7 @@ test('Withdraw an application', async ({ page, person, indexOffenceRequired }) =
   await visitDashboard(page)
   await dashboard.clickApply()
 
-  await withdrawAnApplication(page)
+  await withdrawAnApplicationBeforeSubmission(page)
 
   const listPage = new ListPage(page)
   await listPage.shouldShowWithdrawalConfirmationMessage()
