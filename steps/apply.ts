@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page, expect } from '@playwright/test'
 
 import {
   ApplyPage,
@@ -483,10 +483,26 @@ export const createApplication = async (
   return url.match(/applications\/(.+)\//)[1]
 }
 
-export const withdrawAnApplication = async (page: Page) => {
+export const withdrawAnApplicationBeforeSubmission = async (page: Page) => {
   await page.getByRole('link', { name: 'Withdraw' }).first().click()
 
   const confirmWithdrawalPage = new BasePage(page)
   await confirmWithdrawalPage.checkRadio('Alternative provision identified')
   await confirmWithdrawalPage.clickContinue()
+}
+
+export const withdrawAnApplicationAfterSubmission = async (page: Page) => {
+  const dashboard = visitDashboard(page)
+
+  ;(await dashboard).clickApply()
+
+  const listPage = new ListPage(page)
+  await listPage.clickSubmitted()
+  await page.getByRole('link', { name: 'Withdraw' }).first().click()
+
+  const confirmWithdrawalPage = new BasePage(page)
+  await confirmWithdrawalPage.checkRadio('Alternative provision identified')
+  await confirmWithdrawalPage.clickContinue()
+
+  await expect(page.getByRole('alert', { name: 'Success' })).toContainText('Success')
 }
