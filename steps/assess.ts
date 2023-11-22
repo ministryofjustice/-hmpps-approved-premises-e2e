@@ -223,7 +223,7 @@ export const requestAndAddAdditionalInformation = async ({ page, user, person },
   await page.getByRole('button', { name: 'Back to dashboard' }).click()
 
   // Then I should see the application in the 'Requested further information' section
-  await page.getByRole('tab', { name: 'Requested further information' }).click()
+  await page.getByRole('link', { name: 'Requested further information' }).click()
   await page.getByRole('link', { name: person.name }).first().click()
 
   // And I should be able to add the additional information
