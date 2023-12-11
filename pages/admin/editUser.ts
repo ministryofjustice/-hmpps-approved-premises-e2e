@@ -1,6 +1,24 @@
 import { Page, expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
+export const qualifactions = ['PIPE', 'Emergency APs', 'Limited access offenders', 'ESAP']
+
+export type Qualifaction = (typeof qualifactions)[number]
+
+export const roles = [
+  'Administrator',
+  'Assessor',
+  'Manage an Approved Premises',
+  'Matcher',
+  'Workflow manager',
+  'Stop assessment allocations',
+  'Stop match allocations',
+  'Stop placement request allocations',
+  ...qualifactions,
+] as const
+
+export type Role = (typeof roles)[number]
+
 export class EditUser extends BasePage {
   static async initialize(page: Page) {
     await expect(page.locator('h1')).toContainText('Manage permissions')
@@ -26,13 +44,13 @@ export class EditUser extends BasePage {
     this.page.getByRole('definition', { name: username })
   }
 
-  async assertCheckboxesAreSelected(labels: Array<string>) {
+  async assertCheckboxesAreSelected(labels: ReadonlyArray<Role>) {
     labels.forEach(async label => {
       expect(await this.page.getByLabel(label).isChecked()).toBeTruthy()
     })
   }
 
-  async assertCheckboxesAreUnselected(labels: Array<string>) {
+  async assertCheckboxesAreUnselected(labels: ReadonlyArray<Role>) {
     labels.forEach(async label => {
       expect(await this.page.getByLabel(label).isChecked()).toBeFalsy()
     })

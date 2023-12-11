@@ -32,7 +32,7 @@ export class BasePage {
       .check()
   }
 
-  async checkCheckBoxes(labels: Array<string>) {
+  async checkCheckBoxes(labels: Array<string> | ReadonlyArray<string>) {
     const promises = [] as Array<Promise<void>>
 
     for (let i = 0; i < labels.length; i += 1) {
