@@ -14,6 +14,7 @@ import { assessApplication, requestAndAddAdditionalInformation } from '../steps/
 import { startAndCreatePlacementApplication, withdrawPlacementApplication } from '../steps/placementApplication'
 
 import { ListPage } from '../pages/apply'
+import { setRoles } from '../steps/admin'
 
 test('Apply, assess, match and book an application for an Approved Premises with a release date', async ({
   page,
@@ -22,6 +23,7 @@ test('Apply, assess, match and book an application for an Approved Premises with
   indexOffenceRequired,
   oasysSections,
 }) => {
+  await setRoles(page, [])
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
   await assessApplication({ page, user, person }, id, false)
   await withdrawAnApplicationAfterSubmission(page)
@@ -36,6 +38,8 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
   indexOffenceRequired,
   oasysSections,
 }) => {
+  await setRoles(page, ['Emergency APs'])
+
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, true)
   await assessApplication({ page, user, person }, id, true)
   // Skip match until it's back
@@ -49,6 +53,8 @@ test('Apply, assess, match and book an application for an Approved Premises with
   indexOffenceRequired,
   oasysSections,
 }) => {
+  await setRoles(page, [])
+
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, false, false)
   await assessApplication({ page, user, person }, id, false)
   await startAndCreatePlacementApplication({ page }, id)
@@ -81,6 +87,8 @@ test('Request further information on an Application, adds it and proceeds with t
   indexOffenceRequired,
   oasysSections,
 }) => {
+  await setRoles(page, [])
+
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false)
   await requestAndAddAdditionalInformation({ page, user, person }, id)
 })

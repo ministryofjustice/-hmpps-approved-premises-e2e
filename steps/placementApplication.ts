@@ -55,10 +55,6 @@ export const createPlacementApplication = async ({ page }) => {
   )
   await previousPlacementPage.clickSubmit()
 
-  const sameApPage = new ApplyPage(page)
-  await sameApPage.checkRadioInGroup('Do you want this person to stay in the same Approved Premises (AP)?', 'No')
-  await sameApPage.clickSubmit()
-
   const datePage = new ApplyPage(page)
   await datePage.fillReleaseDateField()
   await datePage.fillField('Weeks', '12')
