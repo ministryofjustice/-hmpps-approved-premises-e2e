@@ -57,9 +57,8 @@ export const createPlacementApplication = async ({ page }) => {
 
   const datePage = new ApplyPage(page)
   await datePage.fillReleaseDateField()
-  await datePage.fillField('Weeks', '12')
-  await datePage.fillField('Days', '0')
-  await datePage.clickSubmit()
+  await datePage.fillDurationField({ weeks: 12, days: 0 })
+  await datePage.clickContinue()
 
   const updatesToPlacementPage = new ApplyPage(page)
   await updatesToPlacementPage.checkRadioInGroup(
