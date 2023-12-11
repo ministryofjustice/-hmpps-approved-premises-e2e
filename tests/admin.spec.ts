@@ -4,7 +4,7 @@ import { visitDashboard } from '../steps/apply'
 import { ReportsPage } from '../pages/admin/reports'
 import { UserList } from '../pages/admin/listUsers'
 import { AddUser } from '../pages/admin/addUser'
-import { EditUser } from '../pages/admin/editUser'
+import { EditUser, roles } from '../pages/admin/editUser'
 import { NewUserConfirmationPage } from '../pages/admin/newUserConfirmationPage'
 import { DeleteUserConfirmationPage } from '../pages/admin/deleteUserConfirmationPage'
 
@@ -62,24 +62,9 @@ test('manage users', async ({ page }) => {
   // Then I should be taken to the Edit User page
   const editUserPage = await EditUser.initialize(page)
 
-  const checkboxes = [
-    'Administrator',
-    'Assessor',
-    'Manage an Approved Premises',
-    'Matcher',
-    'Workflow manager',
-    'Stop assessment allocations',
-    'Stop match allocations',
-    'Stop placement request allocations',
-    'PIPE',
-    'Emergency APs',
-    'Limited access offenders',
-    'ESAP',
-  ]
-
   // When I select all the checkboxes
-  await editUserPage.checkCheckBoxes(checkboxes)
-  await editUserPage.assertCheckboxesAreSelected(checkboxes)
+  await editUserPage.checkCheckBoxes(roles)
+  await editUserPage.assertCheckboxesAreSelected(roles)
 
   // And I click 'Save'
   await editUserPage.clickSave()
@@ -88,11 +73,11 @@ test('manage users', async ({ page }) => {
   await editUserPage.shouldShowUserUpdatedBanner()
 
   // And all the checkboxes should be selected
-  await editUserPage.assertCheckboxesAreSelected(checkboxes)
+  await editUserPage.assertCheckboxesAreSelected(roles)
 
   // When I unselect all the checkboxes
-  await editUserPage.checkCheckBoxes(checkboxes)
-  await editUserPage.assertCheckboxesAreUnselected(checkboxes)
+  await editUserPage.checkCheckBoxes(roles)
+  await editUserPage.assertCheckboxesAreUnselected(roles)
 
   // And I click 'Save'
   await editUserPage.clickSave()
@@ -101,7 +86,7 @@ test('manage users', async ({ page }) => {
   await editUserPage.shouldShowUserUpdatedBanner()
 
   // And all the checkboxes should be selected
-  await editUserPage.assertCheckboxesAreUnselected(checkboxes)
+  await editUserPage.assertCheckboxesAreUnselected(roles)
 
   // When I click 'Remove access'
   await editUserPage.clickRemoveAccess()

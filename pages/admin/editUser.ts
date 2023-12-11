@@ -1,6 +1,24 @@
 import { Page, expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
+export const qualifications = ['PIPE', 'Emergency APs', 'Limited access offenders', 'ESAP']
+
+export type Qualification = (typeof qualifications)[number]
+
+export const roles = [
+  'Administrator',
+  'Assessor',
+  'Manage an Approved Premises',
+  'Matcher',
+  'Workflow manager',
+  'Stop assessment allocations',
+  'Stop match allocations',
+  'Stop placement request allocations',
+  ...qualifications,
+] as const
+
+export type Role = (typeof roles)[number]
+
 export class EditUser extends BasePage {
   static async initialize(page: Page) {
     await expect(page.locator('h1')).toContainText('Manage permissions')
@@ -26,13 +44,26 @@ export class EditUser extends BasePage {
     this.page.getByRole('definition', { name: username })
   }
 
-  async assertCheckboxesAreSelected(labels: Array<string>) {
+  async uncheckSelectedQualifications() {
+    const qualifactionsSection = this.page.getByRole('group', { name: 'Select any additional' })
+    const selectedCheckboxes = await qualifactionsSection.getByRole('checkbox', { checked: true }).all()
+
+    const promises = [] as Array<Promise<void>>
+
+    selectedCheckboxes.forEach(async checkbox => {
+      promises.push(checkbox.dispatchEvent('click'))
+    })
+
+    await Promise.all(promises)
+  }
+
+  async assertCheckboxesAreSelected(labels: ReadonlyArray<Role>) {
     labels.forEach(async label => {
       expect(await this.page.getByLabel(label).isChecked()).toBeTruthy()
     })
   }
 
-  async assertCheckboxesAreUnselected(labels: Array<string>) {
+  async assertCheckboxesAreUnselected(labels: ReadonlyArray<Role>) {
     labels.forEach(async label => {
       expect(await this.page.getByLabel(label).isChecked()).toBeFalsy()
     })
