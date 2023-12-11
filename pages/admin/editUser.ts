@@ -1,9 +1,9 @@
 import { Page, expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
-export const qualifactions = ['PIPE', 'Emergency APs', 'Limited access offenders', 'ESAP']
+export const qualifications = ['PIPE', 'Emergency APs', 'Limited access offenders', 'ESAP']
 
-export type Qualifaction = (typeof qualifactions)[number]
+export type Qualification = (typeof qualifications)[number]
 
 export const roles = [
   'Administrator',
@@ -14,7 +14,7 @@ export const roles = [
   'Stop assessment allocations',
   'Stop match allocations',
   'Stop placement request allocations',
-  ...qualifactions,
+  ...qualifications,
 ] as const
 
 export type Role = (typeof roles)[number]
@@ -42,6 +42,19 @@ export class EditUser extends BasePage {
     await expect(this.page.locator('h1')).toContainText('Manage permissions')
     await expect(this.page.getByRole('definition')).toHaveCount(5)
     this.page.getByRole('definition', { name: username })
+  }
+
+  async uncheckSelectedQualifications() {
+    const qualifactionsSection = this.page.getByRole('group', { name: 'Select any additional' })
+    const selectedCheckboxes = await qualifactionsSection.getByRole('checkbox', { checked: true }).all()
+
+    const promises = [] as Array<Promise<void>>
+
+    selectedCheckboxes.forEach(async checkbox => {
+      promises.push(checkbox.dispatchEvent('click'))
+    })
+
+    await Promise.all(promises)
   }
 
   async assertCheckboxesAreSelected(labels: ReadonlyArray<Role>) {
