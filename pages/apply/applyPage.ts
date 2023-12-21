@@ -4,7 +4,7 @@ import { BasePage } from '../basePage'
 export class ApplyPage extends BasePage {
   static async initialize(page: Page, title?: string) {
     if (title) {
-      await expect(page.locator('h1')).toContainText(title)
+      await expect(page.locator('h1').first()).toContainText(title)
     }
     return new ApplyPage(page)
   }
@@ -24,10 +24,10 @@ export class ApplyPage extends BasePage {
     await this.fillDateField(dateFields)
   }
 
-  async fillSedField(date: { day: string; month: string; year: string }) {
-    await this.page.getByRole('group', { name: 'Sentence end date (SED)' }).getByLabel('Day').fill(date.day)
-    await this.page.getByRole('group', { name: 'Sentence end date (SED)' }).getByLabel('Month').fill(date.month)
-    await this.page.getByRole('group', { name: 'Sentence end date (SED)' }).getByLabel('Year').fill(date.year)
+  async fillNamedDateField({ day, month, year }: { day: string; month: string; year: string }, fieldLabel: string) {
+    await this.page.locator(`#${fieldLabel}-day`).fill(day)
+    await this.page.locator(`#${fieldLabel}-month`).fill(month)
+    await this.page.locator(`#${fieldLabel}-year`).fill(year)
   }
 
   async clickTab(title: string) {
