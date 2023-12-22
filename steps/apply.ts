@@ -76,9 +76,12 @@ export const completeBasicInformationTask = async (
   await transgenderPage.checkRadio('No')
   await transgenderPage.clickSave()
 
-  const endDatesPage = await ApplyPage.initialize(page, 'Which of the following dates are relevant?')
-  await endDatesPage.fillSedField({ year: '2022', month: '3', day: '12' })
-  await endDatesPage.clickSave()
+  const relevantDatesPage = await ApplyPage.initialize(page, 'Which of the following dates are relevant?')
+  await relevantDatesPage.checkCheckBoxes(['Parole eligibility date', 'Licence expiry date', 'Sentence expiry date'])
+  await relevantDatesPage.fillNamedDateField({ year: '2022', month: '3', day: '12' }, 'paroleEligibilityDate')
+  await relevantDatesPage.fillNamedDateField({ year: '2022', month: '3', day: '12' }, 'licenceExpiryDate')
+  await relevantDatesPage.fillNamedDateField({ year: '2022', month: '3', day: '12' }, 'sentenceExpiryDate')
+  await relevantDatesPage.clickSave()
 
   if (testMappaFlow) {
     const sentenceTypePage = await ApplyPage.initialize(
