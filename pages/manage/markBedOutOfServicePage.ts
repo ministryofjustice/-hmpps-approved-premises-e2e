@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test'
+import { addYears, getDate, getMonth, getYear } from 'date-fns'
 import { BasePage } from '../basePage'
 
 export class MarkBedOutOfServicePage extends BasePage {
@@ -10,9 +11,20 @@ export class MarkBedOutOfServicePage extends BasePage {
   }
 
   async enterOutOfServiceFromDate() {
-    await this.page.getByRole('group', { name: 'Out of service from' }).getByLabel('Day').fill('1')
-    await this.page.getByRole('group', { name: 'Out of service from' }).getByLabel('Month').fill('2')
-    await this.page.getByRole('group', { name: 'Out of service from' }).getByLabel('Year').fill('2024')
+    const aDateNextYear = addYears(new Date(), 1)
+    await this.page
+      .getByRole('group', { name: 'Out of service from' })
+      .getByLabel('Day')
+      .fill(getDate(aDateNextYear).toString())
+    await this.page
+      .getByRole('group', { name: 'Out of service from' })
+      .getByLabel('Month')
+      .fill(getMonth(aDateNextYear).toString())
+      .toString()
+    await this.page
+      .getByRole('group', { name: 'Out of service from' })
+      .getByLabel('Year')
+      .fill(getYear(aDateNextYear).toString())
   }
 
   async enterOutOfServiceToDate() {
