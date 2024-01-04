@@ -10,7 +10,6 @@ export const assignAssessmentToMe = async (dashboard: DashboardPage, page: Page,
 
   const assessmentPage = new AssessmentPage(page)
   await assessmentPage.selectStaffMember(userName)
-  await assessmentPage.clickSubmit()
 }
 
 export const assignPlacementRequestToMe = async (
