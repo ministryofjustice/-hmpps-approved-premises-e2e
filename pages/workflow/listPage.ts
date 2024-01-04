@@ -2,6 +2,8 @@ import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
   async chooseAssessmentWithId(id: string) {
+    await this.page.getByRole('link', { name: 'Days until due date ▲' }).click()
+
     const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Assessment') })
 
     await assessmentRows
