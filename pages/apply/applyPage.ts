@@ -10,11 +10,11 @@ export class ApplyPage extends BasePage {
   }
 
   async fillReleaseDateField(emergencyApplication = false) {
-    const sixMonths = 1000 * 60 * 60 * 24 * 7 * 4 * 6
+    const sevenMonths = 1000 * 60 * 60 * 24 * 7 * 4 * 7
 
     const nextWeek = 1000 * 60 * 60 * 24 * 8
 
-    const releaseDate = new Date(new Date().getTime() + (emergencyApplication ? nextWeek : sixMonths))
+    const releaseDate = new Date(new Date().getTime() + (emergencyApplication ? nextWeek : sevenMonths))
     const dateFields = {
       day: releaseDate.getDate().toString(),
       month: (releaseDate.getMonth() + 1).toString(),
