@@ -15,6 +15,7 @@ export class ListPage extends BasePage {
       .getByRole('rowheader')
       .filter({ has: this.page.locator(`[data-cy-id="${applicationId}"]`) })
       .first()
+      .getByRole('link')
       .click()
   }
 
