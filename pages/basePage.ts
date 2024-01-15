@@ -47,4 +47,15 @@ export class BasePage {
     await this.page.getByLabel('Month', { exact: true }).first().fill(month)
     await this.page.getByLabel('Year', { exact: true }).first().fill(year)
   }
+
+  async selectFirstPremises(legend: string) {
+    await this.page
+      .getByRole('group', { name: legend })
+      .getByRole('combobox', { name: 'Select a Region' })
+      .selectOption({ index: 1 })
+    await this.page
+      .getByRole('group', { name: legend })
+      .getByRole('combobox', { name: 'Select a premises' })
+      .selectOption({ index: 1 })
+  }
 }

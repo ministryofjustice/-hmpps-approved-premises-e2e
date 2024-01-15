@@ -239,10 +239,12 @@ export const completeLocationFactorsTask = async (page: Page) => {
   await locationFactorsPage.clickSave()
 
   const preferredApsPage = await ApplyPage.initialize(page, 'Select a preferred AP')
-  await page.getByRole('combobox', { name: 'First choice AP' }).selectOption({ index: 1 })
-  await page.getByRole('combobox', { name: 'Second choice AP' }).selectOption({ index: 2 })
-  await page.getByRole('combobox', { name: 'Third choice AP' }).selectOption({ index: 3 })
-  await page.getByRole('combobox', { name: 'Fourth choice AP' }).selectOption({ index: 4 })
+
+  await preferredApsPage.selectFirstPremises('First choice AP')
+  await preferredApsPage.selectFirstPremises('Second choice AP')
+  await preferredApsPage.selectFirstPremises('Third choice AP')
+  await preferredApsPage.selectFirstPremises('Fourth choice AP')
+
   preferredApsPage.clickSave()
 }
 
