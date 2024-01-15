@@ -95,17 +95,13 @@ const manuallyBookBed = async ({ page, person }) => {
 }
 
 test('Manually book a bed', async ({ page, person }) => {
-  const bedsPage = await navigateToBedsPage(page)
+  await navigateToPremisesPage(page)
 
-  // Given I am on the rooms view page
-  // When I click the 'Manage' link for a room
-  await bedsPage.viewAvailableBed()
+  // Then I should see the premises view page
+  const premisesPage = await PremisesPage.initialize(page, premisesName)
 
-  // Then I should see the room view page
-  const bedPage = await BedPage.initialize(page, 'Manage beds')
-
-  // And be able to select a bed
-  await bedPage.clickBookBed()
+  // And I navigate to create a placement
+  premisesPage.clickCreatePlacement()
 
   // Given I am on the CRN entry page
   const crnPage = new CRNPage(page)
