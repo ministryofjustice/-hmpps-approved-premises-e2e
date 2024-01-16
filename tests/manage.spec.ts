@@ -18,21 +18,6 @@ import { ChangeDepartureDatePage } from '../pages/manage/changeDepartureDate'
 
 const premisesName = 'Test AP 10'
 
-const navigateToBedsPage = async page => {
-  await navigateToPremisesPage(page)
-
-  // Then I should see the premises view page
-  const premisesPage = await PremisesPage.initialize(page, premisesName)
-
-  // Given I am on an individual Premises' page
-  // When I click the 'View Rooms' link
-  await premisesPage.viewRooms()
-
-  // Then I should see the rooms view page
-  const bedsPage = await BedsPage.initialize(page, 'Manage beds')
-  return bedsPage
-}
-
 const navigateToPremisesPage = async page => {
   // Given I visit the dashboard
   const dashboard = await visitDashboard(page)
@@ -63,38 +48,7 @@ const navigateToCurrentResident = async page => {
   await premisesPage.clickManageCurrentResident()
 }
 
-const manuallyBookBed = async ({ page, person }) => {
-  const bedsPage = await navigateToBedsPage(page)
-
-  // Given I am on the rooms view page
-  // When I click the 'Manage' link for a room
-  await bedsPage.viewAvailableBed()
-
-  // Then I should see the room view page
-  const bedPage = await BedPage.initialize(page, 'Manage beds')
-
-  // And be able to select a bed
-  await bedPage.clickBookBed()
-
-  // Given I am on the CRN entry page
-  const crnPage = new CRNPage(page)
-  // When I enter a CRN
-  await crnPage.enterCrn(person.crn)
-  await crnPage.clickSearch()
-
-  // Then I should see the placement page
-  // Given I am on the placement page
-  const createPlacementPage = new CreatePlacementPage(page)
-  // When I complete the form
-  await createPlacementPage.completeForm()
-  createPlacementPage.clickSubmit()
-
-  // Then I should be taken to the confirmation page
-  const confirmationPage = new ConfirmationPage(page)
-  await confirmationPage.shouldShowPlacementSuccessMessage()
-}
-
-test('Manually book a bed', async ({ page, person }) => {
+const manuallyBookPlacement = async ({ page, person }) => {
   await navigateToPremisesPage(page)
 
   // Then I should see the premises view page
@@ -119,11 +73,15 @@ test('Manually book a bed', async ({ page, person }) => {
   // Then I should be taken to the confirmation page
   const confirmationPage = new ConfirmationPage(page)
   await confirmationPage.shouldShowPlacementSuccessMessage()
+}
+
+test('Manually book a bed', async ({ page, person }) => {
+  await manuallyBookPlacement({ page, person })
 })
 
 test('Mark a booking as cancelled', async ({ page }) => {
   // Given there is a placement for today
-  // await manuallyBookBed(page)
+  // await manuallyBookPlacement(page)
   await navigateToTodaysBooking(page)
   // And I am on the placement's page
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
@@ -144,7 +102,7 @@ test('Mark a booking as cancelled', async ({ page }) => {
 
 test('Change placement dates', async ({ page, person }) => {
   // Given there is a placement for today
-  await manuallyBookBed({ page, person })
+  await manuallyBookPlacement({ page, person })
   await navigateToTodaysBooking(page)
   // And I am on the placement's page
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
@@ -197,7 +155,7 @@ test('Mark a bed as lost', async ({ page }) => {
 test('Mark a booking as arrived and extend it', async ({ page, person }) => {
   // Given there is a placement for today
   // And I am on the premises's page
-  await manuallyBookBed({ page, person })
+  await manuallyBookPlacement({ page, person })
   await navigateToTodaysBooking(page)
 
   const placementPage = await PlacementPage.initialize(page, 'Placement details')
@@ -228,7 +186,7 @@ test('Mark a booking as arrived and extend it', async ({ page, person }) => {
 test('Mark a booking as not arrived', async ({ page, person }) => {
   // Given there is a placement for today
   // And I am on the premises's page
-  await manuallyBookBed({ page, person })
+  await manuallyBookPlacement({ page, person })
   await navigateToPremisesPage(page)
   const premisesPage = await PremisesPage.initialize(page, premisesName)
 
@@ -252,7 +210,7 @@ test('Mark a booking as not arrived', async ({ page, person }) => {
 test('Move a booking', async ({ page, person }) => {
   // Given there is a placement for today
   // And I am on the premises's page
-  await manuallyBookBed({ page, person })
+  await manuallyBookPlacement({ page, person })
   await navigateToPremisesPage(page)
   const premisesPage = await PremisesPage.initialize(page, premisesName)
 
