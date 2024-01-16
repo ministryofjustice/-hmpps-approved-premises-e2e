@@ -35,4 +35,9 @@ export class PremisesPage extends BasePage {
   async showsArrivalLoggedMessage() {
     await this.page.waitForSelector('text=Arrival logged')
   }
+
+  async clickCreatePlacement() {
+    await this.clickActions()
+    await this.page.getByRole('menuitem', { name: 'Create a placement' }).click()
+  }
 }
