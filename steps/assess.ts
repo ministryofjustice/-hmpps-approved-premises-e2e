@@ -24,7 +24,7 @@ export const confirmInformation = async (page: Page) => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Check there is sufficient information to make a decision')
 
-  const confirmPage = await AssessPage.initialize(page, 'Sufficient information')
+  const confirmPage = await AssessPage.initialize(page, 'Suitability Assessment')
   await confirmPage.checkRadio('Yes')
   await confirmPage.clickSubmit()
 }
@@ -33,9 +33,13 @@ export const confirmInsufficientInformation = async (page: Page) => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Check there is sufficient information to make a decision')
 
-  const confirmPage = await AssessPage.initialize(page, 'Sufficient information')
-  await confirmPage.checkRadio('No')
-  await confirmPage.fillField('What additional information is required?', 'This is a test')
+  const additionalInformationPage = await AssessPage.initialize(page, 'Suitability Assessment')
+  await additionalInformationPage.checkRadio('No, I need to contact the probation practitioner for more information')
+  await additionalInformationPage.fillField('What additional information is required?', 'This is a test')
+  await additionalInformationPage.clickSubmit()
+
+  const confirmPage = await AssessPage.initialize(page, 'Suitability Assessment')
+  await confirmPage.checkRadio('Yes')
   await confirmPage.clickSubmit()
 }
 
