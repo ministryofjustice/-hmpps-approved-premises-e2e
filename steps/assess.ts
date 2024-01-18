@@ -75,7 +75,7 @@ export const assessSuitability = async (page: Page, emergencyApplication = false
   if (emergencyApplication) {
     const applicationTimelinessPage = await AssessPage.initialize(page, 'Application timeliness')
     await applicationTimelinessPage.checkRadioInGroup(
-      "Do you agree with the applicant's reason for submission within 4 months of expected arrival?",
+      `Do you agree with the applicant's reason for submission outside of National Standards timescales?`,
       'Yes',
     )
     await applicationTimelinessPage.clickSubmit()
