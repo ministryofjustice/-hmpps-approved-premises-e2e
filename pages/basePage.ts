@@ -51,7 +51,7 @@ export class BasePage {
   async selectFirstPremises(legend: string) {
     await this.page
       .getByRole('group', { name: legend })
-      .getByRole('combobox', { name: 'Select a Region' })
+      .getByRole('combobox', { name: 'Select an area' })
       .selectOption({ index: 1 })
     await this.page
       .getByRole('group', { name: legend })

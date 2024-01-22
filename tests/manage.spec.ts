@@ -17,8 +17,9 @@ import { MoveBedPage } from '../pages/manage/moveBedPage'
 import { ChangeDepartureDatePage } from '../pages/manage/changeDepartureDate'
 
 const premisesName = 'Test AP 10'
+const apArea = 'South West & South Central'
 
-const navigateToPremisesPage = async page => {
+const navigateToPremisesPage = async (page, { filterPremisesPage } = { filterPremisesPage: false }) => {
   // Given I visit the dashboard
   const dashboard = await visitDashboard(page)
 
@@ -27,6 +28,10 @@ const navigateToPremisesPage = async page => {
 
   // Then I should see the a list of premises
   const listPage = await PremisesListPage.initialize(page, 'List of Approved Premises')
+
+  if (filterPremisesPage) {
+    await listPage.filterPremises(apArea)
+  }
 
   // When I click on a Premises' 'View' link
   await listPage.choosePremises(premisesName)
@@ -48,8 +53,8 @@ const navigateToCurrentResident = async page => {
   await premisesPage.clickManageCurrentResident()
 }
 
-const manuallyBookPlacement = async ({ page, person }) => {
-  await navigateToPremisesPage(page)
+const manuallyBookPlacement = async ({ page, person, filterPremisesPage }) => {
+  await navigateToPremisesPage(page, { filterPremisesPage })
 
   // Then I should see the premises view page
   const premisesPage = await PremisesPage.initialize(page, premisesName)
@@ -76,7 +81,7 @@ const manuallyBookPlacement = async ({ page, person }) => {
 }
 
 test('Manually book a bed', async ({ page, person }) => {
-  await manuallyBookPlacement({ page, person })
+  await manuallyBookPlacement({ page, person, filterPremisesPage: true })
 })
 
 test('Mark a booking as cancelled', async ({ page }) => {
