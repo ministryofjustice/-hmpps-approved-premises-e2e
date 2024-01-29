@@ -14,7 +14,7 @@ export class ReportsPage extends BasePage {
   }
 
   async downloadApplicationsReports({ month, year }: { month: string; year: string }) {
-    await this.checkRadio('Applications')
+    await this.checkRadio('Combined applications and placement requests')
     return this.downloadReports({ month, year })
   }
 
