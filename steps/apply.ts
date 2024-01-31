@@ -492,7 +492,7 @@ export const withdrawAnApplicationBeforeSubmission = async (page: Page) => {
   await page.getByRole('link', { name: 'Withdraw' }).first().click()
 
   const confirmWithdrawalPage = new BasePage(page)
-  await confirmWithdrawalPage.checkRadio('Alternative provision identified')
+  await confirmWithdrawalPage.checkRadio('Error in application')
   await confirmWithdrawalPage.clickContinue()
 }
 
@@ -505,8 +505,12 @@ export const withdrawAnApplicationAfterSubmission = async (page: Page) => {
   await listPage.clickSubmitted()
   await page.getByRole('link', { name: 'Withdraw' }).first().click()
 
+  const withdrawalTypePage = new BasePage(page)
+  await withdrawalTypePage.checkRadio('Application')
+  await withdrawalTypePage.clickContinue()
+
   const confirmWithdrawalPage = new BasePage(page)
-  await confirmWithdrawalPage.checkRadio('Alternative provision identified')
+  await confirmWithdrawalPage.checkRadio('Error in application')
   await confirmWithdrawalPage.clickContinue()
 
   await expect(page.getByRole('alert', { name: 'Success' })).toContainText('Success')
