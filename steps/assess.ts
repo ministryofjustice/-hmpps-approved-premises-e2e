@@ -35,7 +35,7 @@ export const confirmInsufficientInformation = async (page: Page) => {
 
   const additionalInformationPage = await AssessPage.initialize(page, 'Suitability Assessment')
   await additionalInformationPage.checkRadio('No, I need to contact the probation practitioner for more information')
-  await additionalInformationPage.fillField('What additional information is required?', 'This is a test')
+  await additionalInformationPage.fillField('What additional information is needed?', 'This is a test')
   await additionalInformationPage.clickSubmit()
 
   const confirmPage = await AssessPage.initialize(page, 'Suitability Assessment')
@@ -224,7 +224,7 @@ export const requestAndAddAdditionalInformation = async ({ page, user, person },
 
   // Given I have requested further information
   // When I visit the Dashboard
-  await page.getByRole('button', { name: 'Back to dashboard' }).click()
+  await page.getByRole('button', { name: 'Return to dashboard' }).click()
 
   // Then I should see the application in the 'Requested further information' section
   await page.getByRole('link', { name: 'Requested further information' }).click()
