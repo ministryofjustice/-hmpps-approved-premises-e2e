@@ -496,14 +496,25 @@ export const withdrawAnApplicationBeforeSubmission = async (page: Page) => {
   await confirmWithdrawalPage.clickContinue()
 }
 
-export const withdrawAnApplicationAfterSubmission = async (page: Page) => {
+export const withdrawAnApplicationAfterSubmission = async (page: Page, applicationId: string) => {
   const dashboard = visitDashboard(page)
 
   ;(await dashboard).clickApply()
 
   const listPage = new ListPage(page)
   await listPage.clickSubmitted()
-  await page.getByRole('link', { name: 'Withdraw' }).first().click()
+  await page
+    .getByRole('row')
+    .filter({ has: page.locator(`[data-cy-id="${applicationId}"]`) })
+    .first()
+    .getByRole('link')
+    .filter({ has: page.getByText('Withdraw') })
+    .first()
+    .click()
+
+  const withdrawalTypePage = new BasePage(page)
+  await withdrawalTypePage.checkRadio('Application')
+  await withdrawalTypePage.clickContinue()
 
   const confirmWithdrawalPage = new BasePage(page)
   await confirmWithdrawalPage.checkRadio('Error in application')
