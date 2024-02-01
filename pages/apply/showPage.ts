@@ -14,8 +14,18 @@ export class ShowPage extends BasePage {
   async withdrawPlacementApplication(): Promise<void> {
     await this.clickPlacementRequestsTab()
     await this.page.getByRole('link', { name: 'Withdraw' }).click()
-    const confirmPage = new BasePage(this.page)
-    await confirmPage.clickContinue()
+
+    const typePage = new BasePage(this.page)
+    await typePage.checkRadio('Placement request')
+    await typePage.clickContinue()
+
+    const placementRequestsPage = new BasePage(this.page)
+    await placementRequestsPage.page.getByRole('radio').first().click()
+    await placementRequestsPage.clickContinue()
+
+    const reasonPage = new BasePage(this.page)
+    await reasonPage.page.getByRole('radio').first().click()
+    await reasonPage.clickContinue()
 
     expect(this.page.getByRole('heading', { name: 'Placement application withdrawn' })).toBeTruthy()
   }
