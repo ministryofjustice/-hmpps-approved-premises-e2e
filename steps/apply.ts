@@ -518,7 +518,7 @@ const withdrawApplication = async (page: Page) => {
   await withdrawalTypePage.clickContinue()
 
   const confirmWithdrawalPage = new BasePage(page)
-  await confirmWithdrawalPage.checkRadio('Error in application')
+  await confirmWithdrawalPage.checkRadio('There was an error in the application')
   await confirmWithdrawalPage.clickContinue()
 }
 
