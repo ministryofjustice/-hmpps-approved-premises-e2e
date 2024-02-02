@@ -30,7 +30,7 @@ export class PlacementPage extends BasePage {
 
   async clickMarkCancelled() {
     await this.clickActions()
-    await this.page.getByRole('menuitem', { name: 'Cancel placement' }).click()
+    await this.page.getByRole('menuitem', { name: 'Withdraw placement' }).click()
   }
 
   async clickChangePlacementDates() {
@@ -48,7 +48,7 @@ export class PlacementPage extends BasePage {
   }
 
   async showsCancellationLoggedMessage() {
-    await this.page.waitForSelector('text=Booking cancelled')
+    await this.page.waitForSelector('text=Booking withdrawn')
   }
 
   async showsExtensionLoggedMessage() {

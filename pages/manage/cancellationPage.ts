@@ -11,7 +11,7 @@ export class CancellationPage extends BasePage {
   }
 
   async enterCancellationDate() {
-    const cancellationLabel = 'When was this placement cancelled?'
+    const cancellationLabel = 'When was this placement withdrawn?'
     await this.page
       .getByRole('group', { name: cancellationLabel })
       .getByLabel('Day')
