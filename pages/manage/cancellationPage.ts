@@ -11,7 +11,7 @@ export class CancellationPage extends BasePage {
   }
 
   async enterCancellationDate() {
-    const cancellationLabel = 'When was this placement withdrawn?'
+    const cancellationLabel = 'What is the date of withdrawal?'
     await this.page
       .getByRole('group', { name: cancellationLabel })
       .getByLabel('Day')
@@ -32,7 +32,7 @@ export class CancellationPage extends BasePage {
 
   async completeForm() {
     await this.enterCancellationDate()
-    await this.checkRadio('Withdrawn by Probation Practitioner')
+    await this.checkRadio('The placement is being transferred')
     await this.fillInNotes()
   }
 }
