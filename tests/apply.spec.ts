@@ -69,12 +69,12 @@ test('Withdraw an application before submission', async ({ page, person, indexOf
   const dashboard = await visitDashboard(page)
 
   await startAnApplication(dashboard, page)
-  await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
+  const applicationId = await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
 
   await visitDashboard(page)
   await dashboard.clickApply()
 
-  await withdrawAnApplicationBeforeSubmission(page)
+  await withdrawAnApplicationBeforeSubmission(page, applicationId)
 
   const listPage = new ListPage(page)
   await listPage.shouldShowWithdrawalConfirmationMessage()

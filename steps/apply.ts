@@ -43,6 +43,10 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
     await page.getByLabel('Select Murder - Murder of infants under 1 year of age as index offence').click()
     await confirmPersonPage.clickSave()
   }
+
+  const url = page.url()
+
+  return url.match(/applications\/(.+)\/tasks/)[1]
 }
 
 export const completeBasicInformationTask = async (
@@ -488,12 +492,10 @@ export const createApplication = async (
   return url.match(/applications\/(.+)\//)[1]
 }
 
-export const withdrawAnApplicationBeforeSubmission = async (page: Page) => {
-  await page.getByRole('link', { name: 'Withdraw' }).first().click()
+export const withdrawAnApplicationBeforeSubmission = async (page: Page, applicationId: string) => {
+  await clickWithdrawLink(page, applicationId)
 
-  const confirmWithdrawalPage = new BasePage(page)
-  await confirmWithdrawalPage.checkRadio('Error in application')
-  await confirmWithdrawalPage.clickContinue()
+  await withdrawApplication(page)
 }
 
 export const withdrawAnApplicationAfterSubmission = async (page: Page, applicationId: string) => {
@@ -503,6 +505,24 @@ export const withdrawAnApplicationAfterSubmission = async (page: Page, applicati
 
   const listPage = new ListPage(page)
   await listPage.clickSubmitted()
+  await clickWithdrawLink(page, applicationId)
+
+  await withdrawApplication(page)
+
+  await expect(page.getByRole('alert', { name: 'Success' })).toContainText('Success')
+}
+
+const withdrawApplication = async (page: Page) => {
+  const withdrawalTypePage = new BasePage(page)
+  await withdrawalTypePage.checkRadio('Application')
+  await withdrawalTypePage.clickContinue()
+
+  const confirmWithdrawalPage = new BasePage(page)
+  await confirmWithdrawalPage.checkRadio('Error in application')
+  await confirmWithdrawalPage.clickContinue()
+}
+
+const clickWithdrawLink = async (page: Page, applicationId: string) => {
   await page
     .getByRole('row')
     .filter({ has: page.locator(`[data-cy-id="${applicationId}"]`) })
@@ -511,14 +531,4 @@ export const withdrawAnApplicationAfterSubmission = async (page: Page, applicati
     .filter({ has: page.getByText('Withdraw') })
     .first()
     .click()
-
-  const withdrawalTypePage = new BasePage(page)
-  await withdrawalTypePage.checkRadio('Application')
-  await withdrawalTypePage.clickContinue()
-
-  const confirmWithdrawalPage = new BasePage(page)
-  await confirmWithdrawalPage.checkRadio('Error in application')
-  await confirmWithdrawalPage.clickContinue()
-
-  await expect(page.getByRole('alert', { name: 'Success' })).toContainText('Success')
 }
