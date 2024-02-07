@@ -16,7 +16,7 @@ export class ShowPage extends BasePage {
     await this.page.getByRole('link', { name: 'Withdraw' }).click()
 
     const typePage = new BasePage(this.page)
-    await typePage.checkRadio('Placement request')
+    await typePage.checkRadio('Request for placement')
     await typePage.clickContinue()
 
     const placementRequestsPage = new BasePage(this.page)
