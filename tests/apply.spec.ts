@@ -2,12 +2,13 @@ import { test } from '../test'
 import {
   createApplication,
   enterAndConfirmCrn,
+  recordAnAppealOnApplication,
   startAnApplication,
   visitDashboard,
   withdrawAnApplicationAfterSubmission,
   withdrawAnApplicationBeforeSubmission,
 } from '../steps/apply'
-import { assessApplication, requestAndAddAdditionalInformation } from '../steps/assess'
+import { assessApplication, assessApplicationAsRejected, requestAndAddAdditionalInformation } from '../steps/assess'
 // import { matchAndBookApplication } from '../steps/match'
 
 // import { reviewAndApprovePlacementApplication, startAndCreatePlacementApplication } from '../steps/placementApplication'
@@ -91,4 +92,17 @@ test('Request further information on an Application, adds it and proceeds with t
 
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false)
   await requestAndAddAdditionalInformation({ page, user, person }, id)
+})
+
+test('Record an appeal against a rejected application', async ({
+  page,
+  user,
+  person,
+  indexOffenceRequired,
+  oasysSections,
+}) => {
+  await setRoles(page, [])
+  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
+  await assessApplication({ page, user, person }, id, false, false)
+  await recordAnAppealOnApplication(page, id)
 })
