@@ -2,21 +2,16 @@ import { Page } from '@playwright/test'
 import { EditUser, Qualification } from '../pages/admin/editUser'
 import { visitDashboard } from './apply'
 import { UserList } from '../pages/admin/listUsers'
-import { TestOptions } from '../testOptions'
 
-export const setRoles = async (
-  page: Page,
-  username: TestOptions['user']['name'],
-  roles: ReadonlyArray<Qualification>,
-) => {
+export const setRoles = async (page: Page, user: { name: string }, roles: ReadonlyArray<Qualification>) => {
   const dashboard = await visitDashboard(page)
   dashboard.clickUserMangement()
 
   const userListPage = await UserList.initialize(page)
 
-  await userListPage.search(username)
+  await userListPage.search(user.name)
 
-  await userListPage.clickEditUser(username)
+  await userListPage.clickEditUser(user.name)
 
   const usersPage = new EditUser(page)
 

@@ -16,7 +16,7 @@ test('Record a successful appeal against a rejected application', async ({
   indexOffenceRequired,
   oasysSections,
 }) => {
-  await setRoles(page, user.name, [])
+  await setRoles(page, user, [])
   const id = await createApplication(
     { page, person, indexOffenceRequired, oasysSections, applicationType: 'standard' },
     false,
@@ -35,7 +35,7 @@ test('Record an unsuccessful appeal against a rejected application', async ({
   indexOffenceRequired,
   oasysSections,
 }) => {
-  await setRoles(page, user.name, [])
+  await setRoles(page, user, [])
   const id = await createApplication(
     { page, person, indexOffenceRequired, oasysSections, applicationType: 'standard' },
     false,
