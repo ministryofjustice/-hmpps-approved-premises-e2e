@@ -19,6 +19,16 @@ export class ListPage extends BasePage {
       .click()
   }
 
+  async filterApplicationsBy(option: string) {
+    await this.selectAllApplications()
+    await this.page.getByLabel('Statuses').selectOption({ label: option })
+    await this.page.getByRole('button', { name: 'Apply filters' }).click()
+  }
+
+  async selectAllApplications(): Promise<void> {
+    await this.page.getByRole('link', { name: 'All applications' }).click()
+  }
+
   async shouldShowWithdrawalConfirmationMessage() {
     await expect(this.page.getByRole('alert', { name: 'Success' })).toContainText('Success')
     await expect(this.page.getByRole('heading', { name: 'Application withdrawn' })).toContainText(

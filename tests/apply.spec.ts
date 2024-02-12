@@ -2,6 +2,7 @@ import { test } from '../test'
 import {
   createApplication,
   enterAndConfirmCrn,
+  recordAnAppealOnApplication,
   startAnApplication,
   visitDashboard,
   withdrawAnApplicationAfterSubmission,
@@ -25,7 +26,7 @@ test('Apply, assess, match and book an application for an Approved Premises with
 }) => {
   await setRoles(page, [])
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
-  await assessApplication({ page, user, person }, id, false)
+  await assessApplication({ page, user, person }, id)
   await withdrawAnApplicationAfterSubmission(page, id)
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
@@ -41,7 +42,7 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
   await setRoles(page, ['Emergency APs'])
 
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, true)
-  await assessApplication({ page, user, person }, id, true)
+  await assessApplication({ page, user, person }, id, { emergencyApplication: true })
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
 })
@@ -56,7 +57,7 @@ test('Apply, assess, match and book an application for an Approved Premises with
   await setRoles(page, [])
 
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, false, false)
-  await assessApplication({ page, user, person }, id, false)
+  await assessApplication({ page, user, person }, id)
   await startAndCreatePlacementApplication({ page }, id)
   await withdrawPlacementApplication(page, id)
 
@@ -91,4 +92,17 @@ test('Request further information on an Application, adds it and proceeds with t
 
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false)
   await requestAndAddAdditionalInformation({ page, user, person }, id)
+})
+
+test('Record an appeal against a rejected application', async ({
+  page,
+  user,
+  person,
+  indexOffenceRequired,
+  oasysSections,
+}) => {
+  await setRoles(page, [])
+  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
+  await assessApplication({ page, user, person }, id, { acceptApplication: false })
+  await recordAnAppealOnApplication(page, id)
 })

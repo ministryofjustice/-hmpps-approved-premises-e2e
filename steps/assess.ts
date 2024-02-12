@@ -111,12 +111,14 @@ export const provideRequirements = async (page: Page) => {
   await requirementsPage.clickSubmit()
 }
 
-export const makeDecision = async (page: Page) => {
+export const makeDecision = async (page: Page, options: { acceptApplication: boolean }) => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Make a decision')
 
   const decisionPage = await AssessPage.initialize(page, 'Make a decision')
-  await decisionPage.checkRadio('Accept')
+
+  const decision = options.acceptApplication ? 'Accept' : 'Accommodation need only'
+  await decisionPage.checkRadio(decision)
   await decisionPage.clickSubmit()
 }
 
@@ -170,7 +172,7 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
 export const assessApplication = async (
   { page, user, person },
   applicationId: string,
-  emergencyApplication: boolean,
+  { emergencyApplication = false, acceptApplication = true } = {},
 ) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
@@ -194,10 +196,12 @@ export const assessApplication = async (
   await provideRequirements(page)
 
   // And I make a decision
-  await makeDecision(page)
+  await makeDecision(page, { acceptApplication })
 
-  // And I provide matching information
-  await addMatchingInformation(page)
+  // And I provide matching information if application is accepted
+  if (acceptApplication) {
+    await addMatchingInformation(page)
+  }
 
   // And I check my answers
   await checkAssessAnswers(page)

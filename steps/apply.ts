@@ -13,6 +13,7 @@ import {
 } from '../pages/apply'
 import { BasePage } from '../pages/basePage'
 import { TestOptions } from '../testOptions'
+import { ShowPage } from '../pages/apply/showPage'
 
 export const visitDashboard = async (page: Page): Promise<DashboardPage> => {
   const dashboard = new DashboardPage(page)
@@ -510,6 +511,20 @@ export const withdrawAnApplicationAfterSubmission = async (page: Page, applicati
   await withdrawApplication(page)
 
   await expect(page.getByRole('alert', { name: 'Success' })).toContainText('Success')
+}
+
+export const recordAnAppealOnApplication = async (page: Page, applicationId: string) => {
+  const dashboard = visitDashboard(page)
+
+  ;(await dashboard).clickApply()
+
+  const listPage = new ListPage(page)
+  await listPage.filterApplicationsBy('Application rejected')
+  await listPage.clickApplicationWithId(applicationId)
+
+  const showPage = new ShowPage(page)
+  await showPage.appealApplication()
+  await showPage.shouldShowAssessmentReopenedBanner()
 }
 
 const withdrawApplication = async (page: Page) => {
