@@ -9,7 +9,10 @@ export class ShowPage extends BasePage {
   }
 
   async clickPlacementRequestsTab(): Promise<void> {
-    await this.page.getByLabel('Secondary navigation region').getByRole('link', { name: 'Placement requests' }).click()
+    await this.page
+      .getByLabel('Secondary navigation region')
+      .getByRole('link', { name: 'Request for placement' })
+      .click()
   }
 
   async appealApplication(): Promise<void> {

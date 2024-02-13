@@ -10,7 +10,7 @@ export class DashboardPage extends BasePage {
   }
 
   async clickWorkflow() {
-    await this.page.getByRole('link', { name: 'Manage case allocations' }).click()
+    await this.page.getByRole('link', { name: 'Manage task allocations' }).click()
   }
 
   async clickAssess() {
