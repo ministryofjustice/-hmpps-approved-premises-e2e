@@ -35,4 +35,20 @@ export class ListPage extends BasePage {
       'Application withdrawn',
     )
   }
+
+  async shouldShowWithdrawnApplication(applicationId: string) {
+    // If there are multiple pages of applications, click through them to find the withdrawn application
+    await this.clickNextPage()
+
+    await expect(
+      this.page.getByRole('row').filter({ has: this.page.locator(`[data-cy-id="${applicationId}"]`) }),
+    ).toContainText('Application withdrawn')
+  }
+
+  async clickNextPage() {
+    if (await this.page.getByRole('link', { name: 'Next' }).isVisible()) {
+      await this.page.getByRole('link', { name: 'Next page' }).click()
+      await this.clickNextPage()
+    }
+  }
 }
