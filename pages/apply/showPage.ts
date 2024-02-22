@@ -45,4 +45,8 @@ export class ShowPage extends BasePage {
   async shouldShowAssessmentReopenedBanner(): Promise<void> {
     await expect(this.page.getByRole('alert')).toContainText('Assessment reopened')
   }
+
+  async shouldShowWithdrawnTag(): Promise<void> {
+    await expect(this.page.getByText('Application withdrawn')).toBeVisible()
+  }
 }
