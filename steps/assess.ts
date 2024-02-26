@@ -134,7 +134,6 @@ export const addMatchingInformation = async (page: Page) => {
   await matchingInformationPage.checkRequirement('Is single', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is step free designated', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is catered', 'notRelevant')
-  await matchingInformationPage.checkRequirement('Is ground floor', 'notRelevant')
   await matchingInformationPage.checkRequirement('Has en suite', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is suited for sex offenders', 'notRelevant')
   await matchingInformationPage.checkRequirement('Is arson designated', 'notRelevant')
