@@ -71,7 +71,7 @@ test('Request further information on an Application, adds it and proceeds with t
   await requestAndAddAdditionalInformation({ page, user, person }, id)
 })
 
-test('Record an appeal against a rejected application', async ({
+test('Record a successful appeal against a rejected application', async ({
   page,
   user,
   person,
@@ -81,6 +81,20 @@ test('Record an appeal against a rejected application', async ({
   await setRoles(page, [])
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
   await assessApplication({ page, user, person }, id, { acceptApplication: false })
-  await recordAnAppealOnApplication(page, id)
+  await recordAnAppealOnApplication(page, id, 'Upheld')
   await verifyEmailSent('Approved Premises assessment successfully appealed', user.email)
+})
+
+test('Record an unsuccessful appeal against a rejected application', async ({
+  page,
+  user,
+  person,
+  indexOffenceRequired,
+  oasysSections,
+}) => {
+  await setRoles(page, [])
+  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
+  await assessApplication({ page, user, person }, id, { acceptApplication: false })
+  await recordAnAppealOnApplication(page, id, 'Rejected')
+  await verifyEmailSent('Approved Premises assessment appeal unsuccessful', user.email)
 })

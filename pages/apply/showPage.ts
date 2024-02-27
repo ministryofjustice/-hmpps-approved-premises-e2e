@@ -15,12 +15,12 @@ export class ShowPage extends BasePage {
       .click()
   }
 
-  async appealApplication(): Promise<void> {
+  async appealApplication(decision: AppealDecision): Promise<void> {
     await this.page.getByRole('button', { name: 'Actions' }).click()
     await this.page.getByRole('menuitem', { name: 'Process an appeal' }).click()
 
     const appealApplicationPage = new AppealApplicationPage(this.page)
-    await appealApplicationPage.fillForm()
+    await appealApplicationPage.fillForm(decision)
   }
 
   async withdrawPlacementApplication(): Promise<void> {
@@ -44,6 +44,10 @@ export class ShowPage extends BasePage {
 
   async shouldShowAssessmentReopenedBanner(): Promise<void> {
     await expect(this.page.getByRole('alert')).toContainText('Assessment reopened')
+  }
+
+  async shouldShowAppealRejectedBanner(): Promise<void> {
+    await expect(this.page.getByRole('alert')).toContainText('Appeal marked as rejected')
   }
 
   async shouldShowWithdrawnTag(): Promise<void> {
