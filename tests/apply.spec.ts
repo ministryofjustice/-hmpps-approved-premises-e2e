@@ -7,6 +7,7 @@ import { assessApplication, requestAndAddAdditionalInformation } from '../steps/
 import { startAndCreatePlacementApplication, withdrawPlacementApplication } from '../steps/placementApplication'
 
 import { setRoles } from '../steps/admin'
+import { verifyEmailSent } from '../steps/email'
 
 test('Apply, assess, match and book an application for an Approved Premises with a release date', async ({
   page,
@@ -81,4 +82,5 @@ test('Record an appeal against a rejected application', async ({
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
   await assessApplication({ page, user, person }, id, { acceptApplication: false })
   await recordAnAppealOnApplication(page, id)
+  await verifyEmailSent('Approved Premises assessment successfully appealed', user.email)
 })
