@@ -9,6 +9,7 @@ on:
 env:
   HMPPS_AUTH_USERNAME: ${{ secrets.HMPPS_AUTH_USERNAME }}
   HMPPS_AUTH_PASSWORD: ${{ secrets.HMPPS_AUTH_PASSWORD }}
+  NOTIFY_API_KEY: ${{ secrets.NOTIFY_API_KEY }}
 
 jobs:
   test:
