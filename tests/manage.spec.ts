@@ -99,7 +99,7 @@ test('Mark a booking as cancelled', async ({ page }) => {
 
   // When I complete the form
   await cancellationFormPage.completeForm()
-  await cancellationFormPage.clickSubmit()
+  await cancellationFormPage.clickWithdraw()
 
   // Then I should see the placement page with a banner
   await placementPage.showsCancellationLoggedMessage()

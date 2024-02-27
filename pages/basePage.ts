@@ -15,6 +15,10 @@ export class BasePage {
     await this.page.getByRole('button', { name: 'Continue' }).click()
   }
 
+  async clickWithdraw() {
+    await this.page.getByRole('button', { name: 'Withdraw' }).click()
+  }
+
   async fillField(label: string, value: string) {
     await this.page.getByLabel(label).fill(value)
   }

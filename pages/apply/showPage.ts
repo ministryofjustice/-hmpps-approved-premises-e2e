@@ -37,7 +37,7 @@ export class ShowPage extends BasePage {
 
     const reasonPage = new BasePage(this.page)
     await reasonPage.page.getByRole('radio').first().click()
-    await reasonPage.clickContinue()
+    await reasonPage.clickWithdraw()
 
     expect(this.page.getByRole('heading', { name: 'Placement application withdrawn' })).toBeTruthy()
   }
