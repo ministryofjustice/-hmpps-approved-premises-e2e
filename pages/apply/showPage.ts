@@ -5,7 +5,7 @@ import { AppealApplicationPage } from './appealApplicationPage'
 export class ShowPage extends BasePage {
   async createPlacementRequest(): Promise<void> {
     await this.clickPlacementRequestsTab()
-    await this.page.getByRole('button', { name: 'Create placement request', exact: true }).click()
+    await this.page.getByRole('button', { name: 'Create request for placement', exact: true }).click()
   }
 
   async clickPlacementRequestsTab(): Promise<void> {
@@ -37,7 +37,7 @@ export class ShowPage extends BasePage {
 
     const reasonPage = new BasePage(this.page)
     await reasonPage.page.getByRole('radio').first().click()
-    await reasonPage.clickContinue()
+    await reasonPage.clickWithdraw()
 
     expect(this.page.getByRole('heading', { name: 'Placement application withdrawn' })).toBeTruthy()
   }
