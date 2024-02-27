@@ -7,6 +7,7 @@ export type TestOptions = {
     name: string
     username: string
     password: string
+    email: string
   }
   indexOffenceRequired: boolean
   oasysSections: Array<string>

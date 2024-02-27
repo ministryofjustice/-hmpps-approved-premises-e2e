@@ -25,6 +25,7 @@ Add a `.env` file to the root of the project with the following variables:
 ```text
 HMPPS_AUTH_USERNAME= # A valid HMPPS Auth Username
 HMPPS_AUTH_PASSWORD= # A valid HMPPS Auth Password
+HMPPS_AUTH_EMAIL= # The email address associated with the HMPPS Auth account
 NOTIFY_API_KEY= # An API key for GOV.UK Notify
 ```
 
