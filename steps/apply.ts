@@ -513,7 +513,7 @@ export const withdrawAnApplicationAfterSubmission = async (page: Page, applicati
   await expect(page.getByRole('alert', { name: 'Success' })).toContainText('Success')
 }
 
-export const recordAnAppealOnApplication = async (page: Page, applicationId: string) => {
+export const recordAnAppealOnApplication = async (page: Page, applicationId: string, decision: AppealDecision) => {
   const dashboard = visitDashboard(page)
 
   ;(await dashboard).clickApply()
@@ -523,8 +523,12 @@ export const recordAnAppealOnApplication = async (page: Page, applicationId: str
   await listPage.clickApplicationWithId(applicationId)
 
   const showPage = new ShowPage(page)
-  await showPage.appealApplication()
-  await showPage.shouldShowAssessmentReopenedBanner()
+  await showPage.appealApplication(decision)
+  if (decision === 'Upheld') {
+    await showPage.shouldShowAssessmentReopenedBanner()
+  } else {
+    await showPage.shouldShowAppealRejectedBanner()
+  }
 }
 
 const withdrawApplication = async (page: Page) => {
