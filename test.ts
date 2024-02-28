@@ -12,7 +12,7 @@ export const test = base.extend<TestOptions>({
   ],
   user: [
     {
-      name: 'Approved Premises E2ETester',
+      name: (process.env.HMPPS_AUTH_NAME || 'Approved Premises E2ETester') as string,
       username: process.env.HMPPS_AUTH_USERNAME as string,
       password: process.env.HMPPS_AUTH_PASSWORD as string,
       email: process.env.HMPPS_AUTH_EMAIL as string,
