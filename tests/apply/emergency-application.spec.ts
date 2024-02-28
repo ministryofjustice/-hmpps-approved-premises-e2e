@@ -11,7 +11,7 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
   indexOffenceRequired,
   oasysSections,
 }) => {
-  await setRoles(page, ['Emergency APs'])
+  await setRoles(page, user.name, ['Emergency APs'])
 
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, true)
   await assessApplication({ page, user, person }, id, { emergencyApplication: true })

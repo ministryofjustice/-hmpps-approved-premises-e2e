@@ -11,7 +11,7 @@ test('Request further information on an Application, adds it and proceeds with t
   indexOffenceRequired,
   oasysSections,
 }) => {
-  await setRoles(page, [])
+  await setRoles(page, user.name, [])
 
   const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false)
   await requestAndAddAdditionalInformation({ page, user, person }, id)
