@@ -16,7 +16,7 @@
         "alwaysTryTypes": true
       },
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"]
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".d.ts"]
       }
     }
   },

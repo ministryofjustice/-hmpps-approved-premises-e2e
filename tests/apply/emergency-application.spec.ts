@@ -13,8 +13,11 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
 }) => {
   await setRoles(page, user.name, ['Emergency APs'])
 
-  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, true)
-  await assessApplication({ page, user, person }, id, { emergencyApplication: true })
+  const id = await createApplication(
+    { page, person, indexOffenceRequired, oasysSections, applicationType: 'emergency' },
+    true,
+  )
+  await assessApplication({ page, user, person }, id, { applicationType: 'emergency' })
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
 })

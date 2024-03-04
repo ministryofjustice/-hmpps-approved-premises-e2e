@@ -56,7 +56,7 @@ export const createPlacementApplication = async ({ page }) => {
   await previousPlacementPage.clickSubmit()
 
   const datePage = new ApplyPage(page)
-  await datePage.fillReleaseDateField()
+  await datePage.fillReleaseDateField('standard')
   await datePage.fillDurationField({ weeks: 12, days: 0 })
   await datePage.clickContinue()
 

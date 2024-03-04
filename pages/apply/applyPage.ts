@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test'
+import { ApplicationType } from '@approved-premises/e2e'
 import { BasePage } from '../basePage'
 
 export class ApplyPage extends BasePage {
@@ -9,12 +10,12 @@ export class ApplyPage extends BasePage {
     return new ApplyPage(page)
   }
 
-  async fillReleaseDateField(emergencyApplication = false) {
+  async fillReleaseDateField(applicationType: ApplicationType) {
     const sevenMonths = 1000 * 60 * 60 * 24 * 7 * 4 * 7
 
     const nextWeek = 1000 * 60 * 60 * 24 * 8
 
-    const releaseDate = new Date(new Date().getTime() + (emergencyApplication ? nextWeek : sevenMonths))
+    const releaseDate = new Date(new Date().getTime() + (applicationType === 'emergency' ? nextWeek : sevenMonths))
     const dateFields = {
       day: releaseDate.getDate().toString(),
       month: (releaseDate.getMonth() + 1).toString(),

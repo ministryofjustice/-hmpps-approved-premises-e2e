@@ -1,3 +1,4 @@
+import { AppealDecision } from '@approved-premises/e2e'
 import { BasePage } from '../basePage'
 
 export class AppealApplicationPage extends BasePage {

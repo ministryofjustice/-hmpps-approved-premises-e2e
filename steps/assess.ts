@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test'
+import { ApplicationType } from '@approved-premises/e2e'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
 import { assignAssessmentToMe } from './workflow'
@@ -55,7 +56,7 @@ export const addAdditionalInformation = async (page: Page) => {
   await additionalInformationPage.clickSubmit()
 }
 
-export const assessSuitability = async (page: Page, emergencyApplication = false) => {
+export const assessSuitability = async (page: Page, applicationType: ApplicationType = 'standard') => {
   const tasklistPage = new TasklistPage(page)
   await tasklistPage.clickTask('Assess suitability of application')
 
@@ -72,7 +73,7 @@ export const assessSuitability = async (page: Page, emergencyApplication = false
   await assessPage.checkRadioInGroup('Is the move on plan sufficient?', 'Yes')
   await assessPage.clickSubmit()
 
-  if (emergencyApplication) {
+  if (applicationType === 'emergency' || applicationType === 'shortNotice') {
     const applicationTimelinessPage = await AssessPage.initialize(page, 'Application timeliness')
     await applicationTimelinessPage.checkRadioInGroup(
       `Do you agree with the applicant's reason for submission outside of National Standards timescales?`,
@@ -171,7 +172,7 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
 export const assessApplication = async (
   { page, user, person },
   applicationId: string,
-  { emergencyApplication = false, acceptApplication = true } = {},
+  { applicationType = 'standard', acceptApplication = true } = {},
 ) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
@@ -189,7 +190,7 @@ export const assessApplication = async (
   await confirmInformation(page)
 
   // And I assess the suitablity of the Application
-  await assessSuitability(page, emergencyApplication)
+  await assessSuitability(page, applicationType)
 
   // And I provide the requirements to support the placement
   await provideRequirements(page)
