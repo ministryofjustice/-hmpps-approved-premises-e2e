@@ -13,9 +13,13 @@ test('Record a successful appeal against a rejected application', async ({
   oasysSections,
 }) => {
   await setRoles(page, user.name, [])
-  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
+  const id = await createApplication(
+    { page, person, indexOffenceRequired, oasysSections, applicationType: 'standard' },
+    false,
+    true,
+  )
   await assessApplication({ page, user, person }, id, { acceptApplication: false })
-  await recordAnAppealOnApplication(page, id, 'Upheld')
+  await recordAnAppealOnApplication(page, id, 'Appeal successful')
   await verifyEmailSent('Approved Premises assessment successfully appealed', user.email)
 })
 
@@ -27,8 +31,12 @@ test('Record an unsuccessful appeal against a rejected application', async ({
   oasysSections,
 }) => {
   await setRoles(page, user.name, [])
-  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
+  const id = await createApplication(
+    { page, person, indexOffenceRequired, oasysSections, applicationType: 'standard' },
+    false,
+    true,
+  )
   await assessApplication({ page, user, person }, id, { acceptApplication: false })
-  await recordAnAppealOnApplication(page, id, 'Rejected')
+  await recordAnAppealOnApplication(page, id, 'Appeal unsuccessful')
   await verifyEmailSent('Approved Premises assessment appeal unsuccessful', user.email)
 })

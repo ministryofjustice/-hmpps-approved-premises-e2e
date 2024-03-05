@@ -12,7 +12,11 @@ test('Apply, assess, match and book an application for an Approved Premises with
   oasysSections,
 }) => {
   await setRoles(page, user.name, [])
-  const id = await createApplication({ page, person, indexOffenceRequired, oasysSections }, true, false, true)
+  const id = await createApplication(
+    { page, person, indexOffenceRequired, oasysSections, applicationType: 'standard' },
+    true,
+    true,
+  )
   await assessApplication({ page, user, person }, id)
   await withdrawAnApplicationAfterSubmission(page, id)
   // Skip match until it's back

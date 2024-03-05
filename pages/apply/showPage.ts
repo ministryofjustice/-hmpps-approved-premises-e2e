@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test'
+import { AppealDecision } from '@approved-premises/e2e'
 import { BasePage } from '../basePage'
 import { AppealApplicationPage } from './appealApplicationPage'
 

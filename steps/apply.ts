@@ -1,5 +1,6 @@
 import { Page, expect } from '@playwright/test'
 
+import { AppealDecision, ApplicationType } from '@approved-premises/e2e'
 import {
   ApplyPage,
   CRNPage,
@@ -53,7 +54,7 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
 export const completeBasicInformationTask = async (
   page: Page,
   withReleaseDate = true,
-  emergencyApplication = false,
+  applicationType: ApplicationType = 'standard',
   testMappaFlow = false,
 ) => {
   const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
@@ -116,14 +117,14 @@ export const completeBasicInformationTask = async (
 
   if (withReleaseDate) {
     await releaseDatePage.checkRadio('Yes')
-    await releaseDatePage.fillReleaseDateField(emergencyApplication)
+    await releaseDatePage.fillReleaseDateField(applicationType)
     await releaseDatePage.clickSave()
 
     const placementDatePage = await ApplyPage.initialize(page)
     await placementDatePage.checkRadio('Yes')
     await placementDatePage.clickSave()
 
-    if (emergencyApplication) {
+    if (applicationType === 'emergency' || applicationType === 'shortNotice') {
       const emergencyApplicationPage = await ApplyPage.initialize(page, 'Emergency application')
       await emergencyApplicationPage.checkRadio('The risk level has recently escalated')
       await emergencyApplicationPage.clickSave()
@@ -274,11 +275,7 @@ export const completeAccessCulturalAndHealthcareTask = async (page: Page) => {
   await covidPage.clickSave()
 }
 
-export const completeFurtherConsiderationsTask = async (
-  page: Page,
-
-  emergencyApplication = false,
-) => {
+export const completeFurtherConsiderationsTask = async (page: Page, applicationType: ApplicationType = 'standard') => {
   const taskListPage = new TasklistPage(page)
   await taskListPage.clickTask('Detail further considerations for placement')
 
@@ -332,7 +329,7 @@ export const completeFurtherConsiderationsTask = async (
   await additionalCircumstancesPage.checkRadio('No')
   await additionalCircumstancesPage.clickSave()
 
-  if (emergencyApplication) {
+  if (applicationType === 'emergency' || applicationType === 'shortNotice') {
     const contingencyPlansPage = await ApplyPage.initialize(page, 'Contingency plans')
     await contingencyPlansPage.fillField(
       'If the person does not return to the AP for curfew, what actions should be taken?',
@@ -435,9 +432,15 @@ export const createApplication = async (
     person,
     indexOffenceRequired,
     oasysSections,
-  }: { page: Page; person: TestOptions['person']; indexOffenceRequired: boolean; oasysSections: Array<string> },
+    applicationType,
+  }: {
+    page: Page
+    person: TestOptions['person']
+    indexOffenceRequired: boolean
+    oasysSections: Array<string>
+    applicationType: ApplicationType
+  },
   withReleaseDate: boolean,
-  emergencyApplication: boolean,
   testMappaFlow?: boolean,
 ) => {
   // Given I visit the Dashboard
@@ -450,7 +453,7 @@ export const createApplication = async (
   await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
 
   // And I complete the basic information Task
-  await completeBasicInformationTask(page, withReleaseDate, emergencyApplication, testMappaFlow)
+  await completeBasicInformationTask(page, withReleaseDate, applicationType, testMappaFlow)
 
   // And I complete the Type of AP Task
   await completeTypeOfApTask(page)
@@ -471,7 +474,7 @@ export const createApplication = async (
   await completeAccessCulturalAndHealthcareTask(page)
 
   // And I complete the Further Considerations Task
-  await completeFurtherConsiderationsTask(page, emergencyApplication)
+  await completeFurtherConsiderationsTask(page, applicationType)
 
   // And I complete the Move On Task
   await completeMoveOnTask(page)
@@ -524,7 +527,7 @@ export const recordAnAppealOnApplication = async (page: Page, applicationId: str
 
   const showPage = new ShowPage(page)
   await showPage.appealApplication(decision)
-  if (decision === 'Upheld') {
+  if (decision === 'Appeal successful') {
     await showPage.shouldShowAssessmentReopenedBanner()
   } else {
     await showPage.shouldShowAppealRejectedBanner()
