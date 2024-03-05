@@ -66,7 +66,7 @@ declare module 'notifications-node-client' {
 }
 
 declare module '@approved-premises/e2e' {
-  export type AppealDecision = 'Upheld' | 'Rejected'
+  export type AppealDecision = 'Appeal successful' | 'Appeal unsuccessful'
 
   export type ApplicationType = 'standard' | 'emergency' | 'shortNotice'
 }

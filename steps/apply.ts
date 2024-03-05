@@ -527,7 +527,7 @@ export const recordAnAppealOnApplication = async (page: Page, applicationId: str
 
   const showPage = new ShowPage(page)
   await showPage.appealApplication(decision)
-  if (decision === 'Upheld') {
+  if (decision === 'Appeal successful') {
     await showPage.shouldShowAssessmentReopenedBanner()
   } else {
     await showPage.shouldShowAppealRejectedBanner()
