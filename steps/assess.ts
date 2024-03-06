@@ -80,7 +80,9 @@ export const assessSuitability = async (page: Page, applicationType: Application
       'Yes',
     )
     await applicationTimelinessPage.clickSubmit()
+  }
 
+  if (applicationType === 'emergency') {
     const contingencyPlansSufficientPage = await AssessPage.initialize(page, 'Suitability assessment')
     await contingencyPlansSufficientPage.checkRadioInGroup(
       'Is the contingency plan sufficient to manage behaviour or a failure to return out of hours?',
