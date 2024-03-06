@@ -3,6 +3,7 @@ import { ApplicationType } from '@approved-premises/e2e'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
 import { assessmentShouldHaveCorrectDeadline, assignAssessmentToMe } from './workflow'
+import { verifyEmailSent } from './email'
 
 export const startAssessment = async (page: Page, personName: string, applicationId: string) => {
   const dashboard = await visitDashboard(page)
@@ -184,20 +185,26 @@ export const assessApplication = async (
 
   // Then the task should contain the expected deadline
   let deadline: string
+  let emailBody: string
   switch (true) {
     case applicationType === 'shortNotice':
       deadline = '2 Days'
+      emailBody = '2 working days'
       break
     case applicationType === 'emergency' && new Date().getHours() < 13:
       // If the application has been submitted before 1pm the deadline is today
       deadline = 'Today'
+      emailBody =
+        'As this assessment is an emergency assessment, you have 2 hours to complete the assessment, including any requests for further information'
       break
     case applicationType === 'emergency' && new Date().getHours() > 13:
       // If the application has been submitted after 1pm the deadline is tomorrow
       deadline = '1 Day'
+      emailBody = 'As this assessment is an emergency assessment, you have until 1pm'
       break
     default:
       deadline = '10 Days'
+      emailBody = '10 working days'
   }
 
   await assessmentShouldHaveCorrectDeadline(dashboard, page, applicationId, deadline)
@@ -205,7 +212,10 @@ export const assessApplication = async (
   // And I allocate the assessement to myself
   await assignAssessmentToMe(dashboard, page, user.name, applicationId)
 
-  // And I start the assessment
+  // Then I should receive a confirmation email
+  await verifyEmailSent(user.email, 'Approved Premises application to assess', emailBody)
+
+  // When I start the assessment
   await startAssessment(page, person.name, applicationId)
 
   // And I Review the application
