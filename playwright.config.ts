@@ -17,6 +17,16 @@ export default defineConfig<TestOptions>({
   },
   projects: [
     {
+      name: 'utils',
+      testDir: './utils',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
+        baseURL: 'https://approved-premises-dev.hmpps.service.justice.gov.uk',
+      },
+      dependencies: ['setupDev'],
+    },
+    {
       name: 'setupDev',
       testMatch: /.*\.setup\.ts/,
       use: { baseURL: 'https://approved-premises-dev.hmpps.service.justice.gov.uk' },
