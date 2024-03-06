@@ -197,7 +197,7 @@ export const assessApplication = async (
       emailBody =
         'As this assessment is an emergency assessment, you have 2 hours to complete the assessment, including any requests for further information'
       break
-    case applicationType === 'emergency' && new Date().getHours() > 13:
+    case applicationType === 'emergency' && new Date().getHours() >= 13:
       // If the application has been submitted after 1pm the deadline is tomorrow
       deadline = '1 Day'
       emailBody = 'As this assessment is an emergency assessment, you have until 1pm'
