@@ -2,7 +2,7 @@ import { Page } from '@playwright/test'
 import { ApplicationType } from '@approved-premises/e2e'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
-import { assignAssessmentToMe } from './workflow'
+import { assessmentShouldHaveCorrectDeadline, assignAssessmentToMe } from './workflow'
 
 export const startAssessment = async (page: Page, personName: string, applicationId: string) => {
   const dashboard = await visitDashboard(page)
@@ -80,7 +80,9 @@ export const assessSuitability = async (page: Page, applicationType: Application
       'Yes',
     )
     await applicationTimelinessPage.clickSubmit()
+  }
 
+  if (applicationType === 'emergency') {
     const contingencyPlansSufficientPage = await AssessPage.initialize(page, 'Suitability assessment')
     await contingencyPlansSufficientPage.checkRadioInGroup(
       'Is the contingency plan sufficient to manage behaviour or a failure to return out of hours?',
@@ -172,10 +174,33 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
 export const assessApplication = async (
   { page, user, person },
   applicationId: string,
-  { applicationType = 'standard', acceptApplication = true } = {},
+  { applicationType, acceptApplication }: { applicationType: ApplicationType; acceptApplication: boolean } = {
+    applicationType: 'standard',
+    acceptApplication: true,
+  },
 ) => {
   // Given I visit the Dashboard
   const dashboard = await visitDashboard(page)
+
+  // Then the task should contain the expected deadline
+  let deadline: string
+  switch (true) {
+    case applicationType === 'shortNotice':
+      deadline = '2 Days'
+      break
+    case applicationType === 'emergency' && new Date().getHours() < 13:
+      // If the application has been submitted before 1pm the deadline is today
+      deadline = 'Today'
+      break
+    case applicationType === 'emergency' && new Date().getHours() > 13:
+      // If the application has been submitted after 1pm the deadline is tomorrow
+      deadline = '1 Day'
+      break
+    default:
+      deadline = '10 Days'
+  }
+
+  await assessmentShouldHaveCorrectDeadline(dashboard, page, applicationId, deadline)
 
   // And I allocate the assessement to myself
   await assignAssessmentToMe(dashboard, page, user.name, applicationId)
@@ -216,6 +241,7 @@ export const assessApplication = async (
 export const requestAndAddAdditionalInformation = async ({ page, user, person }, applicationId: string) => {
   // When I start the assessment
   const dashboard = await visitDashboard(page)
+  await dashboard.clickWorkflow()
   await assignAssessmentToMe(dashboard, page, user.name, applicationId)
   await startAssessment(page, person.name, applicationId)
   await reviewApplication(page)

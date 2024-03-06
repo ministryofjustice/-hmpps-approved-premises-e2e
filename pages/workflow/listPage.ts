@@ -1,7 +1,8 @@
+import { expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
-  async chooseAssessmentWithId(id: string) {
+  async getAssignmentWithId(id: string) {
     await this.page.getByRole('link', { name: 'Due ▲' }).click()
 
     const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Assessment') })
@@ -16,7 +17,19 @@ export class ListPage extends BasePage {
         .click()
     }
 
-    await assessmentRow.first().getByRole('link').click()
+    return assessmentRow.first()
+  }
+
+  async chooseAssessmentWithId(id: string) {
+    const row = await this.getAssignmentWithId(id)
+
+    await row.getByRole('link').click()
+  }
+
+  async shouldHaveCorrectDeadline(id: string, deadline: string) {
+    const row = await this.getAssignmentWithId(id)
+
+    await expect(row.locator('td').nth(0)).toContainText(deadline)
   }
 
   async choosePlacementApplicationWithId(id: string) {

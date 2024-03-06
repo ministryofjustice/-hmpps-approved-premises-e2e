@@ -125,7 +125,8 @@ export const completeBasicInformationTask = async (
     await placementDatePage.clickSave()
 
     if (applicationType === 'emergency' || applicationType === 'shortNotice') {
-      const emergencyApplicationPage = await ApplyPage.initialize(page, 'Emergency application')
+      const title = applicationType === 'emergency' ? 'Emergency application' : 'Short notice application'
+      const emergencyApplicationPage = await ApplyPage.initialize(page, title)
       await emergencyApplicationPage.checkRadio('The risk level has recently escalated')
       await emergencyApplicationPage.clickSave()
     }
@@ -329,7 +330,7 @@ export const completeFurtherConsiderationsTask = async (page: Page, applicationT
   await additionalCircumstancesPage.checkRadio('No')
   await additionalCircumstancesPage.clickSave()
 
-  if (applicationType === 'emergency' || applicationType === 'shortNotice') {
+  if (applicationType === 'emergency') {
     const contingencyPlansPage = await ApplyPage.initialize(page, 'Contingency plans')
     await contingencyPlansPage.fillField(
       'If the person does not return to the AP for curfew, what actions should be taken?',
