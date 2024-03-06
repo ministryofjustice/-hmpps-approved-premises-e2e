@@ -185,20 +185,26 @@ export const assessApplication = async (
 
   // Then the task should contain the expected deadline
   let deadline: string
+  let emailBody: string
   switch (true) {
     case applicationType === 'shortNotice':
       deadline = '2 Days'
+      emailBody = '2 working days'
       break
     case applicationType === 'emergency' && new Date().getHours() < 13:
       // If the application has been submitted before 1pm the deadline is today
       deadline = 'Today'
+      emailBody =
+        'As this assessment is an emergency assessment, you have 2 hours to complete the assessment, including any requests for further information'
       break
     case applicationType === 'emergency' && new Date().getHours() > 13:
       // If the application has been submitted after 1pm the deadline is tomorrow
       deadline = '1 Day'
+      emailBody = 'As this assessment is an emergency assessment, you have until 1pm'
       break
     default:
       deadline = '10 Days'
+      emailBody = '10 working days'
   }
 
   await assessmentShouldHaveCorrectDeadline(dashboard, page, applicationId, deadline)
@@ -207,7 +213,7 @@ export const assessApplication = async (
   await assignAssessmentToMe(dashboard, page, user.name, applicationId)
 
   // Then I should receive a confirmation email
-  await verifyEmailSent('Approved Premises application to assess', user.email)
+  await verifyEmailSent(user.email, 'Approved Premises application to assess', emailBody)
 
   // When I start the assessment
   await startAssessment(page, person.name, applicationId)
