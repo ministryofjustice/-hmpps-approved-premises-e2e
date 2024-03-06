@@ -3,6 +3,7 @@ import { ApplicationType } from '@approved-premises/e2e'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
 import { assessmentShouldHaveCorrectDeadline, assignAssessmentToMe } from './workflow'
+import { verifyEmailSent } from './email'
 
 export const startAssessment = async (page: Page, personName: string, applicationId: string) => {
   const dashboard = await visitDashboard(page)
@@ -205,7 +206,10 @@ export const assessApplication = async (
   // And I allocate the assessement to myself
   await assignAssessmentToMe(dashboard, page, user.name, applicationId)
 
-  // And I start the assessment
+  // Then I should receive a confirmation email
+  await verifyEmailSent('Approved Premises application to assess', user.email)
+
+  // When I start the assessment
   await startAssessment(page, person.name, applicationId)
 
   // And I Review the application
