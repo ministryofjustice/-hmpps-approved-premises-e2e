@@ -20,7 +20,7 @@ export class BasePage {
   }
 
   async fillField(label: string, value: string) {
-    await this.page.getByLabel(label).fill(value)
+    await this.page.getByRole('textbox', { name: label }).fill(value)
   }
 
   async checkRadio(label: string) {
