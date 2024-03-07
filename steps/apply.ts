@@ -72,6 +72,8 @@ export const completeBasicInformationTask = async (
   await exemptionApplicationPage.clickSave()
 
   const confirmYourDetailsPage = await ApplyPage.initialize(page, 'Confirm your details')
+  await confirmYourDetailsPage.checkCheckBoxes(['Phone number'])
+  await confirmYourDetailsPage.fillField('Phone number', '01234567890')
   await confirmYourDetailsPage.checkRadio('Yes')
   await confirmYourDetailsPage.clickSave()
 
