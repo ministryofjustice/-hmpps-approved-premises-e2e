@@ -40,7 +40,7 @@ export class BasePage {
     const promises = [] as Array<Promise<void>>
 
     for (let i = 0; i < labels.length; i += 1) {
-      promises.push(this.page.getByLabel(labels[i]).dispatchEvent('click'))
+      promises.push(this.page.getByRole('checkbox', { name: labels[i] }).dispatchEvent('click'))
     }
 
     await Promise.all(promises)
