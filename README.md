@@ -68,3 +68,14 @@ npm run test:local:ui
 To run using the Playwright user interface.
 
 Local variables are contained in the `local` project in [playwright.config.ts](https://github.com/ministryofjustice/hmpps-approved-premises-e2e/blob/main/playwright.config.ts).
+
+## Utilities
+
+As well as the main test suite, there is also a "utility" suite that allows you to quickly
+create an application in the development environment by running one of the following commands:
+
+```bash
+npm run create-application:standard # Create and submit a standard application
+npm run create-application:short-notice # Create and submit a short notice application
+npm run create-application:emergency # Create and submit an emergency application
+```

@@ -10,7 +10,10 @@
     "test:ui": "npm run test -- --ui",
     "test:local": "npx playwright test --project=setupLocal --project=local",
     "test:local:ui": "npm run test:local -- --ui",
-    "install-playwright": "npx playwright install"
+    "install-playwright": "npx playwright install",
+    "create-application:standard": "APPLICATION_TYPE='standard' npx playwright test utils/createApplication.spec.ts",
+    "create-application:emergency": "APPLICATION_TYPE='emergency' npx playwright test utils/createApplication.spec.ts",
+    "create-application:short-notice": "APPLICATION_TYPE='shortNotice' npx playwright test utils/createApplication.spec.ts"
   },
   "keywords": [],
   "author": "",
