@@ -20,7 +20,7 @@ export class BasePage {
   }
 
   async fillField(label: string, value: string) {
-    await this.page.getByLabel(label).fill(value)
+    await this.page.getByRole('textbox', { name: label }).fill(value)
   }
 
   async checkRadio(label: string) {
@@ -40,7 +40,7 @@ export class BasePage {
     const promises = [] as Array<Promise<void>>
 
     for (let i = 0; i < labels.length; i += 1) {
-      promises.push(this.page.getByLabel(labels[i]).dispatchEvent('click'))
+      promises.push(this.page.getByRole('checkbox', { name: labels[i] }).dispatchEvent('click'))
     }
 
     await Promise.all(promises)
