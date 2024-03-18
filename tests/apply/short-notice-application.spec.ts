@@ -17,7 +17,7 @@ test('Apply, assess, match and book an short notice application for an Approved 
     true,
     true,
   )
-  await assessApplication({ page, user, person }, id, { applicationType: 'shortNotice' })
+  await assessApplication({ page, user, person }, id, { applicationType: 'shortNotice', acceptApplication: true })
   await withdrawAnApplicationAfterSubmission(page, id)
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
