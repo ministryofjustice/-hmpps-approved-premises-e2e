@@ -9,12 +9,12 @@ export class ReportsPage extends BasePage {
   }
 
   async downloadLostBedsReports({ month, year }: { month: string; year: string }) {
-    await this.checkRadio('Lost Beds')
+    await this.checkRadio('Lost beds')
     return this.downloadReports({ month, year })
   }
 
   async downloadApplicationsReports({ month, year }: { month: string; year: string }) {
-    await this.checkRadio('Combined applications and placement requests')
+    await this.checkRadio('Raw combined applications and placement requests')
     return this.downloadReports({ month, year })
   }
 
