@@ -15,6 +15,7 @@ import {
 import { BasePage } from '../pages/basePage'
 import { TestOptions } from '../testOptions'
 import { ShowPage } from '../pages/apply/showPage'
+import { assessmentShouldHaveCorrectDeadlineAndAllocatedUser } from './workflow'
 
 export const visitDashboard = async (page: Page): Promise<DashboardPage> => {
   const dashboard = new DashboardPage(page)
@@ -535,6 +536,11 @@ export const recordAnAppealOnApplication = async (page: Page, applicationId: str
   } else {
     await showPage.shouldShowAppealRejectedBanner()
   }
+}
+
+export const assessmentShouldBeAllocatedToCorrectUser = async (page: Page, applicationId: string, user: string) => {
+  const dashboard = await visitDashboard(page)
+  await assessmentShouldHaveCorrectDeadlineAndAllocatedUser(dashboard, page, applicationId, '10 Days', user)
 }
 
 const withdrawApplication = async (page: Page) => {
