@@ -21,4 +21,5 @@ export const test = base.extend<TestOptions>({
   ],
   indexOffenceRequired: [false, { option: true }],
   oasysSections: [['3. Accommodation', '13. Health', '4. Education, training and employment'], { option: true }],
+  emergencyApplicationUser: ['AP_USER TEST_1', { option: true }],
 })

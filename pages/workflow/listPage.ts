@@ -26,10 +26,14 @@ export class ListPage extends BasePage {
     await row.getByRole('link').click()
   }
 
-  async shouldHaveCorrectDeadline(id: string, deadline: string) {
+  async shouldHaveCorrectDeadlineAndAllocation(id: string, deadline: string, user?: string | null) {
     const row = await this.getAssignmentWithId(id)
 
     await expect(row.locator('td').nth(0)).toContainText(deadline)
+
+    if (user) {
+      await expect(row.locator('td').nth(1)).toContainText(user)
+    }
   }
 
   async choosePlacementApplicationWithId(id: string) {

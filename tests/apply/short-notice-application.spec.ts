@@ -10,14 +10,19 @@ test('Apply, assess, match and book an short notice application for an Approved 
   person,
   indexOffenceRequired,
   oasysSections,
+  emergencyApplicationUser,
 }) => {
-  await setRoles(page, user.name, [])
+  await setRoles(page, user.name, ['Emergency APs'])
   const id = await createApplication(
     { page, person, indexOffenceRequired, oasysSections, applicationType: 'shortNotice' },
     true,
     true,
   )
-  await assessApplication({ page, user, person }, id, { applicationType: 'shortNotice', acceptApplication: true })
+  await assessApplication({ page, user, person }, id, {
+    applicationType: 'shortNotice',
+    acceptApplication: true,
+    allocatedUser: emergencyApplicationUser,
+  })
   await withdrawAnApplicationAfterSubmission(page, id)
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)

@@ -11,4 +11,5 @@ export type TestOptions = {
   }
   indexOffenceRequired: boolean
   oasysSections: Array<string>
+  emergencyApplicationUser?: string
 }

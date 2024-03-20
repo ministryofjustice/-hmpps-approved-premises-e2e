@@ -2,15 +2,16 @@ import { Page } from '@playwright/test'
 import { DashboardPage } from '../pages/dashboardPage'
 import { AssessmentPage, ListPage, PlacementRequestPage } from '../pages/workflow'
 
-export const assessmentShouldHaveCorrectDeadline = async (
+export const assessmentShouldHaveCorrectDeadlineAndAllocatedUser = async (
   dashboard: DashboardPage,
   page: Page,
   id: string,
   deadline: string,
+  user: string | null,
 ) => {
   await dashboard.clickWorkflow()
   const workflowListPage = new ListPage(page)
-  await workflowListPage.shouldHaveCorrectDeadline(id, deadline)
+  await workflowListPage.shouldHaveCorrectDeadlineAndAllocation(id, deadline, user)
 }
 
 export const assignAssessmentToMe = async (dashboard: DashboardPage, page: Page, userName: string, id: string) => {

@@ -2,12 +2,13 @@ import { Page } from '@playwright/test'
 import { ApplicationType } from '@approved-premises/e2e'
 import { AssessPage, ConfirmationPage, ListPage, TasklistPage } from '../pages/assess'
 import { visitDashboard } from './apply'
-import { assessmentShouldHaveCorrectDeadline, assignAssessmentToMe } from './workflow'
+import { assessmentShouldHaveCorrectDeadlineAndAllocatedUser, assignAssessmentToMe } from './workflow'
 import { verifyEmailSent } from './email'
 
 interface AssessApplicationOptions {
   applicationType?: ApplicationType
   acceptApplication?: boolean
+  allocatedUser?: string | null
 }
 
 export const startAssessment = async (page: Page, personName: string, applicationId: string) => {
@@ -180,7 +181,7 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
 export const assessApplication = async (
   { page, user, person },
   applicationId: string,
-  { applicationType = 'standard', acceptApplication = true }: AssessApplicationOptions = {
+  { applicationType = 'standard', acceptApplication = true, allocatedUser = null }: AssessApplicationOptions = {
     applicationType: 'standard',
     acceptApplication: true,
   },
@@ -212,7 +213,7 @@ export const assessApplication = async (
       emailBody = '10 working days'
   }
 
-  await assessmentShouldHaveCorrectDeadline(dashboard, page, applicationId, deadline)
+  await assessmentShouldHaveCorrectDeadlineAndAllocatedUser(dashboard, page, applicationId, deadline, allocatedUser)
 
   // And I allocate the assessement to myself
   await assignAssessmentToMe(dashboard, page, user.name, applicationId)
