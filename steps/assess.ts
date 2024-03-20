@@ -5,6 +5,11 @@ import { visitDashboard } from './apply'
 import { assessmentShouldHaveCorrectDeadline, assignAssessmentToMe } from './workflow'
 import { verifyEmailSent } from './email'
 
+interface AssessApplicationOptions {
+  applicationType?: ApplicationType
+  acceptApplication?: boolean
+}
+
 export const startAssessment = async (page: Page, personName: string, applicationId: string) => {
   const dashboard = await visitDashboard(page)
   await dashboard.clickAssess()
@@ -175,7 +180,7 @@ export const shouldSeeAssessmentConfirmationScreen = async (page: Page) => {
 export const assessApplication = async (
   { page, user, person },
   applicationId: string,
-  { applicationType, acceptApplication }: { applicationType: ApplicationType; acceptApplication: boolean } = {
+  { applicationType = 'standard', acceptApplication = true }: AssessApplicationOptions = {
     applicationType: 'standard',
     acceptApplication: true,
   },
