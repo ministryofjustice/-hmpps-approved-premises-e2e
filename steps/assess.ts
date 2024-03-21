@@ -216,7 +216,7 @@ export const assessApplication = async (
   await assessmentShouldHaveCorrectDeadlineAndAllocatedUser(dashboard, page, applicationId, deadline, allocatedUser)
 
   // And I allocate the assessement to myself
-  await assignAssessmentToMe(dashboard, page, user.name, applicationId)
+  await assignAssessmentToMe(dashboard, page, user.name, applicationId, !!allocatedUser)
 
   // Then I should receive a confirmation email
   await verifyEmailSent(user.email, 'Approved Premises application to assess', emailBody)

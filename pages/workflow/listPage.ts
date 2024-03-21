@@ -1,15 +1,10 @@
+/* eslint-disable no-await-in-loop */
 import { expect } from '@playwright/test'
 import { BasePage } from '../basePage'
 
 export class ListPage extends BasePage {
-  async getAssignmentWithId(id: string) {
-    await this.page.getByRole('link', { name: 'Due ▲' }).click()
-
-    const assessmentRows = this.page.getByRole('row').filter({ has: this.page.getByText('Assessment') })
-
-    const assessmentRow = await assessmentRows.filter({ has: this.page.locator(`[data-cy-applicationId="${id}"]`) })
-
-    if (!(await assessmentRow.isVisible())) {
+  async getAssignmentWithId(id: string, isAllocated: boolean) {
+    if (!isAllocated) {
       await this.page
         .getByRole('link')
         .filter({ has: this.page.getByText('Unallocated') })
@@ -17,17 +12,39 @@ export class ListPage extends BasePage {
         .click()
     }
 
+    return this.getAssessmentRow(id)
+  }
+
+  async getAssessmentRow(id: string) {
+    const assessmentRow = this.page
+      .getByRole('row')
+      .filter({ has: this.page.getByText('Assessment') })
+      .filter({ has: this.page.locator(`[data-cy-applicationId="${id}"]`) })
+    const nextLink = this.page.getByRole('link', { name: 'Next' })
+
+    try {
+      await expect(assessmentRow).toBeVisible()
+    } catch (err) {
+      try {
+        await expect(nextLink).toBeVisible()
+      } catch {
+        throw err
+      }
+      await nextLink.click()
+      await this.getAssessmentRow(id)
+    }
+
     return assessmentRow.first()
   }
 
-  async chooseAssessmentWithId(id: string) {
-    const row = await this.getAssignmentWithId(id)
+  async chooseAssessmentWithId(id: string, isAllocated: boolean) {
+    const row = await this.getAssignmentWithId(id, isAllocated)
 
     await row.getByRole('link').click()
   }
 
   async shouldHaveCorrectDeadlineAndAllocation(id: string, deadline: string, user?: string | null) {
-    const row = await this.getAssignmentWithId(id)
+    const row = await this.getAssignmentWithId(id, !!user)
 
     await expect(row.locator('td').nth(0)).toContainText(deadline)
 

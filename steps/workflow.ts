@@ -14,9 +14,15 @@ export const assessmentShouldHaveCorrectDeadlineAndAllocatedUser = async (
   await workflowListPage.shouldHaveCorrectDeadlineAndAllocation(id, deadline, user)
 }
 
-export const assignAssessmentToMe = async (dashboard: DashboardPage, page: Page, userName: string, id: string) => {
+export const assignAssessmentToMe = async (
+  dashboard: DashboardPage,
+  page: Page,
+  userName: string,
+  id: string,
+  isAllocated: boolean,
+) => {
   const workflowListPage = new ListPage(page)
-  await workflowListPage.chooseAssessmentWithId(id)
+  await workflowListPage.chooseAssessmentWithId(id, isAllocated)
 
   const assessmentPage = new AssessmentPage(page)
   await assessmentPage.selectStaffMember(userName)
