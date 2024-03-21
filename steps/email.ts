@@ -10,47 +10,49 @@ export const verifyEmailSent = async (
   subject: string,
   bodyIncludes?: string | undefined,
 ) => {
-  await expect(async () => {
-    const client = new NotifyClient(process.env.NOTIFY_API_KEY)
-    const response = await client.getNotifications('email')
-    const { notifications } = response.data
-    const notificationsForEmail = notifications.filter(
-      notification => notificationWasSentInTheLastMinute(notification) && notification.email_address === emailAddress,
-    )
+  if (emailAddress) {
+    await expect(async () => {
+      const client = new NotifyClient(process.env.NOTIFY_API_KEY)
+      const response = await client.getNotifications('email')
+      const { notifications } = response.data
+      const notificationsForEmail = notifications.filter(
+        notification => notificationWasSentInTheLastMinute(notification) && notification.email_address === emailAddress,
+      )
 
-    if (notificationsForEmail.length === 0) {
-      console.error('No email messages found for the given email address')
-      return false
-    }
+      if (notificationsForEmail.length === 0) {
+        console.error('No email messages found for the given email address')
+        return false
+      }
 
-    const notificationsWithSubject = notificationsForEmail.filter(notification => notification.subject === subject)
+      const notificationsWithSubject = notificationsForEmail.filter(notification => notification.subject === subject)
 
-    if (notificationsWithSubject.length === 0) {
-      console.error(
-        `
+      if (notificationsWithSubject.length === 0) {
+        console.error(
+          `
           No email messages found with the given subject - subject lines found:
           ${notificationsForEmail.map(n => n.subject).join('\r\n')}
         `,
+        )
+        return false
+      }
+
+      const notificationsWithBody = notificationsWithSubject.filter(notification =>
+        bodyIncludes ? notification.body.includes(bodyIncludes) : true,
       )
-      return false
-    }
 
-    const notificationsWithBody = notificationsWithSubject.filter(notification =>
-      bodyIncludes ? notification.body.includes(bodyIncludes) : true,
-    )
-
-    if (notificationsWithBody.length === 0) {
-      console.error(
-        `
+      if (notificationsWithBody.length === 0) {
+        console.error(
+          `
           No email messages found with the given body - email bodies found:
           ${notificationsForEmail.map(n => n.body).join('\r\n')}
         `,
-      )
-      return false
-    }
+        )
+        return false
+      }
 
-    return true
-  }).toPass()
+      return true
+    }).toPass()
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

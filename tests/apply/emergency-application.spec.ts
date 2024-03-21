@@ -10,6 +10,7 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
   person,
   indexOffenceRequired,
   oasysSections,
+  emergencyApplicationUser,
 }) => {
   await setRoles(page, user.name, ['Emergency APs'])
 
@@ -17,7 +18,10 @@ test('Apply, assess, match and book an emergency application for an Approved Pre
     { page, person, indexOffenceRequired, oasysSections, applicationType: 'emergency' },
     true,
   )
-  await assessApplication({ page, user, person }, id, { applicationType: 'emergency' })
+  await assessApplication({ page, user, person }, id, {
+    applicationType: 'emergency',
+    allocatedUser: emergencyApplicationUser,
+  })
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
 })
