@@ -132,6 +132,11 @@ export const makeDecision = async (page: Page, options: { acceptApplication: boo
     decisionPage.fillField('Rationale for your decision', 'reason notes')
   }
   await decisionPage.checkRadio(decision)
+
+  if (!options.acceptApplication) {
+    await decisionPage.fillField('Rationale for your decision', 'This is a test')
+  }
+
   await decisionPage.clickSubmit()
 }
 
