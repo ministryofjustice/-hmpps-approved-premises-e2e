@@ -128,6 +128,9 @@ export const makeDecision = async (page: Page, options: { acceptApplication: boo
   const decisionPage = await AssessPage.initialize(page, 'Make a decision')
 
   const decision = options.acceptApplication ? 'Accept' : 'Accommodation need only'
+  if (decision !== 'Accept') {
+    decisionPage.fillField('Rationale for your decision', 'reason notes')
+  }
   await decisionPage.checkRadio(decision)
   await decisionPage.clickSubmit()
 }
