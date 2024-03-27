@@ -80,7 +80,7 @@ export const assessSuitability = async (page: Page, applicationType: Application
   await assessPage.checkRadioInGroup('Is the move on plan sufficient?', 'Yes')
   await assessPage.clickSubmit()
 
-  if (applicationType === 'emergency' || applicationType === 'shortNotice') {
+  if (applicationType === 'shortNotice' || applicationType === 'emergency') {
     const applicationTimelinessPage = await AssessPage.initialize(page, 'Application timeliness')
     await applicationTimelinessPage.checkRadioInGroup(
       `Do you agree with the applicant's reason for submission outside of National Standards timescales?`,
@@ -89,7 +89,7 @@ export const assessSuitability = async (page: Page, applicationType: Application
     await applicationTimelinessPage.clickSubmit()
   }
 
-  if (applicationType === 'emergency') {
+  if (applicationType === 'shortNotice' || applicationType === 'emergency') {
     const contingencyPlansSufficientPage = await AssessPage.initialize(page, 'Suitability assessment')
     await contingencyPlansSufficientPage.checkRadioInGroup(
       'Is the contingency plan sufficient to manage behaviour or a failure to return out of hours?',
