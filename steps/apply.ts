@@ -57,6 +57,7 @@ export const completeBasicInformationTask = async (
   withReleaseDate = true,
   applicationType: ApplicationType = 'standard',
   testMappaFlow = false,
+  completeCaseManagerSection = false,
 ) => {
   const notEligiblePage = await ApplyPage.initialize(page, 'This application is not eligible')
   await notEligiblePage.checkRadio('Yes')
@@ -77,6 +78,14 @@ export const completeBasicInformationTask = async (
   await confirmYourDetailsPage.fillField('Phone number', '01234567890')
   await confirmYourDetailsPage.checkRadio('Yes')
   await confirmYourDetailsPage.clickSave()
+
+  if (completeCaseManagerSection) {
+    const caseManagerPage = await ApplyPage.initialize(page, 'Add case manager information')
+    await caseManagerPage.fillField('Case manager name', 'Bob Case')
+    await caseManagerPage.fillField('Case manager email', 'bob@moj.com')
+    await caseManagerPage.fillField('Case manager phone number', '01234567890')
+    await caseManagerPage.clickSave()
+  }
 
   const transgenderPage = await ApplyPage.initialize(
     page,
