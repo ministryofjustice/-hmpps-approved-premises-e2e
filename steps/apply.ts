@@ -333,7 +333,7 @@ export const completeFurtherConsiderationsTask = async (page: Page, applicationT
   await additionalCircumstancesPage.checkRadio('No')
   await additionalCircumstancesPage.clickSave()
 
-  if (applicationType === 'emergency') {
+  if (applicationType === 'shortNotice' || applicationType === 'emergency') {
     const contingencyPlansPage = await ApplyPage.initialize(page, 'Contingency plans')
     await contingencyPlansPage.fillField(
       'If the person does not return to the AP for curfew, what actions should be taken?',
