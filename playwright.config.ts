@@ -37,11 +37,6 @@ export default defineConfig<TestOptions>({
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.auth/user.json',
         baseURL: 'https://approved-premises-dev.hmpps.service.justice.gov.uk',
-        user: {
-          name: 'Approved Premises E2ETester',
-          username: process.env.HMPPS_AUTH_USERNAME,
-          password: process.env.HMPPS_AUTH_PASSWORD,
-        },
       },
       dependencies: ['setupDev'],
     },

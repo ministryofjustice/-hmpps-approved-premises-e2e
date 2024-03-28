@@ -24,7 +24,7 @@ test('Record a successful appeal against a rejected application', async ({
   )
   await assessApplication({ page, user, person }, id, { acceptApplication: false })
   await recordAnAppealOnApplication(page, id, 'Appeal successful')
-  await assessmentShouldBeAllocatedToCorrectUser(page, id, user.name)
+  await assessmentShouldBeAllocatedToCorrectUser(page, id, user.username)
   await verifyEmailSent(user.email, 'Approved Premises assessment successfully appealed')
 })
 
