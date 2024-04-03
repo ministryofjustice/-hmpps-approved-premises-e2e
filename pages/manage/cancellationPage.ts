@@ -10,6 +10,6 @@ export class CancellationPage extends BasePage {
   }
 
   async completeForm() {
-    await this.checkRadio('The placement is being transferred')
+    await this.checkRadio('Probation Practitioner requested it')
   }
 }
