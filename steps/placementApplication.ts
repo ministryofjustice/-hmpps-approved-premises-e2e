@@ -100,7 +100,7 @@ export const startAndCreatePlacementApplication = async ({ page }, applicationId
 
 export const reviewAndApprovePlacementApplication = async ({ page, user }, applicationId: string) => {
   const dashboard = await visitDashboard(page)
-  await assignPlacementApplicationToMe(dashboard, page, user.name, applicationId)
+  await assignPlacementApplicationToMe(dashboard, page, user.username, applicationId)
 
   await visitDashboard(page)
   await dashboard.clickMatch()

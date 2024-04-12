@@ -135,6 +135,11 @@ export const makeDecision = async (page: Page, options: { acceptApplication: boo
     decisionPage.fillField('Rationale for your decision', 'reason notes')
   }
   await decisionPage.checkRadio(decision)
+
+  if (!options.acceptApplication) {
+    await decisionPage.fillField('Rationale for your decision', 'This is a test')
+  }
+
   await decisionPage.clickSubmit()
 }
 
@@ -222,7 +227,7 @@ export const assessApplication = async (
   await assessmentShouldHaveCorrectDeadlineAndAllocatedUser(dashboard, page, applicationId, deadline, allocatedUser)
 
   // And I allocate the assessement to myself
-  await assignAssessmentToMe(dashboard, page, user.name, applicationId, !!allocatedUser)
+  await assignAssessmentToMe(dashboard, page, user.username, applicationId, allocatedUser)
 
   // Then I should receive a confirmation email
   await verifyEmailSent(user.email, 'Approved Premises application to assess', emailBody)
@@ -264,7 +269,7 @@ export const requestAndAddAdditionalInformation = async ({ page, user, person },
   // When I start the assessment
   const dashboard = await visitDashboard(page)
   await dashboard.clickWorkflow()
-  await assignAssessmentToMe(dashboard, page, user.name, applicationId)
+  await assignAssessmentToMe(dashboard, page, user.username, applicationId)
   await startAssessment(page, person.name, applicationId)
   await reviewApplication(page)
 

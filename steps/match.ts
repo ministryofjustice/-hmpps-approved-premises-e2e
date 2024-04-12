@@ -34,7 +34,7 @@ export const matchAndBookApplication = async ({ page, user, person }, id: string
   const dashboard = await visitDashboard(page)
 
   // And I allocate the placement request to myself
-  await assignPlacementRequestToMe(dashboard, page, user.name, id)
+  await assignPlacementRequestToMe(dashboard, page, user.username, id)
 
   // And I search for a bed
   await searchForBed(page, person.name)

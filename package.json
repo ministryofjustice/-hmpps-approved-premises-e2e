@@ -8,7 +8,7 @@
     "lint:fix": "eslint . --cache --max-warnings 0 --fix",
     "test": "npx playwright test --project=setupDev --project=dev",
     "test:ui": "npm run test -- --ui",
-    "test:local": "npx playwright test --project=setupLocal --project=local",
+    "test:local": "npx playwright test --project=local",
     "test:local:ui": "npm run test:local -- --ui",
     "install-playwright": "npx playwright install",
     "create-application:standard": "APPLICATION_TYPE='standard' npx playwright test utils/createApplication.spec.ts",
