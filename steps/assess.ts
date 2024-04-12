@@ -46,9 +46,12 @@ export const confirmInsufficientInformation = async (page: Page) => {
   await additionalInformationPage.fillField('What additional information is needed?', 'This is a test')
   await additionalInformationPage.clickSubmit()
 
-  const confirmPage = await AssessPage.initialize(page, 'Suitability Assessment')
-  await confirmPage.checkRadio('Yes')
-  await confirmPage.clickSubmit()
+  const showConfirmationScreen = false
+  if (showConfirmationScreen) {
+    const confirmPage = await AssessPage.initialize(page, 'Suitability Assessment')
+    await confirmPage.checkRadio('Yes')
+    await confirmPage.clickSubmit()
+  }
 }
 
 export const addAdditionalInformation = async (page: Page) => {
