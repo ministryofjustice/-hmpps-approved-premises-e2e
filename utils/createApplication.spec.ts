@@ -4,6 +4,6 @@ import { createApplication } from '../steps/apply'
 
 const applicationType = process.env.APPLICATION_TYPE as ApplicationType
 
-test(`create ${applicationType} application`, async ({ page, person, indexOffenceRequired, oasysSections }) => {
-  await createApplication({ page, person, indexOffenceRequired, oasysSections, applicationType }, true, true)
+test(`create ${applicationType} application`, async ({ page, person, oasysSections }) => {
+  await createApplication({ page, person, oasysSections, applicationType }, true, true)
 })

@@ -8,16 +8,11 @@ test('Apply, assess, match and book an short notice application for an Approved 
   page,
   user,
   person,
-  indexOffenceRequired,
   oasysSections,
   emergencyApplicationUser,
 }) => {
   await setRoles(page, user.name, ['Emergency APs'])
-  const id = await createApplication(
-    { page, person, indexOffenceRequired, oasysSections, applicationType: 'shortNotice' },
-    true,
-    true,
-  )
+  const id = await createApplication({ page, person, oasysSections, applicationType: 'shortNotice' }, true, true)
   await assessApplication({ page, user, person }, id, {
     applicationType: 'shortNotice',
     acceptApplication: true,

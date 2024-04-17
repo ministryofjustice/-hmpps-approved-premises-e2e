@@ -9,7 +9,6 @@ export type TestOptions = {
     password: string
     email?: string
   }
-  indexOffenceRequired: boolean
   oasysSections: Array<string>
   emergencyApplicationUser?: string
 }
