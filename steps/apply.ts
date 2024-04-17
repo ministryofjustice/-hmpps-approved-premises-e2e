@@ -16,6 +16,7 @@ import { BasePage } from '../pages/basePage'
 import { TestOptions } from '../testOptions'
 import { ShowPage } from '../pages/apply/showPage'
 import { assessmentShouldHaveCorrectDeadlineAndAllocatedUser } from './workflow'
+import { SelectIndexOffencePage } from '../pages/apply/selectIndexOffencePage'
 
 export const visitDashboard = async (page: Page): Promise<DashboardPage> => {
   const dashboard = new DashboardPage(page)
@@ -42,8 +43,9 @@ export const enterAndConfirmCrn = async (page: Page, crn: string) => {
   const confirmPersonPage = new ConfirmPersonPage(page)
   await confirmPersonPage.clickSave()
 
-  await page.getByLabel('Select Murder - Murder of infants under 1 year of age as index offence').click()
-  await confirmPersonPage.clickSave()
+  const selectIndexOffencePage = new SelectIndexOffencePage(page)
+  await selectIndexOffencePage.selectFirstOffence()
+  await selectIndexOffencePage.clickSave()
 
   const url = page.url()
 
