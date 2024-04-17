@@ -67,7 +67,6 @@ export default defineConfig<TestOptions>({
           username: 'jimsnowldap',
           password: 'secret',
         },
-        indexOffenceRequired: true,
         oasysSections: [
           '5. Finance',
           '6. Relationships',

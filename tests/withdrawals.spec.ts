@@ -14,16 +14,14 @@ import { ShowPage } from '../pages/apply/showPage'
 test('Withdraw an application before submission', async ({
   page,
   person,
-  indexOffenceRequired,
 }: {
   page: Page
   person: TestOptions['person']
-  indexOffenceRequired: boolean
 }) => {
   const dashboard = await visitDashboard(page)
 
   await startAnApplication(dashboard, page)
-  const applicationId = await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
+  const applicationId = await enterAndConfirmCrn(page, person.crn)
 
   await visitDashboard(page)
   await dashboard.clickApply()

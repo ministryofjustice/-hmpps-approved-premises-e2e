@@ -8,11 +8,11 @@ import {
 
 import { ListPage } from '../../pages/apply'
 
-test('Withdraw an application before submission', async ({ page, person, indexOffenceRequired }) => {
+test('Withdraw an application before submission', async ({ page, person }) => {
   const dashboard = await visitDashboard(page)
 
   await startAnApplication(dashboard, page)
-  const applicationId = await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
+  const applicationId = await enterAndConfirmCrn(page, person.crn)
 
   await visitDashboard(page)
   await dashboard.clickApply()

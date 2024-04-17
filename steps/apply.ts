@@ -34,7 +34,7 @@ export const startAnApplication = async (dashboard: DashboardPage, page: Page) =
   await startPage.createApplication()
 }
 
-export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRequired: boolean) => {
+export const enterAndConfirmCrn = async (page: Page, crn: string) => {
   const crnPage = new CRNPage(page)
   await crnPage.enterCrn(crn)
   await crnPage.clickSave()
@@ -42,10 +42,8 @@ export const enterAndConfirmCrn = async (page: Page, crn: string, indexOffenceRe
   const confirmPersonPage = new ConfirmPersonPage(page)
   await confirmPersonPage.clickSave()
 
-  if (indexOffenceRequired) {
-    await page.getByLabel('Select Murder - Murder of infants under 1 year of age as index offence').click()
-    await confirmPersonPage.clickSave()
-  }
+  await page.getByLabel('Select Murder - Murder of infants under 1 year of age as index offence').click()
+  await confirmPersonPage.clickSave()
 
   const url = page.url()
 
@@ -439,13 +437,11 @@ export const createApplication = async (
   {
     page,
     person,
-    indexOffenceRequired,
     oasysSections,
     applicationType,
   }: {
     page: Page
     person: TestOptions['person']
-    indexOffenceRequired: boolean
     oasysSections: Array<string>
     applicationType: ApplicationType
   },
@@ -459,7 +455,7 @@ export const createApplication = async (
   await startAnApplication(dashboard, page)
 
   // And I enter and confirm a CRN
-  await enterAndConfirmCrn(page, person.crn, indexOffenceRequired)
+  await enterAndConfirmCrn(page, person.crn)
 
   // And I complete the basic information Task
   await completeBasicInformationTask(page, withReleaseDate, applicationType, testMappaFlow)
