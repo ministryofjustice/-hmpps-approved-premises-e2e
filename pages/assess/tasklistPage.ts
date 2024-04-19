@@ -7,6 +7,6 @@ export class TasklistPage extends BasePage {
 
   async submitAssessment() {
     await this.page.getByLabel('I confirm the information provided is complete, accurate and up to date.').check()
-    await this.page.getByRole('button', { name: 'Submit application' }).click()
+    await this.page.getByRole('button', { name: 'Submit assessment' }).click()
   }
 }
