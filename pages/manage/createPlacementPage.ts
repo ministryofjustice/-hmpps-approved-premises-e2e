@@ -33,7 +33,12 @@ export class CreatePlacementPage extends BasePage {
       .fill(getYear(addDays(new Date(), 1)).toString())
   }
 
+  async chooseIndexOffence() {
+    await this.page.getByRole('group', { name: 'Select an index offence' }).getByRole('radio').first().click()
+  }
+
   async completeForm() {
+    await this.chooseIndexOffence()
     await this.enterArrivalDate()
     await this.enterExpectedDepartureDate()
   }
