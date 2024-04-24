@@ -1,5 +1,5 @@
 import { test } from '../../test'
-import { createApplication, withdrawAnApplicationAfterSubmission } from '../../steps/apply'
+import { createApplication } from '../../steps/apply'
 import { assessApplication } from '../../steps/assess'
 
 import { setRoles } from '../../steps/admin'
@@ -13,7 +13,6 @@ test('Apply, assess, match and book an application for an Approved Premises with
   await setRoles(page, user.name, [])
   const id = await createApplication({ page, person, oasysSections, applicationType: 'standard' }, true, true)
   await assessApplication({ page, user, person }, id)
-  await withdrawAnApplicationAfterSubmission(page, id)
   // Skip match until it's back
   // await matchAndBookApplication({ page, user, person }, id)
 })
