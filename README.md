@@ -1,3 +1,7 @@
+# Repo no longer in use
+
+These tests have now been incorporated into the [UI repo](https://github.com/ministryofjustice/hmpps-approved-premises-ui)
+
 # Approved Premises End to End tests
 
 A suite of end to end tests for the [Approved Premises project](https://github.com/ministryofjustice/hmpps-approved-premises-ui) using [Playwright](https://playwright.dev/).
